@@ -56,7 +56,7 @@ const AdminOrders: React.FC = () => {
   );
 
   return (
-    <AdminLayout>
+    <>
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-black tracking-tighter text-gray-900 uppercase italic">Logistics Hub</h1>
@@ -213,7 +213,7 @@ const AdminOrders: React.FC = () => {
            )}
         </AnimatePresence>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

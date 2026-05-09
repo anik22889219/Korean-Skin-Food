@@ -96,7 +96,7 @@ const AdminDashboard: React.FC = () => {
   if (loading) return <div className="flex items-center justify-center h-screen bg-white font-black uppercase text-xs tracking-widest italic animate-pulse">Initializing Control Center...</div>;
 
   return (
-    <AdminLayout>
+    <>
       <div className="space-y-8 pb-12">
         {/* Page Title */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -311,7 +311,7 @@ const AdminDashboard: React.FC = () => {
            </div>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

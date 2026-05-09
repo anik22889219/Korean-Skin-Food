@@ -80,7 +80,7 @@ const AdminReports: React.FC = () => {
   }));
 
   return (
-    <AdminLayout>
+    <>
       <div className="space-y-8 pb-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
@@ -191,7 +191,7 @@ const AdminReports: React.FC = () => {
            </div>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

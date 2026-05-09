@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { geminiService } from '../services/geminiService';
+import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import { Product } from '../types';
 
@@ -12,6 +13,8 @@ export const ChatBot: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     api.getProducts().then(setProducts).catch(console.error);
@@ -37,7 +40,7 @@ export const ChatBot: React.FC = () => {
       parts: [{ text: m.text }]
     }));
 
-    const response = await geminiService.getChatResponse(userMessage, history, products);
+    const response = await geminiService.getChatResponse(userMessage, history, products, user);
     
     setMessages(prev => [...prev, { role: 'model', text: response }]);
     setIsLoading(false);

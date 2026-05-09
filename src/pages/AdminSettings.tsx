@@ -19,7 +19,7 @@ const AdminSettings: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'general' | 'security' | 'notifications' | 'system'>('general');
 
   return (
-    <AdminLayout>
+    <>
       <div className="space-y-8 pb-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
@@ -166,7 +166,7 @@ const AdminSettings: React.FC = () => {
            </div>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

@@ -82,7 +82,7 @@ const AdminInventory: React.FC = () => {
   );
 
   return (
-    <AdminLayout>
+    <>
       <div className="space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
@@ -296,7 +296,7 @@ const AdminInventory: React.FC = () => {
           )}
         </AnimatePresence>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

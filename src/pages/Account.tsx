@@ -42,6 +42,10 @@ export const Account: React.FC = () => {
 
   useEffect(() => {
     if (user) {
+      if (isAdmin) {
+        navigate('/admin/dashboard');
+        return;
+      }
       setLoading(true);
       api.getUserOrders(user.phone)
         .then(data => {
@@ -49,7 +53,7 @@ export const Account: React.FC = () => {
         })
         .finally(() => setLoading(false));
     }
-  }, [user]);
+  }, [user, isAdmin, navigate]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
