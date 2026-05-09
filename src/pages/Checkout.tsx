@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { api } from '../services/api';
 import { ShoppingBag, ChevronLeft, MapPin, Phone, User, CheckCircle2, Package } from 'lucide-react';
@@ -8,6 +9,7 @@ import { motion, AnimatePresence } from 'motion/react';
 
 export const Checkout: React.FC = () => {
   const { cart, subtotal, clearCart } = useCart();
+  const { user } = useAuth();
   const { language, t } = useLanguage();
   const navigate = useNavigate();
   
@@ -53,6 +55,18 @@ export const Checkout: React.FC = () => {
         total: total,
         payment_method: 'COD'
       };
+
+      // Auto account creation for guests
+      if (!user) {
+        try {
+          const autoEmail = `${formData.phone.replace(/[^0-9]/g, '')}@ksf.com`;
+          const autoPassword = formData.phone;
+          // Attempt registration, ignore errors if user already exists
+          api.registerUser(formData.name, autoEmail, formData.phone, autoPassword).catch(() => {});
+        } catch (e) {
+          // Silent catch
+        }
+      }
 
       const res = await api.placeOrder(orderPayload);
       

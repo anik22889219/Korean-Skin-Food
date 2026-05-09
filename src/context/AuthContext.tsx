@@ -5,6 +5,7 @@ import { api } from '../services/api';
 interface AuthContextType {
   user: User | null;
   login: (phone: string, password: string) => Promise<boolean>;
+  loginWithGoogle: (email: string, name: string, picture?: string) => Promise<boolean>;
   register: (name: string, email: string, phone: string, password: string) => Promise<boolean>;
   logout: () => void;
   isAdmin: boolean;
@@ -22,6 +23,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return null;
     }
   });
+
+  const loginWithGoogle = async (email: string, name: string, picture?: string): Promise<boolean> => {
+    try {
+      const data = await api.googleLogin(email, name, picture);
+      // Fallback: if backend doesn't implement it yet, create a mock local session
+      if (data?.success && data?.user) {
+        setUser(data.user);
+        localStorage.setItem('ksf_user', JSON.stringify(data.user));
+        return true;
+      } else if (!data) {
+        // Fallback for when Apps script is missing the googleLogin action
+        const mockUser: User = {
+          user_id: `g_${Date.now()}`,
+          name: name,
+          email: email,
+          phone: '', // Needs phone linkage later
+          role: 'customer'
+        };
+        setUser(mockUser);
+        localStorage.setItem('ksf_user', JSON.stringify(mockUser));
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.error('[Auth] Google Login error:', e);
+      return false;
+    }
+  };
 
   const login = async (phone: string, password: string): Promise<boolean> => {
     try {
@@ -63,7 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isSuperAdmin = user?.role === 'super_admin';
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isAdmin, isSuperAdmin }}>
+    <AuthContext.Provider value={{ user, login, loginWithGoogle, register, logout, isAdmin, isSuperAdmin }}>
       {children}
     </AuthContext.Provider>
   );

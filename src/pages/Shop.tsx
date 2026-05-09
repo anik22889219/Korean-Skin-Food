@@ -9,7 +9,7 @@ import { Search, Filter, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 
-export const Shop: React.FC = () => {
+export const Shop: React.FC<{ isOffersOnly?: boolean }> = ({ isOffersOnly = false }) => {
   const { t } = useLanguage();
   const [filters, setFilters] = useState({
     category: 'All',
@@ -32,6 +32,8 @@ export const Shop: React.FC = () => {
   }, [location]);
 
   const filtered = products.filter(p => {
+    if (isOffersOnly && !p.discount_price) return false;
+    
     const matchesSearch = p.name_en.toLowerCase().includes(filters.search.toLowerCase()) || 
                           p.name_bn.toLowerCase().includes(filters.search.toLowerCase());
     const matchesCategory = filters.category === 'All' || p.category === filters.category;

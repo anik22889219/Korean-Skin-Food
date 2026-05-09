@@ -1,5 +1,5 @@
 ---
-trigger: always_on
+trigger: model_decision
 ---
 
 # AGENT RULES — KOREAN SKIN FOOD

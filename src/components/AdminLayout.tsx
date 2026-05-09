@@ -26,6 +26,7 @@ interface AdminLayoutProps {
 
 export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
@@ -45,11 +46,21 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] flex">
+      {/* Mobile Overlay */}
+      {isMobileOpen && (
+        <div 
+          className="fixed inset-0 bg-gray-900/50 z-40 lg:hidden backdrop-blur-sm"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <motion.aside 
         initial={false}
         animate={{ width: isCollapsed ? 80 : 280 }}
-        className="bg-white border-r border-gray-100 flex flex-col sticky top-0 h-screen transition-all duration-300 z-50 overflow-hidden"
+        className={`bg-white border-r border-gray-100 flex flex-col fixed lg:sticky top-0 h-[100dvh] transition-transform duration-300 z-50 overflow-hidden ${
+          isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}
       >
         <div className="p-6 flex items-center justify-between">
           <AnimatePresence mode="wait">
@@ -66,17 +77,26 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </AnimatePresence>
           <button 
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-2 hover:bg-gray-50 rounded-xl transition-colors"
+            className="p-2 hover:bg-gray-50 rounded-xl transition-colors hidden lg:block"
           >
             {isCollapsed ? <Menu className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
           </button>
+          <button 
+            onClick={() => setIsMobileOpen(false)}
+            className="p-2 hover:bg-gray-50 rounded-xl transition-colors lg:hidden"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
         </div>
 
-        <nav className="flex-1 px-4 mt-8 space-y-2">
+        <nav className="flex-1 px-4 mt-8 space-y-2 overflow-y-auto">
           {menuItems.map((item) => (
             <button
               key={item.path}
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                navigate(item.path);
+                setIsMobileOpen(false);
+              }}
               className={`w-full flex items-center gap-4 px-4 py-3 rounded-2xl transition-all relative group ${
                 location.pathname === item.path 
                   ? 'bg-primary text-white shadow-lg shadow-primary/20' 
@@ -88,7 +108,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 <span className="text-xs font-black uppercase tracking-widest">{item.label}</span>
               )}
               {isCollapsed && (
-                <div className="absolute left-full ml-4 px-3 py-2 bg-gray-900 text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
+                <div className="absolute left-full ml-4 px-3 py-2 bg-gray-900 text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap hidden lg:block">
                   {item.label}
                 </div>
               )}
@@ -117,10 +137,16 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       </motion.aside>
 
       {/* Main Content */}
-      <main className="flex-1 min-w-0">
-        <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-40">
+      <main className="flex-1 min-w-0 flex flex-col h-[100dvh] overflow-hidden">
+        <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-4 lg:px-8 flex-shrink-0 z-30">
           <div className="flex items-center gap-4">
-             <div className="relative">
+             <button 
+               className="p-2 hover:bg-gray-50 rounded-xl lg:hidden"
+               onClick={() => setIsMobileOpen(true)}
+             >
+               <Menu className="w-5 h-5 text-gray-900" />
+             </button>
+             <div className="relative hidden sm:block">
                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                <input 
                 type="text" 
@@ -129,14 +155,14 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                />
              </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 lg:gap-4">
              <button className="relative p-2 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                <Bell className="w-4 h-4 text-gray-400" />
                <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
              </button>
-             <div className="h-8 w-px bg-gray-100 mx-2"></div>
-             <button className="flex items-center gap-3 group">
-               <div className="text-right hidden sm:block">
+             <div className="h-8 w-px bg-gray-100 mx-1 lg:mx-2 hidden sm:block"></div>
+             <button className="flex items-center gap-3 group hidden sm:flex">
+               <div className="text-right">
                  <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest">Active Server</p>
                  <div className="text-[8px] font-black text-emerald-500 uppercase tracking-widest flex items-center justify-end gap-1">
                    <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
@@ -147,7 +173,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </div>
         </header>
 
-        <div className="p-8">
+        <div className="flex-1 overflow-y-auto p-4 lg:p-8">
           {children}
         </div>
       </main>

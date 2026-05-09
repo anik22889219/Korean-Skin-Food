@@ -91,6 +91,7 @@ const AppContent = () => {
         <Route path="/"                   element={<Home />} />
         <Route path="/shop"               element={<Shop />} />
         <Route path="/search"             element={<Shop />} />
+        <Route path="/offers"             element={<Shop isOffersOnly />} />
         <Route path="/product/:id"        element={<ProductDetail />} />
         <Route path="/category/:slug"     element={<Shop />} />
         {/* Cart & Orders */}
