@@ -1,0 +1,156 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  LayoutDashboard, 
+  ShoppingBag, 
+  Package, 
+  Scan, 
+  BarChart3, 
+  Settings, 
+  ChevronLeft, 
+  Menu,
+  Bell,
+  Search,
+  LogOut,
+  User,
+  MessageCircle,
+  Sparkles,
+  Bot
+} from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+interface AdminLayoutProps {
+  children: React.ReactNode;
+}
+
+export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user, logout } = useAuth();
+
+  const menuItems = [
+    { icon: LayoutDashboard, label: 'Overview', path: '/admin/dashboard' },
+    { icon: ShoppingBag, label: 'Orders', path: '/admin/orders' },
+    { icon: Package, label: 'Inventory', path: '/admin/inventory' },
+    { icon: Scan, label: 'Barcode Scanner', path: '/admin/scanner' },
+    { icon: User, label: 'Customers & Leads', path: '/admin/customers' },
+    { icon: BarChart3, label: 'Analytics', path: '/admin/reports' },
+    { icon: MessageCircle, label: 'WhatsApp CRM', path: '/admin/whatsapp' },
+    { icon: Sparkles, label: 'Meta Ads & Pixel', path: '/admin/meta-ads' },
+    { icon: Bot, label: 'AI Center', path: '/admin/ai-center' },
+    { icon: Settings, label: 'Settings', path: '/admin/settings' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#F8F9FA] flex">
+      {/* Sidebar */}
+      <motion.aside 
+        initial={false}
+        animate={{ width: isCollapsed ? 80 : 280 }}
+        className="bg-white border-r border-gray-100 flex flex-col sticky top-0 h-screen transition-all duration-300 z-50 overflow-hidden"
+      >
+        <div className="p-6 flex items-center justify-between">
+          <AnimatePresence mode="wait">
+            {!isCollapsed && (
+              <motion.h2 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-2xl font-black tracking-tighter text-gray-900 uppercase italic"
+              >
+                ADMIN.
+              </motion.h2>
+            )}
+          </AnimatePresence>
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-2 hover:bg-gray-50 rounded-xl transition-colors"
+          >
+            {isCollapsed ? <Menu className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+          </button>
+        </div>
+
+        <nav className="flex-1 px-4 mt-8 space-y-2">
+          {menuItems.map((item) => (
+            <button
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              className={`w-full flex items-center gap-4 px-4 py-3 rounded-2xl transition-all relative group ${
+                location.pathname === item.path 
+                  ? 'bg-primary text-white shadow-lg shadow-primary/20' 
+                  : 'text-gray-400 hover:text-gray-900 hover:bg-gray-50'
+              }`}
+            >
+              <item.icon className="w-5 h-5 flex-shrink-0" />
+              {!isCollapsed && (
+                <span className="text-xs font-black uppercase tracking-widest">{item.label}</span>
+              )}
+              {isCollapsed && (
+                <div className="absolute left-full ml-4 px-3 py-2 bg-gray-900 text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
+                  {item.label}
+                </div>
+              )}
+            </button>
+          ))}
+        </nav>
+
+        <div className="p-4 mt-auto">
+          <div className={`bg-gray-50 rounded-[2rem] p-4 flex items-center gap-4 ${isCollapsed ? 'justify-center' : ''}`}>
+            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+              <User className="w-5 h-5 text-primary" />
+            </div>
+            {!isCollapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest truncate">{user?.name}</p>
+                <button 
+                  onClick={() => { logout(); navigate('/'); }}
+                  className="text-[8px] font-black text-red-500 uppercase tracking-widest hover:underline"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </motion.aside>
+
+      {/* Main Content */}
+      <main className="flex-1 min-w-0">
+        <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-40">
+          <div className="flex items-center gap-4">
+             <div className="relative">
+               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+               <input 
+                type="text" 
+                placeholder="Global Search..."
+                className="pl-11 pr-4 py-2 bg-gray-50 rounded-xl border-none text-xs font-bold w-48 md:w-80 outline-none focus:ring-2 focus:ring-primary/20 transition-all font-mono"
+               />
+             </div>
+          </div>
+          <div className="flex items-center gap-4">
+             <button className="relative p-2 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+               <Bell className="w-4 h-4 text-gray-400" />
+               <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
+             </button>
+             <div className="h-8 w-px bg-gray-100 mx-2"></div>
+             <button className="flex items-center gap-3 group">
+               <div className="text-right hidden sm:block">
+                 <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest">Active Server</p>
+                 <div className="text-[8px] font-black text-emerald-500 uppercase tracking-widest flex items-center justify-end gap-1">
+                   <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
+                   Synced
+                 </div>
+               </div>
+             </button>
+          </div>
+        </header>
+
+        <div className="p-8">
+          {children}
+        </div>
+      </main>
+    </div>
+  );
+};

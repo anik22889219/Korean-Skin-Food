@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <script>
+      (function() {
+        try {
+          var _fetch = window.fetch;
+          Object.defineProperty(window, 'fetch', {
+            get: function() { return _fetch; },
+            set: function(v) { console.warn('Blocked attempt to overwrite window.fetch.'); },
+            configurable: true,
+            enumerable: true
+          });
+          if (typeof window.global === 'undefined') { window.global = window; }
+        } catch (e) { console.error('Failed to apply fetch protection:', e); }
+      })();
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primary Meta -->
+    <title>Korean Skin Food | বাংলাদেশে অথেনটিক K-Beauty</title>
+    <meta name="description" content="বাংলাদেশে অথেনটিক কোরিয়ান স্কিনকেয়ার। সেরাম, ময়েশ্চারাইজার, ক্লেনজার, সানস্ক্রিন — ক্যাশ অন ডেলিভারিতে সারাদেশে পৌঁছে দিই। গ্লাস স্কিনের জন্য Korean Skin Food বেছে নিন।" />
+    <meta name="keywords" content="korean skincare bangladesh, kbeauty dhaka, glass skin, serum bangladesh, moisturizer, cleanser, sunscreen, korean cosmetics" />
+    <meta name="author" content="Korean Skin Food" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://koreanskinfood.com/" />
+
+    <!-- Theme Color (mobile browser bar) -->
+    <meta name="theme-color" content="#E91E8C" />
+    <meta name="msapplication-TileColor" content="#E91E8C" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://koreanskinfood.com/" />
+    <meta property="og:title" content="Korean Skin Food | অথেনটিক K-Beauty বাংলাদেশ" />
+    <meta property="og:description" content="বাংলাদেশে অথেনটিক কোরিয়ান স্কিনকেয়ার। ক্যাশ অন ডেলিভারি — সারাদেশে।" />
+    <meta property="og:image" content="https://koreanskinfood.com/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="bn_BD" />
+    <meta property="og:site_name" content="Korean Skin Food" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://koreanskinfood.com/" />
+    <meta name="twitter:title" content="Korean Skin Food | অথেনটিক K-Beauty বাংলাদেশ" />
+    <meta name="twitter:description" content="বাংলাদেশে অথেনটিক কোরিয়ান স্কিনকেয়ার। ক্যাশ অন ডেলিভারি।" />
+    <meta name="twitter:image" content="https://koreanskinfood.com/og-image.jpg" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Structured Data: Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Korean Skin Food",
+      "url": "https://koreanskinfood.com",
+      "logo": "https://koreanskinfood.com/icons/icon-192x192.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+880-1755-837545",
+        "contactType": "customer service",
+        "areaServed": "BD",
+        "availableLanguage": ["Bengali", "English"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/share/1Cbu2BNywm/",
+        "https://www.instagram.com/korean_skin_food_2579"
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+
