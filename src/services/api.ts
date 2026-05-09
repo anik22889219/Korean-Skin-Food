@@ -17,7 +17,12 @@ const get = (params: Record<string, string>) => {
 };
 
 const post = (body: Record<string, unknown>) => {
-  return axios.post(SCRIPT_URL, body);
+  // Google Apps Script requires text/plain to bypass CORS preflight issues on POST requests
+  return axios.post(SCRIPT_URL, JSON.stringify(body), {
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8',
+    },
+  });
 };
 
 const transformProduct = (p: any): Product => {
