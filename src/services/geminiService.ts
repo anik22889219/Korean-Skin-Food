@@ -75,7 +75,7 @@ ${userInfo}
 
     try {
       const chat = ai.chats.create({
-        model: 'gemini-2.0-flash-exp',
+        model: 'gemini-2.5-flash',
         config: { systemInstruction: systemPrompt },
         history: [
           {
