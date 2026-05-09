@@ -32,17 +32,11 @@ const AdminReports        = lazy(() => import('./pages/AdminReports'));
 const AdminSettings       = lazy(() => import('./pages/AdminSettings'));
 const AdminSEO            = lazy(() => import('./pages/AdminSEO'));
 const AdminSocial         = lazy(() => import('./pages/AdminSocial'));
-
-// ── Admin Placeholder (for sections being built) ────────────────────────────
-const AdminPlaceholder = ({ title, emoji = '🔧' }: { title: string; emoji?: string }) => (
-  <div className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 text-center space-y-4">
-    <div className="text-5xl">{emoji}</div>
-    <h1 className="text-2xl font-black uppercase tracking-tighter text-gray-900">{title}</h1>
-    <p className="text-gray-400 font-mono text-sm max-w-sm mx-auto">
-      এই সেকশনটি তৈরি হচ্ছে। শীঘ্রই লাইভ হবে।
-    </p>
-  </div>
-);
+const AdminCustomers      = lazy(() => import('./pages/AdminCustomers'));
+const AdminWhatsApp       = lazy(() => import('./pages/AdminWhatsApp'));
+const AdminMetaAds        = lazy(() => import('./pages/AdminMetaAds'));
+const AdminAICenter       = lazy(() => import('./pages/AdminAICenter'));
+const AdminSystemFix      = lazy(() => import('./pages/AdminSystemFix'));
 
 // ── Suspense Fallback ───────────────────────────────────────────────────────
 const PageLoader = () => (
@@ -75,11 +69,11 @@ const AppContent = () => {
               <Route path="/admin/settings"  element={<AdminSettings />} />
               <Route path="/admin/seo"       element={<AdminSEO />} />
               <Route path="/admin/social"    element={<AdminSocial />} />
-              <Route path="/admin/customers" element={<AdminPlaceholder title="Customers & Leads" emoji="👥" />} />
-              <Route path="/admin/whatsapp"  element={<AdminPlaceholder title="WhatsApp CRM" emoji="💬" />} />
-              <Route path="/admin/meta-ads"  element={<AdminPlaceholder title="Meta Ads & Pixel" emoji="📊" />} />
-              <Route path="/admin/ai-center" element={<AdminPlaceholder title="AI Center" emoji="🤖" />} />
-              <Route path="/admin/system-fix" element={<AdminPlaceholder title="System Fix" emoji="⚙️" />} />
+              <Route path="/admin/customers" element={<AdminCustomers />} />
+              <Route path="/admin/whatsapp"  element={<AdminWhatsApp />} />
+              <Route path="/admin/meta-ads"  element={<AdminMetaAds />} />
+              <Route path="/admin/ai-center" element={<AdminAICenter />} />
+              <Route path="/admin/system-fix" element={<AdminSystemFix />} />
               {/* Default admin redirect */}
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="*" element={<NotFound />} />
@@ -118,18 +112,25 @@ const AppContent = () => {
   );
 };
 
+import { ToastProvider } from './context/ToastContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
+
 export default function App() {
   return (
-    <Router>
-      <LanguageProvider>
-        <AuthProvider>
-          <CartProvider>
-            <div className="font-sans antialiased text-gray-900">
-              <AppContent />
-            </div>
-          </CartProvider>
-        </AuthProvider>
-      </LanguageProvider>
-    </Router>
+    <ErrorBoundary>
+      <ToastProvider>
+        <Router>
+          <LanguageProvider>
+            <AuthProvider>
+              <CartProvider>
+                <div className="font-sans antialiased text-gray-900">
+                  <AppContent />
+                </div>
+              </CartProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </Router>
+      </ToastProvider>
+    </ErrorBoundary>
   );
 }

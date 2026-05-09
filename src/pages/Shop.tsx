@@ -3,9 +3,10 @@ import { useLocation } from 'react-router-dom';
 import { api } from '../services/api';
 import { Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
+import { SkeletonCard } from '../components/SkeletonCard';
 import { useLanguage } from '../context/LanguageContext';
 import { Search, Filter, SlidersHorizontal, ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const Shop: React.FC = () => {
   const { t } = useLanguage();
@@ -142,9 +143,9 @@ export const Shop: React.FC = () => {
 
       {/* Grid */}
       {loading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-8">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="aspect-[4/5] bg-gray-100 rounded-3xl animate-pulse" />
+            <SkeletonCard key={i} />
           ))}
         </div>
       ) : filtered.length > 0 ? (
