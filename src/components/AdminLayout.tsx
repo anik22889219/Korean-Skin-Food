@@ -10,7 +10,6 @@ import {
   ChevronLeft, 
   Menu,
   Bell,
-  Search,
   LogOut,
   User,
   MessageCircle,
@@ -137,41 +136,29 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       </motion.aside>
 
       {/* Main Content */}
-      <main className="flex-1 min-w-0 flex flex-col h-[100dvh] overflow-hidden">
-        <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-4 lg:px-8 flex-shrink-0 z-30">
-          <div className="flex items-center gap-4">
+      <main className="flex-1 min-w-0 flex flex-col overflow-hidden">
+        {/* Admin sub-header toolbar */}
+        <div className="h-12 bg-white border-b border-gray-100 flex items-center justify-between px-4 lg:px-8 flex-shrink-0 z-30">
+          <div className="flex items-center gap-3">
              <button 
-               className="p-2 hover:bg-gray-50 rounded-xl lg:hidden"
+               className="p-1.5 hover:bg-gray-50 rounded-xl lg:hidden"
                onClick={() => setIsMobileOpen(true)}
              >
-               <Menu className="w-5 h-5 text-gray-900" />
+               <Menu className="w-5 h-5 text-gray-700" />
              </button>
-             <div className="relative hidden sm:block">
-               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-               <input 
-                type="text" 
-                placeholder="Global Search..."
-                className="pl-11 pr-4 py-2 bg-gray-50 rounded-xl border-none text-xs font-bold w-48 md:w-80 outline-none focus:ring-2 focus:ring-primary/20 transition-all font-mono"
-               />
+             <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 hidden sm:block">Admin Panel</span>
+          </div>
+          <div className="flex items-center gap-3">
+             <button className="relative p-1.5 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+               <Bell className="w-4 h-4 text-gray-400" />
+               <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
+             </button>
+             <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 rounded-full">
+               <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+               <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">Synced</span>
              </div>
           </div>
-          <div className="flex items-center gap-2 lg:gap-4">
-             <button className="relative p-2 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-               <Bell className="w-4 h-4 text-gray-400" />
-               <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
-             </button>
-             <div className="h-8 w-px bg-gray-100 mx-1 lg:mx-2 hidden sm:block"></div>
-             <button className="flex items-center gap-3 group hidden sm:flex">
-               <div className="text-right">
-                 <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest">Active Server</p>
-                 <div className="text-[8px] font-black text-emerald-500 uppercase tracking-widest flex items-center justify-end gap-1">
-                   <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
-                   Synced
-                 </div>
-               </div>
-             </button>
-          </div>
-        </header>
+        </div>
 
         <div className="flex-1 overflow-y-auto p-4 lg:p-8">
           {children}

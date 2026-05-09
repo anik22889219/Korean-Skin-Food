@@ -7,6 +7,7 @@ import { Layout } from './components/Layout';
 import { AdminLayout } from './components/AdminLayout';
 import { AdminGuard } from './components/AdminGuard';
 import { DiscountPopup } from './components/DiscountPopup';
+import { Navbar } from './components/Navbar';
 
 // ── Public Pages ────────────────────────────────────────────────────────────
 import { Home } from './pages/Home';
@@ -49,38 +50,42 @@ const PageLoader = () => (
 const AppContent = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAdminLogin = location.pathname === '/admin/login';
 
-  // Admin login page — standalone (no AdminLayout)
-  if (location.pathname === '/admin/login') {
+  // Admin login page — completely standalone (no layout)
+  if (isAdminLogin) {
     return <AdminLogin />;
   }
 
   if (isAdminRoute) {
     return (
-      <AdminGuard>
-        <AdminLayout>
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/orders"    element={<AdminOrders />} />
-              <Route path="/admin/inventory" element={<AdminInventory />} />
-              <Route path="/admin/scanner"   element={<AdminBarcodeScanner />} />
-              <Route path="/admin/reports"   element={<AdminReports />} />
-              <Route path="/admin/settings"  element={<AdminSettings />} />
-              <Route path="/admin/seo"       element={<AdminSEO />} />
-              <Route path="/admin/social"    element={<AdminSocial />} />
-              <Route path="/admin/customers" element={<AdminCustomers />} />
-              <Route path="/admin/whatsapp"  element={<AdminWhatsApp />} />
-              <Route path="/admin/meta-ads"  element={<AdminMetaAds />} />
-              <Route path="/admin/ai-center" element={<AdminAICenter />} />
-              <Route path="/admin/system-fix" element={<AdminSystemFix />} />
-              {/* Default admin redirect */}
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </AdminLayout>
-      </AdminGuard>
+      <>
+        <Navbar />
+        <AdminGuard>
+          <AdminLayout>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/orders"    element={<AdminOrders />} />
+                <Route path="/admin/inventory" element={<AdminInventory />} />
+                <Route path="/admin/scanner"   element={<AdminBarcodeScanner />} />
+                <Route path="/admin/reports"   element={<AdminReports />} />
+                <Route path="/admin/settings"  element={<AdminSettings />} />
+                <Route path="/admin/seo"       element={<AdminSEO />} />
+                <Route path="/admin/social"    element={<AdminSocial />} />
+                <Route path="/admin/customers" element={<AdminCustomers />} />
+                <Route path="/admin/whatsapp"  element={<AdminWhatsApp />} />
+                <Route path="/admin/meta-ads"  element={<AdminMetaAds />} />
+                <Route path="/admin/ai-center" element={<AdminAICenter />} />
+                <Route path="/admin/system-fix" element={<AdminSystemFix />} />
+                {/* Default admin redirect */}
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </AdminLayout>
+        </AdminGuard>
+      </>
     );
   }
 
