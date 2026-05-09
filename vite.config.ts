@@ -26,37 +26,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       sourcemap: false,
-      chunkSizeWarningLimit: 600,
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            // Core React
-            if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) {
-              return 'vendor';
-            }
-            // Animation
-            if (id.includes('node_modules/framer-motion') || id.includes('node_modules/motion')) {
-              return 'motion';
-            }
-            // Charts (admin only)
-            if (id.includes('node_modules/recharts') || id.includes('node_modules/d3')) {
-              return 'charts';
-            }
-            // Barcode scanner (admin only — heaviest chunk)
-            if (id.includes('node_modules/html5-qrcode') || id.includes('node_modules/jsbarcode')) {
-              return 'barcode';
-            }
-            // AI / Gemini
-            if (id.includes('node_modules/@google')) {
-              return 'ai';
-            }
-            // Remaining node_modules
-            if (id.includes('node_modules')) {
-              return 'libs';
-            }
-          },
-        },
-      },
+      chunkSizeWarningLimit: 2000,
     },
   };
 });
