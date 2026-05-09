@@ -1,33 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { Product } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { ShoppingBag, ChevronLeft, ChevronRight, Star, ShieldCheck, RefreshCw, Zap, Plus, Minus } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { StickyAddToCart } from '../components/StickyAddToCart';
+import { useQuery } from '@tanstack/react-query';
 
 export const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { language, t } = useLanguage();
   const { addToCart } = useCart();
-  const [product, setProduct] = useState<Product | null>(null);
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'desc' | 'ing' | 'skin'>('desc');
-  const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
 
-  useEffect(() => {
-    if (id) {
-      setLoading(true);
-      api.getProductById(id).then(setProduct).finally(() => {
-        setLoading(false);
-        window.scrollTo(0, 0);
-      });
-    }
-  }, [id]);
+  const { data: product, isLoading: loading } = useQuery({
+    queryKey: ['product', id],
+    queryFn: () => api.getProductById(id!),
+    enabled: !!id,
+  });
 
   if (loading) return <div className="h-screen flex items-center justify-center font-black animate-pulse">LOADING...</div>;
 

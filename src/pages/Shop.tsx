@@ -7,11 +7,10 @@ import { SkeletonCard } from '../components/SkeletonCard';
 import { useLanguage } from '../context/LanguageContext';
 import { Search, Filter, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 
 export const Shop: React.FC = () => {
   const { t } = useLanguage();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     category: 'All',
     skin_type: 'All',
@@ -20,23 +19,17 @@ export const Shop: React.FC = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const location = useLocation();
 
+  const { data: products = [], isLoading: loading } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => api.getProducts(),
+  });
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const search = params.get('search') || '';
     const category = params.get('category') || 'All';
     setFilters(prev => ({ ...prev, search, category }));
   }, [location]);
-
-  useEffect(() => {
-    setLoading(true);
-    api.getProducts().then(data => {
-      setProducts(data);
-      setLoading(false);
-    }).catch(e => {
-      console.error(e);
-      setLoading(false);
-    });
-  }, []);
 
   const filtered = products.filter(p => {
     const matchesSearch = p.name_en.toLowerCase().includes(filters.search.toLowerCase()) || 

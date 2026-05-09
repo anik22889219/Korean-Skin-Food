@@ -114,23 +114,36 @@ const AppContent = () => {
 
 import { ToastProvider } from './context/ToastContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes cache
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 export default function App() {
   return (
     <ErrorBoundary>
-      <ToastProvider>
-        <Router>
-          <LanguageProvider>
-            <AuthProvider>
-              <CartProvider>
-                <div className="font-sans antialiased text-gray-900">
-                  <AppContent />
-                </div>
-              </CartProvider>
-            </AuthProvider>
-          </LanguageProvider>
-        </Router>
-      </ToastProvider>
+      <QueryClientProvider client={queryClient}>
+        <ToastProvider>
+          <Router>
+            <LanguageProvider>
+              <AuthProvider>
+                <CartProvider>
+                  <div className="font-sans antialiased text-gray-900">
+                    <AppContent />
+                  </div>
+                </CartProvider>
+              </AuthProvider>
+            </LanguageProvider>
+          </Router>
+        </ToastProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 }

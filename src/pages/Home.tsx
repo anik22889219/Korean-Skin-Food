@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { api } from '../services/api';
-import { Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { useLanguage } from '../context/LanguageContext';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, ShieldCheck, Truck, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 export const Home: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
   const { t } = useLanguage();
 
-  useEffect(() => {
-    api.getProducts().then(setProducts).catch(console.error);
-  }, []);
+  const { data: products = [] } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => api.getProducts(),
+  });
 
   const featured = products.filter(p => p.is_featured).slice(0, 4);
 
