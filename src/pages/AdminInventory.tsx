@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { api } from '../services/api';
-import { uploadImageToCloudinary } from '../services/cloudinary';
+import { uploadImageToCloudinary, uploadBase64ToCloudinary } from '../services/cloudinary';
+import { processProductImage } from '../services/imageProcessor';
 import { Product } from '../types';
 import {
   Plus, Search, Filter, Edit2, Trash2, AlertTriangle,
@@ -28,7 +29,7 @@ Return ONLY valid JSON (no markdown) with these exact keys:
 }`;
 
   const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${key}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -66,6 +67,7 @@ const AdminInventory: React.FC = () => {
   const [aiData, setAiData] = useState<Partial<Product>>({});
   const [error, setError] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { fetchProducts(); }, []);
 
@@ -100,21 +102,28 @@ const AdminInventory: React.FC = () => {
     setStep('processing');
 
     try {
-      // Step 1: Upload image
-      setStepMsg('☁️ ছবি Cloudinary-তে আপলোড হচ্ছে...'); setProgress(20);
-      const imageUrl = await uploadImageToCloudinary(imageFile, (p) => setProgress(20 + p * 0.3));
-
-      // Step 2: AI research
-      setStepMsg('🤖 Gemini AI পণ্যের তথ্য সংগ্রহ করছে...'); setProgress(55);
+      // Step 1: AI research (Name -> Info)
+      setStepMsg('🤖 Gemini AI পণ্যের তথ্য সংগ্রহ করছে...'); setProgress(20);
       const ai = await researchProduct(productName);
+      
+      // Step 2: Image Processing (BG Removal + Canvas)
+      setStepMsg('📸 ছবির ব্যাকগ্রাউন্ড পরিবর্তন করা হচ্ছে...'); setProgress(45);
+      const processed = await processProductImage(imageFile, ai.ingredients || productName, (msg) => {
+        setStepMsg(msg);
+      });
+      setImagePreview(processed.dataUrl);
 
-      // Step 3: Merge
-      setProgress(90);
+      // Step 3: Upload processed image
+      setStepMsg('☁️ প্রসেসড ছবি Cloudinary-তে আপলোড হচ্ছে...'); setProgress(75);
+      const imageUrl = await uploadBase64ToCloudinary(processed.dataUrl, (p) => setProgress(75 + p * 0.2));
+
+      // Step 4: Finalize
+      setProgress(100);
       setStepMsg('✅ সব তথ্য প্রস্তুত, পর্যালোচনা করুন...');
       setAiData({ ...ai, images: [imageUrl], price: Number(price), stock: Number(stock) });
       setStep('review');
-      setProgress(100);
     } catch (err: any) {
+      console.error(err);
       setError(err.message || 'একটি সমস্যা হয়েছে।');
       setStep('input');
     }
@@ -259,16 +268,61 @@ const AdminInventory: React.FC = () => {
                       className="relative border-2 border-dashed border-gray-200 rounded-2xl h-48 flex flex-col items-center justify-center cursor-pointer hover:border-pink-400 hover:bg-pink-50/30 transition-all overflow-hidden"
                     >
                       {imagePreview ? (
-                        <img src={imagePreview} className="w-full h-full object-cover" alt="preview" />
+                        <div className="relative w-full h-full">
+                          <img src={imagePreview} className="w-full h-full object-cover" alt="preview" />
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); setImagePreview(null); setImageFile(null); }}
+                            className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full shadow-lg"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
                       ) : (
-                        <div className="text-center p-4">
-                          <Camera className="w-10 h-10 text-pink-400 mx-auto mb-2" />
-                          <p className="text-sm font-black text-gray-700 uppercase italic">ক্যামেরা দিয়ে ছবি তুলুন</p>
-                          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">অথবা গ্যালারি থেকে আপলোড করুন</p>
+                        <div className="flex flex-col gap-4 p-6">
+                          <div className="grid grid-cols-2 gap-4">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); fileRef.current?.click(); }}
+                              className="flex flex-col items-center justify-center p-4 bg-pink-50 rounded-xl border-2 border-dashed border-pink-200 hover:bg-pink-100 transition-colors group"
+                            >
+                              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 group-hover:scale-110 transition-transform">
+                                <Image className="w-6 h-6 text-pink-500" />
+                              </div>
+                              <span className="text-xs font-black text-gray-700 uppercase">গ্যালারি</span>
+                            </button>
+
+                            <button
+                              onClick={(e) => { e.stopPropagation(); cameraRef.current?.click(); }}
+                              className="flex flex-col items-center justify-center p-4 bg-blue-50 rounded-xl border-2 border-dashed border-blue-200 hover:bg-blue-100 transition-colors group"
+                            >
+                              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 group-hover:scale-110 transition-transform">
+                                <Camera className="w-6 h-6 text-blue-500" />
+                              </div>
+                              <span className="text-xs font-black text-gray-700 uppercase">ক্যামেরা</span>
+                            </button>
+                          </div>
+                          
+                          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center">
+                            যেকোনো একটি অপশন বেছে নিন
+                          </p>
                         </div>
                       )}
-                      <input ref={fileRef} type="file" accept="image/*" capture="environment"
-                        className="hidden" onChange={handleImagePick} />
+                      
+                      {/* Hidden Inputs */}
+                      <input 
+                        ref={fileRef} 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        onChange={handleImagePick} 
+                      />
+                      <input 
+                        ref={cameraRef} 
+                        type="file" 
+                        accept="image/*" 
+                        capture="environment" 
+                        className="hidden" 
+                        onChange={handleImagePick} 
+                      />
                     </div>
 
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">টিপস: পরিষ্কার ছবি তুললে AI দ্রুত কাজ করবে</p>
