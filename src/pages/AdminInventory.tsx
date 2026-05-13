@@ -7,8 +7,9 @@ import { Product } from '../types';
 import {
   Plus, Search, Filter, Edit2, Trash2, AlertTriangle,
   RotateCcw, CheckCircle2, XCircle, Sparkles, Upload,
-  Camera, X, Loader2, ImageIcon
+  Camera, X, Loader2, ImageIcon, Printer
 } from 'lucide-react';
+import { BarcodeGenerator } from '../components/BarcodeGenerator';
 
 // ── Gemini AI Research ────────────────────────────────────────────────────────
 async function researchProduct(name: string): Promise<Partial<Product>> {
@@ -54,6 +55,7 @@ const AdminInventory: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [printProduct, setPrintProduct] = useState<Product | null>(null);
 
   // AI Agent state
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -219,10 +221,19 @@ const AdminInventory: React.FC = () => {
                       }
                     </td>
                     <td className="px-8 py-6">
-                      <button onClick={() => api.deleteProduct(p.product_id!).then(fetchProducts)}
-                        className="p-2 hover:bg-red-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Trash2 className="w-4 h-4 text-red-400" />
-                      </button>
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={() => setPrintProduct(p)}
+                          className="p-2 hover:bg-gray-100 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
+                          title="Print Barcode"
+                        >
+                          <Printer className="w-4 h-4 text-gray-600" />
+                        </button>
+                        <button onClick={() => api.deleteProduct(p.product_id!).then(fetchProducts)}
+                          className="p-2 hover:bg-red-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Trash2 className="w-4 h-4 text-red-400" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -426,6 +437,26 @@ const AdminInventory: React.FC = () => {
                 )}
 
               </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Print Barcode Modal */}
+      <AnimatePresence>
+        {printProduct && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setPrintProduct(null)} className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+            <motion.div initial={{ scale: 0.9, opacity: 0, y: 30 }} animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 30 }}
+              className="relative bg-white rounded-[2.5rem] p-8 shadow-2xl overflow-hidden min-w-[300px]">
+              <div className="flex justify-end mb-4">
+                <button onClick={() => setPrintProduct(null)} className="p-2 hover:bg-gray-100 rounded-xl">
+                  <X className="w-5 h-5 text-gray-400" />
+                </button>
+              </div>
+              <BarcodeGenerator product={printProduct} />
             </motion.div>
           </div>
         )}

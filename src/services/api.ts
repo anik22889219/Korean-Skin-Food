@@ -140,6 +140,17 @@ export const api = {
     }
   },
 
+  async getProductByBarcode(barcode: string): Promise<Product | null> {
+    try {
+      const res = await get({ action: 'getProductByBarcode', barcode: barcode.trim() });
+      const product = transformProduct(res.data);
+      return product && product.product_id ? product : null;
+    } catch (err) {
+      console.error('[KSF] getProductByBarcode error:', err);
+      return null;
+    }
+  },
+
   async addProduct(product: Partial<Product>): Promise<any> {
     return post({ action: 'addProduct', ...product });
   },

@@ -29,6 +29,14 @@ function doGet(e) {
     });
     return jsonResponse(product || { error: 'Not found' });
   }
+
+  if (action === 'getProductByBarcode') {
+    const barcode = (e.parameter.barcode || "").trim();
+    const sheet = ss.getSheetByName('Product list 2026');
+    const data = getRowsData(sheet);
+    const product = data.find(p => String(p.barcode || "").trim() === barcode);
+    return jsonResponse(product || { error: 'Not found' });
+  }
   
   if (action === 'getUserOrders') {
     const phone = e.parameter.phone;
@@ -141,7 +149,7 @@ function doPost(e) {
       if (idIdx !== -1 && stockIdx !== -1) {
         body.items.forEach(item => {
           for (let i = 1; i < pData.length; i++) {
-            if (String(pData[i][idIdx]) === String(item.id)) {
+            if (String(pData[i][idIdx]) === String(item.product_id || item.id)) {
               const currentStock = Number(pData[i][stockIdx]) || 0;
               const newStock = Math.max(0, currentStock - (Number(item.quantity) || 0));
               productSheet.getRange(i + 1, stockIdx + 1).setValue(newStock);
@@ -195,6 +203,17 @@ function doPost(e) {
     for (let i = 1; i < data.length; i++) {
       if (String(data[i][idIdx]) === String(body.product_id)) {
         sheet.getRange(i + 1, stockIdx + 1).setValue(body.stock);
+        
+        const logSheet = ss.getSheetByName('inventory_logs') || ss.insertSheet('inventory_logs');
+        logSheet.appendRow([
+          'LOG-' + Date.now(),
+          body.product_id,
+          'STOCK_UPDATE',
+          body.stock,
+          new Date().toISOString(),
+          body.user_role || 'admin'
+        ]);
+        
         return jsonResponse({ success: true });
       }
     }
