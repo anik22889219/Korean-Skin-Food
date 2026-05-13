@@ -134,14 +134,17 @@ const AdminInventory: React.FC = () => {
   const handleSave = async () => {
     setStep('processing'); setStepMsg('💾 Google Sheet-এ সংরক্ষণ হচ্ছে...');
     try {
-      await api.addProduct({
+      const res = await api.addProduct({
         ...aiData,
         product_id: 'PRD' + Date.now(),
       });
+      if (res.data && res.data.success === false) {
+        throw new Error(res.data.error || 'Failed to add product');
+      }
       setStep('done');
       fetchProducts();
-    } catch {
-      setError('Save failed. Try again.');
+    } catch (err: any) {
+      setError(err.message || 'Save failed. Try again.');
       setStep('review');
     }
   };

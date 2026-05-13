@@ -221,11 +221,20 @@ function doPost(e) {
   }
 
   if (action === 'addProduct') {
-    const sheet = ss.getSheetByName('Product list 2026');
-    const headers = sheet.getDataRange().getValues()[0];
-    const newRow = headers.map(h => body[h] || '');
-    sheet.appendRow(newRow);
-    return jsonResponse({ success: true });
+    try {
+      const sheet = ss.getSheetByName('Product list 2026');
+      const headers = sheet.getDataRange().getValues()[0];
+      const newRow = headers.map(h => {
+        let val = body[h];
+        if (val === undefined || val === null) return '';
+        if (Array.isArray(val) || typeof val === 'object') return JSON.stringify(val);
+        return val;
+      });
+      sheet.appendRow(newRow);
+      return jsonResponse({ success: true });
+    } catch (err) {
+      return jsonResponse({ success: false, error: err.message });
+    }
   }
 
   if (action === 'updateProduct') {
@@ -238,7 +247,9 @@ function doPost(e) {
        if (String(data[i][idIdx]) === String(body.product_id)) {
          headers.forEach((h, colIdx) => {
            if (body[h] !== undefined) {
-             sheet.getRange(i + 1, colIdx + 1).setValue(body[h]);
+             let val = body[h];
+             if (Array.isArray(val) || typeof val === 'object') val = JSON.stringify(val);
+             sheet.getRange(i + 1, colIdx + 1).setValue(val);
            }
          });
          return jsonResponse({ success: true });
