@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { AdminChatBot } from './AdminChatBot';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -44,7 +45,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex">
+    <div className="min-h-screen bg-[#F8F9FA] flex relative">
+      {/* Admin AI Assistant */}
+      <AdminChatBot />
+      
       {/* Mobile Overlay */}
       {isMobileOpen && (
         <div 

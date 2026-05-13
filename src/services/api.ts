@@ -88,6 +88,7 @@ const transformProduct = (p: any): Product => {
     ingredients: String(getVal('ingredients') || ''),
     skin_type: String(getVal('skin_type', 'skin') || 'All'),
     tags: String(getVal('tags') || ''),
+    barcode: String(getVal('barcode', 'upc', 'ean') || ''),
     is_featured:
       getVal('is_featured', 'featured') === true ||
       getVal('is_featured', 'featured') === 'TRUE' ||
@@ -280,5 +281,26 @@ export const api = {
   // Audit Logging
   async logAction(details: any): Promise<any> {
     return post({ action: 'logAction', ...details });
+  },
+
+  // System Initialization & Repair
+  async initializeSystem(): Promise<any> {
+    // This will check and add missing columns across all critical sheets
+    const criticalFixes = [
+      { sheet: 'Product list 2026', col: 'barcode' },
+      { sheet: 'Orders', col: 'admin_note' },
+      { sheet: 'Users', col: 'role' },
+      { sheet: 'inventory_logs', col: 'user_role' }
+    ];
+
+    for (const fix of criticalFixes) {
+      await this.manageSheet({
+        sub_action: 'addColumn',
+        sheet_name: fix.sheet,
+        column_name: fix.col,
+        user_role: 'super_admin'
+      });
+    }
+    return { success: true };
   },
 };

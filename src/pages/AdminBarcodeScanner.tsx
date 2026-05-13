@@ -52,9 +52,12 @@ const AdminBarcodeScanner: React.FC = () => {
     setScanning(false);
     try {
       const products = await api.getProducts();
-      // In a real app, you'd match decodedText with a barcode field. 
-      // For this demo, we'll match it with the product_id or name.
-      const found = products.find(p => p.product_id === decodedText || p.name_en.toLowerCase().includes(decodedText.toLowerCase()));
+      // Match decodedText with barcode field first, then fallback to product_id
+      const found = products.find(p => 
+        (p.barcode && String(p.barcode).trim() === decodedText.trim()) || 
+        p.product_id === decodedText || 
+        p.name_en.toLowerCase().includes(decodedText.toLowerCase())
+      );
       
       if (found) {
         setActiveProduct(found);

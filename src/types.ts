@@ -13,6 +13,7 @@ export interface Product {
   skin_type: string;
   tags: string;
   is_featured: boolean;
+  barcode?: string;
 }
 
 export interface User {
