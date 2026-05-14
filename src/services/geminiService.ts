@@ -1,22 +1,20 @@
 import { GoogleGenAI } from '@google/genai';
 import { Product } from '../types';
 
-const API_KEY =
-  import.meta.env.VITE_GEMINI_API_KEY ||
-  (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : '') ||
-  '';
+// Initialize the Google Gen AI client with the API key from environment variables
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
+if (!apiKey) {
+  console.warn('[Gemini] No API Key found in environment variables!');
+}
+const genAI = new GoogleGenAI({ apiKey });
 
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+// Use gemini-1.5-flash — stable and high quota
+const MODEL_NAME = 'models/gemini-flash-latest';
 
-// Use gemini-2.0-flash — fastest, most available model
-const MODEL = 'gemini-2.0-flash';
+
 
 export const geminiService = {
   async getChatResponse(message: string, history: any[], products: Product[], user?: any): Promise<string> {
-    if (!API_KEY) {
-      return 'দয়া করে VITE_GEMINI_API_KEY সেট করুন।';
-    }
-
     const productContext = products.slice(0, 30).map(p => ({
       name_bn: p.name_bn || p.name_en,
       name_en: p.name_en,
@@ -43,7 +41,9 @@ ${userInfo}
 - প্রতিযোগী ব্র্যান্ড উল্লেখ করবেন না।
 - শেষে লিখুন: "আর কোনো সাহায্য লাগলে জানাবেন! 😊"`;
 
-    // Build conversation history as a single formatted string
+    // Build conversation history for @google/genai
+    // Note: The new SDK expects a specific format if using chat, 
+    // but here we are using generateContent with a full prompt for simplicity and control.
     const historyText = history.map(m =>
       `${m.role === 'user' ? 'Customer' : 'Sabiha'}: ${m.parts[0].text}`
     ).join('\n');
@@ -51,21 +51,23 @@ ${userInfo}
     const fullPrompt = `${systemPrompt}\n\n${historyText ? 'Conversation so far:\n' + historyText + '\n\n' : ''}Customer: ${message}\nSabiha:`;
 
     try {
-      const response = await ai.models.generateContent({
-        model: MODEL,
+      const result = await genAI.models.generateContent({
+        model: MODEL_NAME,
         contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
       });
-      return response.text?.trim() || 'দুঃখিত, উত্তর পেতে সমস্যা হচ্ছে।';
+      return result.text?.trim() || 'দুঃখিত, উত্তর পেতে সমস্যা হচ্ছে।';
     } catch (error: any) {
-      console.error('[Gemini] Error:', error?.message || error);
-      // Fallback: try with gemini-1.5-flash
+      console.error('[Gemini] Primary Call Error:', error);
+      // Fallback: try with flash-lite
+
       try {
-        const fallback = await ai.models.generateContent({
-          model: 'gemini-1.5-flash',
+        const fallbackResult = await genAI.models.generateContent({
+          model: 'models/gemini-flash-lite-latest',
           contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
         });
-        return fallback.text?.trim() || 'দুঃখিত, উত্তর পেতে সমস্যা হচ্ছে।';
+        return fallbackResult.text?.trim() || 'দুঃখিত, উত্তর পেতে সমস্যা হচ্ছে।';
       } catch (fallbackError: any) {
+
         console.error('[Gemini] Fallback Error:', fallbackError?.message || fallbackError);
         return 'দুঃখিত, এই মুহূর্তে AI সার্ভিস পাওয়া যাচ্ছে না। একটু পরে আবার চেষ্টা করুন।';
       }
@@ -74,16 +76,16 @@ ${userInfo}
 
   // For product research in AdminInventory
   async generateProductInfo(prompt: string): Promise<string> {
-    if (!API_KEY) return '';
     try {
-      const response = await ai.models.generateContent({
-        model: MODEL,
+      const result = await genAI.models.generateContent({
+        model: MODEL_NAME,
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
       });
-      return response.text?.trim() || '';
+      return result.text?.trim() || '';
     } catch (error: any) {
       console.error('[Gemini] generateProductInfo Error:', error?.message || error);
       return '';
     }
   },
 };
+

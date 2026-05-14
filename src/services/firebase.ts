@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getAnalytics, isSupported } from 'firebase/analytics';
+import { getAI } from 'firebase/ai';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -19,6 +20,9 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
+// Initialize AI (Firebase v12)
+export const ai = getAI(app);
+
 // Initialize Analytics conditionally (it might be blocked by ad blockers or not supported in some environments)
 let analytics = null;
 isSupported().then(supported => {
@@ -26,4 +30,4 @@ isSupported().then(supported => {
     analytics = getAnalytics(app);
   }
 });
-export { analytics };
+export { analytics, app };

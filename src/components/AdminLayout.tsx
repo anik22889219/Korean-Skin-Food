@@ -12,9 +12,9 @@ import {
   Bell,
   LogOut,
   User,
-  MessageCircle,
   Sparkles,
-  Bot
+  Bot,
+  Globe
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -41,6 +41,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { icon: MessageCircle, label: 'WhatsApp CRM', path: '/admin/whatsapp' },
     { icon: Sparkles, label: 'Meta Ads & Pixel', path: '/admin/meta-ads' },
     { icon: Bot, label: 'AI Center', path: '/admin/ai-center' },
+    { icon: Globe, label: 'Dropshipping', path: '/admin/dropshipping' },
     { icon: Settings, label: 'Settings', path: '/admin/settings' },
   ];
 

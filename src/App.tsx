@@ -38,6 +38,9 @@ const AdminWhatsApp       = lazy(() => import('./pages/AdminWhatsApp'));
 const AdminMetaAds        = lazy(() => import('./pages/AdminMetaAds'));
 const AdminAICenter       = lazy(() => import('./pages/AdminAICenter'));
 const AdminSystemFix      = lazy(() => import('./pages/AdminSystemFix'));
+const AdminDropshipping   = lazy(() => import('./pages/AdminDropshipping'));
+const AdminSourcing       = lazy(() => import('./pages/AdminSourcing'));
+const AdminImportList     = lazy(() => import('./pages/AdminImportList'));
 
 // ── Suspense Fallback ───────────────────────────────────────────────────────
 const PageLoader = () => (
@@ -78,6 +81,9 @@ const AppContent = () => {
                 <Route path="/admin/meta-ads"  element={<AdminMetaAds />} />
                 <Route path="/admin/ai-center" element={<AdminAICenter />} />
                 <Route path="/admin/system-fix" element={<AdminSystemFix />} />
+                <Route path="/admin/dropshipping" element={<AdminDropshipping />} />
+                <Route path="/admin/sourcing" element={<AdminSourcing />} />
+                <Route path="/admin/import-list" element={<AdminImportList />} />
                 {/* Default admin redirect */}
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="*" element={<NotFound />} />
