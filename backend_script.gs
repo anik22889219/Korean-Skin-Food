@@ -102,8 +102,20 @@ function doPost(e) {
     body = JSON.parse(e.postData.contents);
   } catch(err) {
     return jsonResponse({ success: false, error: 'Invalid JSON' });
-  }
   const action = body.action;
+
+  // Security Check: Verify API Key for sensitive operations
+  // To set this, run setApiKey() once in the Apps Script Editor
+  const requiredApiKey = PropertiesService.getScriptProperties().getProperty('API_KEY');
+  
+  // Only enforce if the API_KEY property has been configured.
+  // We exempt public actions like login, register, placeOrder, and saveLead.
+  if (requiredApiKey && body.api_key !== requiredApiKey) {
+    if (action !== 'loginUser' && action !== 'registerUser' && action !== 'placeOrder' && action !== 'saveLead') {
+       return jsonResponse({ success: false, error: 'Unauthorized: Invalid API Key' });
+    }
+  }
+
 
   // LOG ACTION (System-wide Audit)
   if (action === 'logAction' || body.log_action) {

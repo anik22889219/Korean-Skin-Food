@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1098653030665",
+    "firebase_url": "https://korean-skin-food-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "korean-skin-food",
+    "storage_bucket": "korean-skin-food.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098653030665:android:c06c1a3bda484565311bd8",
+        "android_client_info": {
+          "package_name": "com.korean_skin_food"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098653030665-qnljqot5h1sl0qvudvbc596ul5d60s21.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMYNkyBYSBxa7uyT2a5GrSn01sTSfLSlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098653030665-qnljqot5h1sl0qvudvbc596ul5d60s21.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
