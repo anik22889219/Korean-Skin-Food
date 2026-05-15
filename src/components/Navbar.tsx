@@ -11,7 +11,10 @@ export const Navbar: React.FC = () => {
   const { language, setLanguage, t } = useLanguage();
   const { itemCount } = useCart();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +22,7 @@ export const Navbar: React.FC = () => {
       navigate(`/shop?search=${searchQuery}`);
       setIsSearchOpen(false);
       setIsMobileMenuOpen(false);
+      setSearchQuery('');
     }
   };
 
