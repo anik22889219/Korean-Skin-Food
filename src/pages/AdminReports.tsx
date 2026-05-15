@@ -81,16 +81,16 @@ const AdminReports: React.FC = () => {
 
   return (
     <>
-      <div className="space-y-8 pb-12">
+      <div className="space-y-12 pb-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-black tracking-tighter text-gray-900 uppercase italic">Analytics Matrix</h1>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Global performance reporting and data extraction</p>
+            <h1 className="text-4xl font-black tracking-tighter text-gray-900 uppercase italic">Analytics Matrix</h1>
+            <p className="text-xs font-black text-gray-500 uppercase tracking-widest mt-2">Global performance reporting and data extraction</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
              <button 
                onClick={exportToCSV}
-               className="flex items-center gap-3 px-8 py-4 bg-gray-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-gray-200"
+               className="flex items-center gap-3 px-8 py-4 bg-gray-900 text-white rounded-full font-black text-[10px] uppercase tracking-widest transition-all shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_rgba(219,39,119,0.3)] hover:scale-[1.02] active:scale-95 hover:bg-pink-600"
              >
                <FileDown className="w-4 h-4" />
                Export Protocol (CSV)
@@ -103,13 +103,13 @@ const AdminReports: React.FC = () => {
            {/* Section 1: Stock Value Concentration */}
            <div className="space-y-6">
               <div className="flex items-center justify-between">
-                 <h4 className="text-lg font-black tracking-tighter text-gray-900 uppercase italic flex items-center gap-2">
-                    <Layers className="w-5 h-5 text-primary" />
+                 <h4 className="text-2xl font-black tracking-tighter text-gray-900 uppercase italic flex items-center gap-3">
+                    <Layers className="w-6 h-6 text-pink-500" />
                     Asset Concentration
                  </h4>
-                 <div className="px-3 py-1 bg-gray-50 rounded-lg text-[8px] font-black uppercase tracking-widest text-gray-400">Value per SKU</div>
+                 <div className="px-4 py-2 bg-white border border-orange-50 shadow-[0_5px_15px_rgba(0,0,0,0.02)] rounded-full text-[9px] font-black uppercase tracking-widest text-gray-400">Value per SKU</div>
               </div>
-              <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm h-[400px]">
+              <div className="bg-white p-8 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] h-[400px]">
                  <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={stockValueData}>
                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 900, fill: '#A0AEC0' }} dy={10} />
@@ -118,7 +118,7 @@ const AdminReports: React.FC = () => {
                          contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', fontWeight: 900, fontSize: '10px' }}
                          cursor={{ fill: 'rgba(0,0,0,0.02)' }}
                        />
-                       <Bar dataKey="value" fill="#FF4C60" radius={[10, 10, 10, 10]} barSize={20} />
+                       <Bar dataKey="value" fill="#ec4899" radius={[10, 10, 10, 10]} barSize={20} />
                     </BarChart>
                  </ResponsiveContainer>
               </div>
@@ -127,13 +127,13 @@ const AdminReports: React.FC = () => {
            {/* Section 2: Recent Transaction Volume */}
            <div className="space-y-6">
               <div className="flex items-center justify-between">
-                 <h4 className="text-lg font-black tracking-tighter text-gray-900 uppercase italic flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-blue-500" />
+                 <h4 className="text-2xl font-black tracking-tighter text-gray-900 uppercase italic flex items-center gap-3">
+                    <Activity className="w-6 h-6 text-blue-500" />
                     Transaction Intensity
                  </h4>
-                 <div className="px-3 py-1 bg-gray-50 rounded-lg text-[8px] font-black uppercase tracking-widest text-gray-400">Recent 10 Cycles</div>
+                 <div className="px-4 py-2 bg-white border border-orange-50 shadow-[0_5px_15px_rgba(0,0,0,0.02)] rounded-full text-[9px] font-black uppercase tracking-widest text-gray-400">Recent 10 Cycles</div>
               </div>
-              <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm h-[400px]">
+              <div className="bg-white p-8 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] h-[400px]">
                  <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={salesTrendData}>
                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 900, fill: '#A0AEC0' }} dy={10} />
@@ -150,44 +150,46 @@ const AdminReports: React.FC = () => {
 
         {/* Detailed Metrics Table */}
         <div className="space-y-6">
-           <h4 className="text-lg font-black tracking-tighter text-gray-900 uppercase italic">Enterprise Resource Planning</h4>
-           <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
-              <table className="w-full text-left">
-                 <thead className="bg-gray-50/50">
-                    <tr>
-                       <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest">Global Asset</th>
-                       <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Unit Price</th>
-                       <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Quantity</th>
-                       <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Inventory Value</th>
-                    </tr>
-                 </thead>
-                 <tbody className="divide-y divide-gray-50">
-                    {products.map((p, idx) => (
-                       <tr key={`${p.product_id}-${idx}`} className="hover:bg-gray-50/50 transition-colors group">
-                          <td className="px-8 py-6">
-                             <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-xl bg-gray-50 overflow-hidden">
-                                   <img src={p.images[0]} className="w-full h-full object-cover" alt="" referrerPolicy="no-referrer" />
-                                </div>
-                                <div>
-                                   <p className="text-[10px] font-black text-gray-900 uppercase italic tracking-tighter">{p.name_en}</p>
-                                   <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">{p.category}</p>
-                                </div>
-                             </div>
-                          </td>
-                          <td className="px-8 py-6 text-center">
-                             <p className="text-[10px] font-black text-gray-600">৳{p.price.toLocaleString()}</p>
-                          </td>
-                          <td className="px-8 py-6 text-center">
-                             <span className={`text-[10px] font-black ${p.stock < 10 ? 'text-red-500' : 'text-gray-900'}`}>{p.stock}</span>
-                          </td>
-                          <td className="px-8 py-6 text-right">
-                             <p className="text-sm font-black text-gray-900 tracking-tighter italic italic">৳{(p.stock * p.price).toLocaleString()}</p>
-                          </td>
+           <h4 className="text-2xl font-black tracking-tighter text-gray-900 uppercase italic">Enterprise Resource Planning</h4>
+           <div className="bg-white rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] overflow-hidden">
+              <div className="overflow-x-auto">
+                 <table className="w-full text-left">
+                    <thead className="bg-[#FDF9F6] border-b border-orange-50/50">
+                       <tr>
+                          <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest whitespace-nowrap">Global Asset</th>
+                          <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">Unit Price</th>
+                          <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">Quantity</th>
+                          <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right whitespace-nowrap">Inventory Value</th>
                        </tr>
-                    ))}
-                 </tbody>
-              </table>
+                    </thead>
+                    <tbody className="divide-y divide-orange-50/30">
+                       {products.map((p, idx) => (
+                          <tr key={`${p.product_id}-${idx}`} className="hover:bg-[#FDF9F6]/50 transition-colors group">
+                             <td className="px-8 py-6">
+                                <div className="flex items-center gap-4">
+                                   <div className="w-12 h-12 rounded-[1rem] bg-white border border-orange-50 overflow-hidden shadow-sm">
+                                      <img src={p.images[0]} className="w-full h-full object-cover" alt="" referrerPolicy="no-referrer" />
+                                   </div>
+                                   <div>
+                                      <p className="text-sm font-black text-gray-900 uppercase italic tracking-tighter">{p.name_en}</p>
+                                      <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-1">{p.category}</p>
+                                   </div>
+                                </div>
+                             </td>
+                             <td className="px-8 py-6 text-center whitespace-nowrap">
+                                <p className="text-sm font-black text-gray-900 italic tracking-tighter">৳{p.price.toLocaleString()}</p>
+                             </td>
+                             <td className="px-8 py-6 text-center whitespace-nowrap">
+                                <span className={`text-sm font-black italic tracking-tighter ${p.stock < 10 ? 'text-red-500' : 'text-gray-900'}`}>{p.stock}</span>
+                             </td>
+                             <td className="px-8 py-6 text-right whitespace-nowrap">
+                                <p className="text-lg font-black text-gray-900 tracking-tighter italic">৳{(p.stock * p.price).toLocaleString()}</p>
+                             </td>
+                          </tr>
+                       ))}
+                    </tbody>
+                 </table>
+              </div>
            </div>
         </div>
       </div>

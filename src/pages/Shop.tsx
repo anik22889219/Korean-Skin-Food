@@ -5,8 +5,8 @@ import { Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { SkeletonCard } from '../components/SkeletonCard';
 import { useLanguage } from '../context/LanguageContext';
-import { Search, Filter, SlidersHorizontal, ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Filter, SlidersHorizontal, ChevronDown, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useQuery } from '@tanstack/react-query';
 
 export const Shop: React.FC<{ isOffersOnly?: boolean }> = ({ isOffersOnly = false }) => {
@@ -45,116 +45,132 @@ export const Shop: React.FC<{ isOffersOnly?: boolean }> = ({ isOffersOnly = fals
   const skinTypes = ['All', 'Dry', 'Oily', 'Sensitive', 'Normal', 'Combination'];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 space-y-12">
-      {/* Header with Ghost Text */}
-      <div className="relative text-center py-10 overflow-hidden">
-        <h2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl md:text-[12rem] font-black text-gray-50 select-none pointer-events-none uppercase tracking-tighter opacity-50">
-          Shop
-        </h2>
-        <div className="relative z-10 space-y-2">
-          <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-gray-900 uppercase">{t('shop')}</h1>
-          <p className="text-gray-400 font-bold tracking-widest uppercase text-[10px]">{filtered.length} Results Found</p>
-        </div>
-      </div>
-
-      {/* Redesigned Toolbar */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between sticky top-[80px] z-40 bg-white/90 backdrop-blur-xl p-3 rounded-[2rem] border border-gray-100 shadow-2xl shadow-gray-200/50">
-        <div className="relative w-full md:flex-1 max-w-md">
-          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <input 
-            type="text" 
-            placeholder="Search skincare products..."
-            className="w-full pl-14 pr-6 py-4 bg-gray-50/50 rounded-full border-none outline-none focus:ring-2 focus:ring-primary/10 text-sm font-semibold placeholder:text-gray-300"
-            value={filters.search}
-            onChange={(e) => setFilters({...filters, search: e.target.value})}
-          />
-        </div>
-
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <button 
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex items-center gap-3 px-8 py-4 bg-[#111111] text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-gray-900/10 active:scale-95 transition-all hover:bg-black"
-          >
-            <SlidersHorizontal className="w-4 h-4" />
-            Filter
-          </button>
-          
-          <div className="hidden md:flex bg-gray-50 p-1 rounded-2xl gap-1">
-            {categories.slice(0, 3).map(c => (
-              <button
-                key={c}
-                onClick={() => setFilters({...filters, category: c})}
-                className={`px-6 py-3 rounded-xl text-xs font-black transition-all uppercase tracking-widest ${
-                  filters.category === c ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400 hover:text-gray-600'
-                }`}
-              >
-                {c === 'All' ? 'All' : c}
-              </button>
-            ))}
+    <div className="bg-[#FDF9F6] min-h-screen">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 space-y-12">
+        {/* Header with Ghost Text */}
+        <div className="relative text-center py-12 md:py-20 overflow-hidden rounded-[3rem] bg-white border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)]">
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-50/50 via-white to-orange-50/50"></div>
+          <h2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-[14rem] font-black text-gray-50 select-none pointer-events-none uppercase tracking-tighter opacity-60 italic">
+            K-BEAUTY
+          </h2>
+          <div className="relative z-10 flex flex-col items-center space-y-6">
+            <span className="inline-flex items-center gap-2 px-6 py-2 bg-white border border-orange-50 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.03)] text-[10px] font-black uppercase tracking-widest text-gray-500">
+              <Sparkles className="w-4 h-4 text-primary" />
+              Your Skincare Journey
+            </span>
+            <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-gray-900 uppercase italic">
+              {t('shop')} <span className="text-primary">All</span>
+            </h1>
+            <p className="text-gray-400 font-bold tracking-[0.2em] uppercase text-xs">{filtered.length} Curated Items</p>
           </div>
-          
-          <div className="relative md:hidden flex-1">
-             <select 
-              className="w-full appearance-none bg-gray-50 px-6 py-4 rounded-2xl font-bold text-xs uppercase outline-none"
-              value={filters.category}
-              onChange={(e) => setFilters({...filters, category: e.target.value})}
+        </div>
+
+        {/* Premium Toolbar */}
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between sticky top-[80px] z-40 bg-white/80 backdrop-blur-2xl p-4 rounded-full border border-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+          <div className="relative w-full md:flex-1 max-w-md">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input 
+              type="text" 
+              placeholder="Search your ritual..."
+              className="w-full pl-14 pr-6 py-4 bg-[#FDF9F6] rounded-full border border-transparent focus:border-orange-100 outline-none focus:ring-4 focus:ring-primary/5 text-sm font-semibold placeholder:text-gray-400 transition-all shadow-inner"
+              value={filters.search}
+              onChange={(e) => setFilters({...filters, search: e.target.value})}
+            />
+          </div>
+
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <button 
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="flex items-center justify-center gap-3 w-full md:w-auto px-10 py-4 bg-gray-900 text-white rounded-full font-black text-[10px] uppercase tracking-[0.2em] shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
-              {categories.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
+              <SlidersHorizontal className="w-4 h-4" />
+              Filter
+            </button>
+            
+            <div className="hidden md:flex bg-[#FDF9F6] p-1.5 rounded-full gap-2 border border-orange-50 shadow-inner">
+              {categories.slice(0, 3).map(c => (
+                <button
+                  key={c}
+                  onClick={() => setFilters({...filters, category: c})}
+                  className={`px-8 py-3 rounded-full text-[10px] font-black transition-all uppercase tracking-widest ${
+                    filters.category === c ? 'bg-white text-gray-900 shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-gray-100' : 'text-gray-400 hover:text-gray-900 hover:bg-orange-50/50'
+                  }`}
+                >
+                  {c === 'All' ? 'All' : c}
+                </button>
+              ))}
+            </div>
+            
+            <div className="relative md:hidden flex-1">
+               <select 
+                className="w-full appearance-none bg-[#FDF9F6] px-6 py-4 rounded-full font-bold text-xs uppercase tracking-widest outline-none border border-orange-50 focus:border-orange-200 shadow-inner"
+                value={filters.category}
+                onChange={(e) => setFilters({...filters, category: e.target.value})}
+              >
+                {categories.map(c => <option key={c} value={c}>{c === 'All' ? 'All Categories' : c}</option>)}
+              </select>
+               <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Active Filters Drawer */}
-      <AnimatePresence>
-        {isFilterOpen && (
-          <motion.div 
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="bg-gray-50 p-8 rounded-[2.5rem] grid grid-cols-2 md:grid-cols-4 gap-8">
-              <div>
-                <h4 className="font-black text-xs uppercase tracking-widest text-gray-400 mb-4">Skin Type</h4>
-                <div className="flex flex-wrap gap-2">
-                  {skinTypes.map(s => (
-                    <button 
-                      key={s}
-                      onClick={() => setFilters({...filters, skin_type: s})}
-                      className={`px-4 py-2 rounded-xl text-xs font-black transition-all ${
-                        filters.skin_type === s ? 'bg-primary text-white' : 'bg-white text-gray-600 hover:bg-gray-100'
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
+        {/* Active Filters Drawer */}
+        <AnimatePresence>
+          {isFilterOpen && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden"
+            >
+              <div className="bg-white p-10 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                  <h4 className="font-black text-xs uppercase tracking-widest text-gray-900 mb-6 flex items-center gap-3">
+                    <Sparkles className="w-4 h-4 text-primary" />
+                    Skin Type
+                  </h4>
+                  <div className="flex flex-wrap gap-3">
+                    {skinTypes.map(s => (
+                      <button 
+                        key={s}
+                        onClick={() => setFilters({...filters, skin_type: s})}
+                        className={`px-6 py-3 rounded-full text-[10px] font-black tracking-widest uppercase transition-all ${
+                          filters.skin_type === s ? 'bg-gray-900 text-white shadow-[0_10px_20px_rgba(0,0,0,0.1)]' : 'bg-[#FDF9F6] text-gray-500 hover:text-gray-900 hover:bg-orange-50 border border-transparent hover:border-orange-100'
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      {/* Grid */}
-      {loading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-8">
-          {[...Array(8)].map((_, i) => (
-            <SkeletonCard key={i} />
-          ))}
-        </div>
-      ) : filtered.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-8">
-          {filtered.map((p, idx) => <ProductCard key={`${p.product_id}-${idx}`} product={p} />)}
-        </div>
-      ) : (
-        <div className="text-center py-20 space-y-4">
-          <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto text-gray-400">
-            <Search className="w-10 h-10" />
+        {/* Grid */}
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-10">
+            {[...Array(8)].map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
           </div>
-          <p className="text-gray-500 font-bold">No products found matching your results.</p>
-        </div>
-      )}
+        ) : filtered.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-10">
+            {filtered.map((p, idx) => <ProductCard key={`${p.product_id}-${idx}`} product={p} />)}
+          </div>
+        ) : (
+          <div className="text-center py-32 bg-white rounded-[3rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-white space-y-6">
+            <div className="w-24 h-24 bg-[#FDF9F6] rounded-[2rem] flex items-center justify-center mx-auto text-primary shadow-sm border border-orange-50">
+              <Search className="w-10 h-10" />
+            </div>
+            <h3 className="text-xl font-black text-gray-900 uppercase italic tracking-tighter">No products found</h3>
+            <p className="text-gray-400 font-bold tracking-widest uppercase text-[10px] max-w-[250px] mx-auto leading-relaxed">
+              Try adjusting your search terms or exploring a different category to discover your perfect ritual.
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

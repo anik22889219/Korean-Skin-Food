@@ -1,38 +1,40 @@
 import React from 'react';
-import { Search, ShieldCheck, Plane, Box } from 'lucide-react';
+import { Sparkles, ShieldCheck, Plane, Heart } from 'lucide-react';
 
 export const StoreGrowth: React.FC = () => {
   return (
-    <section className="relative rounded-[2.5rem] overflow-hidden bg-gray-900 p-10 lg:p-16 mt-20 shadow-2xl">
+    <section className="relative rounded-[2.5rem] overflow-hidden bg-gray-950 p-10 lg:p-16 mt-20 shadow-2xl">
       {/* Decorative background */}
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop')] opacity-10 bg-cover bg-center mix-blend-overlay"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/95 to-gray-900/80"></div>
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1617897903246-719242758050?q=80&w=2000&auto=format&fit=crop')] opacity-[0.03] bg-cover bg-center mix-blend-overlay"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950"></div>
       
       <div className="relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="bg-white/10 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border border-white/20 backdrop-blur-md mb-6 inline-block">
-            Complete Solution
+          <span className="bg-white/5 text-white/80 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border border-white/10 backdrop-blur-md mb-6 inline-block">
+            The Korean Skin Food Promise
           </span>
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight leading-tight">
-            Grow Your Store <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">We Handle the Rest</span>
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tighter leading-tight italic">
+            Unveil Your <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-orange-300 to-pink-300">Natural Glow</span>
           </h2>
-          <p className="text-lg text-gray-400 font-medium">From global sourcing to local doorstep delivery, we provide the ultimate end-to-end dropshipping infrastructure.</p>
+          <p className="text-sm md:text-base text-gray-400 font-medium leading-relaxed max-w-lg mx-auto">
+            Directly sourced from top South Korean brands. We ensure 100% authenticity, premium quality, and transformative results in every single bottle.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: Search, title: 'Smart Sourcing', desc: 'Discover winning products with AI-driven analytics across multiple global platforms.' },
-            { icon: ShieldCheck, title: 'Verified Suppliers', desc: 'Work only with pre-vetted, high-quality manufacturers ensuring product authenticity.' },
-            { icon: Plane, title: 'Express Logistics', desc: 'Optimized shipping routes with real-time tracking and end-to-end transparency.' },
-            { icon: Box, title: 'Local Fulfillment', desc: 'Access our strategically located hubs for faster, more reliable last-mile delivery.' }
+            { icon: Sparkles, title: '100% Authentic', desc: 'Directly sourced from trusted Korean manufacturers and official distributors.' },
+            { icon: ShieldCheck, title: 'Dermatologist Tested', desc: 'Safe, highly effective ingredients curated for diverse skin types and concerns.' },
+            { icon: Plane, title: 'Direct from Seoul', desc: 'Imported straight from the beauty capital of the world directly to your doorstep.' },
+            { icon: Heart, title: 'Ethical Beauty', desc: 'Partnering with conscious brands that care for the environment and your skin.' }
           ].map((feature, idx) => (
-            <div key={idx} className="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md hover:bg-white/10 transition-colors group">
-              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <feature.icon className="w-6 h-6 text-white" />
+            <div key={idx} className="bg-white/5 border border-white/5 p-8 rounded-[2rem] backdrop-blur-md hover:bg-white/10 hover:border-white/10 transition-all duration-500 group">
+              <div className="w-14 h-14 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl flex items-center justify-center mb-6 group-hover:-translate-y-2 group-hover:shadow-[0_10px_40px_rgba(255,255,255,0.1)] transition-all duration-500 border border-white/5">
+                <feature.icon className="w-6 h-6 text-white group-hover:text-primary transition-colors" strokeWidth={1.5} />
               </div>
-              <h4 className="text-lg font-bold text-white mb-3">{feature.title}</h4>
-              <p className="text-sm text-gray-400 leading-relaxed">{feature.desc}</p>
+              <h4 className="text-lg font-black text-white mb-3 tracking-wide">{feature.title}</h4>
+              <p className="text-sm text-gray-400 leading-relaxed font-medium">{feature.desc}</p>
             </div>
           ))}
         </div>

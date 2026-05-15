@@ -1,6 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Search, Copy, Plane, Box, Edit3, Globe, ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
+import { ArrowRight, Sparkles, ShieldCheck, Truck, Heart, BadgeCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const HeroBanner: React.FC = () => {
   return (
@@ -9,81 +10,97 @@ export const HeroBanner: React.FC = () => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative rounded-[2rem] overflow-hidden bg-[#0A0F1C] h-[400px] flex items-center shadow-2xl"
+        className="relative rounded-[2rem] overflow-hidden bg-[#FDF9F6] h-[450px] flex items-center shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-white"
       >
-        {/* Abstract Gradient Background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-[50%] -right-[20%] w-[100%] h-[150%] bg-gradient-to-b from-primary/20 to-transparent rounded-full blur-[120px] mix-blend-screen"></div>
-          <div className="absolute -bottom-[50%] -left-[20%] w-[80%] h-[120%] bg-gradient-to-t from-blue-500/20 to-transparent rounded-full blur-[100px] mix-blend-screen"></div>
+        {/* Abstract Soft Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-[20%] -right-[10%] w-[60%] h-[120%] bg-gradient-to-bl from-pink-200/40 via-primary/10 to-transparent rounded-full blur-[80px]"></div>
+          <div className="absolute -bottom-[20%] -left-[10%] w-[50%] h-[100%] bg-gradient-to-tr from-blue-100/40 via-transparent to-transparent rounded-full blur-[80px]"></div>
         </div>
         
-        <img 
-          src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1200&auto=format&fit=crop" 
-          alt="Banner Background"
-          className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity"
-          loading="eager" // Hero images should generally be eager loaded
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1C] via-[#0A0F1C]/90 to-transparent"></div>
+        {/* High-end Editorial Image */}
+        <div className="absolute inset-y-0 right-0 w-[55%]">
+          {/* Fading gradient to blend image with background */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#FDF9F6] via-transparent to-transparent z-10"></div>
+          <img 
+            src="https://images.unsplash.com/photo-1599305090598-fe179d501227?q=80&w=1200&auto=format&fit=crop" 
+            alt="Korean Skincare Splash"
+            className="w-full h-full object-cover object-left-top opacity-90"
+            loading="eager"
+          />
+        </div>
         
-        <div className="relative z-10 p-12 md:p-16 flex flex-col justify-center h-full max-w-2xl">
+        <div className="relative z-20 p-8 md:p-14 flex flex-col justify-center h-full w-full max-w-lg">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="flex items-center gap-2 mb-6"
+            className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/60 backdrop-blur-md rounded-full border border-white shadow-sm mb-6 w-max"
           >
-            <span className="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border border-primary/30 backdrop-blur-md">
-              Global Sourcing
-            </span>
-            <span className="text-gray-400 text-sm font-medium flex items-center gap-1">
-              <Globe className="w-4 h-4" /> B2B Portal
-            </span>
+            <Sparkles className="w-3 h-3 text-primary" />
+            <span className="text-[10px] font-bold tracking-widest uppercase text-gray-800">Glass Skin Journey</span>
           </motion.div>
 
-          <h1 className="text-white text-4xl md:text-6xl font-black mb-6 leading-[1.1] tracking-tight">
-            Import Products <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
-              List in Your Store
-            </span> <br />
-            Ship Globally
-          </h1>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-[#1A1A1A] text-4xl md:text-[3.5rem] font-black leading-[1.1] tracking-tighter mb-6 uppercase italic"
+          >
+            Authentic <br/>
+            <span className="text-primary">K-Beauty</span>
+          </motion.h1>
           
-          <div className="flex items-center gap-4 mt-4">
-            <button className="px-8 py-4 bg-primary hover:bg-primary/90 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-primary/30 flex items-center gap-2 group">
-              Start Importing Now
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white rounded-xl text-sm font-bold backdrop-blur-md border border-white/10 transition-colors">
-              View Catalog
-            </button>
-          </div>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-gray-500 font-medium text-sm md:text-base leading-relaxed mb-8 max-w-sm"
+          >
+            Directly sourced from Seoul. Discover your perfect ritual with 100% authentic Korean skincare essentials.
+          </motion.p>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="flex items-center gap-4"
+          >
+            <Link to="/shop" className="px-8 py-3.5 bg-gray-900 hover:bg-gray-800 text-white rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-lg shadow-gray-900/20 flex items-center gap-2">
+              Shop Now
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <div className="flex items-center gap-2 px-4">
+              <BadgeCheck className="w-5 h-5 text-green-500" />
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black uppercase text-gray-800 leading-none">100% Original</span>
+                <span className="text-[9px] font-medium text-gray-400">Guaranteed</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </motion.div>
 
-      {/* Premium Action Icons Row */}
+      {/* Action Icons Row */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="grid grid-cols-2 md:grid-cols-5 gap-4"
+        className="grid grid-cols-2 md:grid-cols-4 gap-4"
       >
         {[
-          { icon: Search, label: 'Global Sourcing', sub: 'Any Platform', color: 'from-blue-500 to-cyan-400' },
-          { icon: Copy, label: '1-Click Listing', sub: 'Multiple Stores', color: 'from-purple-500 to-pink-500' },
-          { icon: Plane, label: 'Fast Shipping', sub: '7-15 Days', color: 'from-primary to-orange-400' },
-          { icon: Box, label: 'Fulfillment', sub: 'End-to-End', color: 'from-emerald-400 to-teal-500' },
-          { icon: Edit3, label: 'Custom Sourcing', sub: 'On Demand', color: 'from-amber-400 to-orange-500' }
-        ].map((action, i) => (
-          <div key={i} className="group relative bg-white rounded-2xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 transition-all cursor-pointer overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none" style={{ backgroundImage: `var(--tw-gradient-stops)` }}></div>
-            <div className="flex flex-col items-center text-center gap-3 relative z-10">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${action.color} shadow-inner group-hover:scale-110 transition-transform duration-300`}>
-                <action.icon className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-gray-800 leading-tight mb-1">{action.label}</h4>
-                <p className="text-[10px] text-gray-400 font-medium">{action.sub}</p>
-              </div>
+          { icon: ShieldCheck, title: 'Authentic', desc: 'Sourced from Korea', color: 'bg-[#FDF9F6] text-orange-400 border-orange-100' },
+          { icon: Truck, title: 'Fast Delivery', desc: 'Inside & Outside Dhaka', color: 'bg-[#F4F8FB] text-blue-400 border-blue-100' },
+          { icon: Heart, title: 'Curated', desc: 'For Your Skin Type', color: 'bg-[#FFF5F7] text-pink-400 border-pink-100' },
+          { icon: Sparkles, title: 'Latest Trends', desc: 'New Arrivals Weekly', color: 'bg-[#F6F5FA] text-purple-400 border-purple-100' }
+        ].map((feature, i) => (
+          <div key={i} className={`flex items-center gap-3 p-4 rounded-2xl border ${feature.color} bg-opacity-50 transition-transform hover:-translate-y-1`}>
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm">
+              <feature.icon className="w-5 h-5" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs font-black uppercase tracking-wider text-gray-900">{feature.title}</span>
+              <span className="text-[10px] font-medium text-gray-500">{feature.desc}</span>
             </div>
           </div>
         ))}

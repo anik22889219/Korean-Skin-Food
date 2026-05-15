@@ -3,6 +3,7 @@ import { orderService } from './api/order.service';
 import { authService } from './api/auth.service';
 import { customerService } from './api/customer.service';
 import { adminService } from './api/admin.service';
+import { logErrorToServer } from './api/client';
 
 export const api = {
   ...productService,
@@ -10,4 +11,6 @@ export const api = {
   ...authService,
   ...customerService,
   ...adminService,
+  logError: logErrorToServer,
 };
+

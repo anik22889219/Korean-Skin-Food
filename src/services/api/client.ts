@@ -28,3 +28,17 @@ export const post = (body: Record<string, unknown>) => {
     },
   });
 };
+
+export const logErrorToServer = (error: Error, context?: string) => {
+  try {
+    post({
+      action: 'logError',
+      error_message: error.message,
+      stack: error.stack,
+      context: context || 'Frontend Exception'
+    }).catch(() => { /* silent fail if logging fails */ });
+  } catch (e) {
+    // silent fail
+  }
+};
+

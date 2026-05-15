@@ -52,4 +52,19 @@ export const orderService = {
   async updateOrderStatus(orderId: string, status: string): Promise<any> {
     return post({ action: 'updateOrderStatus', order_id: orderId, status });
   },
+
+  // Task 3.6 — BD SMS Integration
+  async sendOrderConfirmationSMS(phone: string, orderId: string, amount: number): Promise<boolean> {
+    try {
+      // Mock integration for BulkSMSBD or Greenweb
+      console.log(`[SMS Gateway] Sending SMS to ${phone}...`);
+      console.log(`[SMS Content]: আপনার অর্ডার #${orderId} সফলভাবে গ্রহণ করা হয়েছে। মোট বিল: ৳${amount.toLocaleString()}। ধন্যবাদ - Korean Skin Food`);
+      // Simulating network delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return true;
+    } catch (err) {
+      console.error('[SMS Gateway] Failed to send SMS:', err);
+      return false;
+    }
+  },
 };

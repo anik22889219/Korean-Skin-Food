@@ -11,15 +11,14 @@ export const Navbar: React.FC = () => {
   const { language, setLanguage, t } = useLanguage();
   const { itemCount } = useCart();
   const { user } = useAuth();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/shop?search=${searchQuery}`);
       setIsSearchOpen(false);
+      setIsMobileMenuOpen(false);
     }
   };
 
@@ -37,6 +36,15 @@ export const Navbar: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
+          
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="p-2 -ml-2 mr-2 md:hidden hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <Menu className="w-6 h-6 text-gray-900" />
+          </button>
+
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <Logo className="w-10 h-10 md:w-12 md:h-12" />
@@ -54,21 +62,23 @@ export const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-sm font-semibold text-gray-700 hover:text-primary transition-colors">{t('home')}</Link>
             <Link to="/shop" className="text-sm font-semibold text-gray-700 hover:text-primary transition-colors">{t('shop')}</Link>
-            <Link to="/about" className="text-sm font-semibold text-gray-700 hover:text-primary transition-colors">About</Link>
+            <Link to="/about" className="text-sm font-semibold text-gray-700 hover:text-primary transition-colors">About Us</Link>
+            <Link to="/contact" className="text-sm font-semibold text-gray-700 hover:text-primary transition-colors">Contact</Link>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-3 sm:gap-6">
-            <button onClick={() => setIsSearchOpen(true)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <button onClick={() => setIsSearchOpen(true)} className="p-2 hover:bg-gray-100 rounded-full transition-colors hidden sm:block">
               <Search className="w-5 h-5 text-gray-600" />
             </button>
 
             <button 
               onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
-              className="px-3 py-1 border border-gray-200 rounded-full text-xs font-bold hover:bg-gray-50 flex items-center gap-1"
+              className="px-3 py-1.5 border border-gray-200 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 flex items-center gap-1"
             >
               <Globe className="w-3 h-3" />
-              {language === 'en' ? 'বাংলা' : 'EN'}
+              <span className="hidden sm:inline">{language === 'en' ? 'বাংলা' : 'English'}</span>
+              <span className="sm:hidden">{language === 'en' ? 'BN' : 'EN'}</span>
             </button>
 
             <Link to="/cart" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
@@ -115,6 +125,78 @@ export const Navbar: React.FC = () => {
               </button>
             </form>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Menu Drawer */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            />
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 left-0 w-[280px] bg-white z-50 shadow-2xl flex flex-col md:hidden"
+            >
+              <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2">
+                  <Logo className="w-8 h-8" />
+                  <span className="font-extrabold tracking-tighter text-primary">KSF</span>
+                </Link>
+                <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-gray-400 hover:bg-gray-100 rounded-full">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="p-4 border-b border-gray-100">
+                <form onSubmit={handleSearch} className="relative">
+                  <input 
+                    type="text" 
+                    placeholder="Search..."
+                    className="w-full bg-gray-50 border-none rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                </form>
+              </div>
+
+              <div className="flex-1 overflow-y-auto py-4">
+                <nav className="flex flex-col space-y-1 px-2">
+                  <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 text-sm font-bold text-gray-700 hover:bg-primary/5 hover:text-primary rounded-xl transition-colors">
+                    {t('home')}
+                  </Link>
+                  <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 text-sm font-bold text-gray-700 hover:bg-primary/5 hover:text-primary rounded-xl transition-colors">
+                    {t('shop')}
+                  </Link>
+                  <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 text-sm font-bold text-gray-700 hover:bg-primary/5 hover:text-primary rounded-xl transition-colors">
+                    About Us
+                  </Link>
+                  <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 text-sm font-bold text-gray-700 hover:bg-primary/5 hover:text-primary rounded-xl transition-colors">
+                    Contact & Support
+                  </Link>
+                  <Link to="/track-order" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 text-sm font-bold text-gray-700 hover:bg-primary/5 hover:text-primary rounded-xl transition-colors">
+                    Track Order
+                  </Link>
+                </nav>
+              </div>
+
+              <div className="p-4 border-t border-gray-100 bg-gray-50">
+                <Link to="/account" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-sm hover:border-primary/30 transition-colors shadow-sm">
+                  <User className="w-5 h-5 text-gray-500" />
+                  My Account
+                </Link>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </nav>

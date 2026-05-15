@@ -2,7 +2,8 @@ import React from 'react';
 import { Product } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
-import { ShoppingBag, Eye, Star } from 'lucide-react';
+import { useWishlist } from '../context/WishlistContext';
+import { ShoppingBag, Eye, Star, Heart } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { language, t } = useLanguage();
   const { addToCart } = useCart();
+  const { isWishlisted, toggleWishlist } = useWishlist();
   const [added, setAdded] = React.useState(false);
 
   const name = language === 'en' ? product.name_en : product.name_bn;
@@ -72,6 +74,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
            <button className="bg-white p-3 rounded-full shadow-lg transform translate-y-10 group-hover:translate-y-0 transition-transform duration-500 delay-75">
             <Eye className="w-5 h-5 text-gray-800" />
+           </button>
+           <button
+             onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(product); }}
+             className={`p-3 rounded-full shadow-lg transform translate-y-10 group-hover:translate-y-0 transition-transform duration-500 delay-100 ${
+               isWishlisted(product.product_id!) ? 'bg-red-500 text-white' : 'bg-white text-gray-500 hover:text-red-500'
+             }`}
+           >
+            <Heart className={`w-5 h-5 ${isWishlisted(product.product_id!) ? 'fill-current' : ''}`} />
            </button>
         </div>
       </Link>

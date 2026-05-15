@@ -39,29 +39,31 @@ export const AdminSocial: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 md:py-20 space-y-12 bg-[#fafafa] min-h-screen">
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 bg-pink-100 text-pink-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest">
+    <div className="space-y-12 pb-12">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h1 className="text-4xl font-black tracking-tighter text-gray-900 uppercase italic">AI Content Creator</h1>
+          <p className="text-xs font-black text-gray-500 uppercase tracking-widest mt-2">Generate viral captions, hashtags, and story ideas for Facebook & Instagram.</p>
+        </div>
+        <div className="inline-flex items-center gap-3 bg-white border border-pink-100 text-pink-500 px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest shadow-[0_5px_15px_rgba(236,72,153,0.1)]">
           <Share2 className="w-4 h-4" />
           Social Media Studio
         </div>
-        <h1 className="text-4xl md:text-6xl font-black tracking-tighter">AI Content <span className="text-primary italic">Creator</span></h1>
-        <p className="text-gray-500 font-medium max-w-2xl mx-auto">Generate viral captions, hashtags, and story ideas for Facebook & Instagram.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Sidebar: Product & Settings */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-100/50 space-y-8">
+          <div className="bg-white p-8 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] space-y-8 h-full">
             <div>
-              <h3 className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-4">1. Campaign Goal</h3>
-              <div className="grid grid-cols-1 gap-2">
+              <h3 className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6">1. Campaign Goal</h3>
+              <div className="grid grid-cols-1 gap-3">
                 {(['awareness', 'sale', 'engagement'] as const).map(g => (
                   <button
                     key={g}
                     onClick={() => setGoal(g)}
-                    className={`px-4 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all border ${
-                      goal === g ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-gray-50 text-gray-400 border-transparent hover:bg-gray-100'
+                    className={`px-6 py-4 rounded-full font-black text-[10px] uppercase tracking-widest transition-all border ${
+                      goal === g ? 'bg-gray-900 text-white border-gray-900 shadow-[0_10px_30px_rgba(0,0,0,0.1)] scale-[1.02]' : 'bg-[#FDF9F6] text-gray-400 border-orange-50 hover:bg-gray-50 hover:text-gray-900'
                     }`}
                   >
                     {g}
@@ -71,19 +73,19 @@ export const AdminSocial: React.FC = () => {
             </div>
 
             <div>
-              <h3 className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-4">2. Select Product</h3>
-              <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2 scrollbar-hide">
+              <h3 className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6">2. Select Product</h3>
+              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 scrollbar-hide">
                 {products.map((p, idx) => (
                   <button
                     key={`${p.product_id}-${idx}`}
                     onClick={() => { setSelectedProduct(p); setResult(null); }}
-                    className={`w-full text-left p-4 rounded-2xl transition-all border ${
+                    className={`w-full text-left p-6 rounded-[2rem] transition-all border ${
                       selectedProduct?.product_id === p.product_id 
-                        ? 'bg-pink-50 border-pink-200 text-pink-700 shadow-lg shadow-pink-100' 
-                        : 'bg-gray-50 border-transparent text-gray-700 hover:bg-gray-100'
+                        ? 'bg-pink-50 border-pink-200 text-pink-700 shadow-[0_10px_30px_rgba(252,165,165,0.2)] scale-[1.02]' 
+                        : 'bg-[#FDF9F6] border-orange-50 text-gray-700 hover:border-gray-300'
                     }`}
                   >
-                    <p className="font-bold line-clamp-1">{p.name_en}</p>
+                    <p className="font-bold text-sm tracking-tight italic line-clamp-1">{p.name_en}</p>
                   </button>
                 ))}
               </div>
@@ -93,7 +95,7 @@ export const AdminSocial: React.FC = () => {
               <button 
                 onClick={handleGenerate}
                 disabled={loading}
-                className="w-full bg-gray-900 text-white py-5 rounded-2xl font-black text-lg shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                className="w-full bg-pink-600 text-white py-6 rounded-full font-black text-xs uppercase tracking-widest shadow-[0_10px_30px_rgba(219,39,119,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-4 border border-pink-500"
               >
                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
                 {loading ? 'Thinking...' : 'Magic Generate'}
@@ -110,10 +112,12 @@ export const AdminSocial: React.FC = () => {
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="h-[600px] border-4 border-dashed border-gray-100 rounded-[3.5rem] flex flex-col items-center justify-center text-gray-200 gap-4"
+                className="h-full min-h-[600px] border-4 border-dashed border-gray-100 rounded-[3rem] flex flex-col items-center justify-center text-gray-300 gap-6 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.03)]"
               >
-                <Instagram className="w-24 h-24" />
-                <p className="font-black text-xl uppercase tracking-[0.3em]">Ready for your next post</p>
+                <div className="w-24 h-24 rounded-full bg-gray-50 flex items-center justify-center">
+                   <Instagram className="w-10 h-10 text-gray-300" />
+                </div>
+                <p className="font-black text-xl uppercase tracking-widest italic">Ready for your next post</p>
               </motion.div>
             ) : (
               <motion.div 
@@ -123,17 +127,19 @@ export const AdminSocial: React.FC = () => {
                 className="space-y-8"
               >
                 {/* Facebook Preview */}
-                <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden">
-                  <div className="bg-[#1877F2]/5 p-6 border-b border-[#1877F2]/10 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                       <Facebook className="text-[#1877F2]" />
+                <div className="bg-white rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] overflow-hidden">
+                  <div className="bg-[#1877F2]/5 p-8 border-b border-[#1877F2]/10 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                       <div className="w-12 h-12 rounded-[1rem] bg-white flex items-center justify-center shadow-sm">
+                          <Facebook className="text-[#1877F2] w-6 h-6" />
+                       </div>
                        <span className="font-black text-[#1877F2] uppercase tracking-widest text-xs">Facebook Post</span>
                     </div>
-                    <button onClick={() => copyToClipboard(result.facebook_caption, 'fb')} className="hover:bg-white p-2 rounded-xl transition-colors">
-                       {copiedField === 'fb' ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-400" />}
+                    <button onClick={() => copyToClipboard(result.facebook_caption, 'fb')} className="hover:bg-white p-3 rounded-full transition-colors bg-white/50 text-[#1877F2]">
+                       {copiedField === 'fb' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                     </button>
                   </div>
-                  <div className="p-8">
+                  <div className="p-10">
                     <p className="text-gray-800 font-medium whitespace-pre-wrap leading-relaxed">
                       {result.facebook_caption}
                     </p>
@@ -141,24 +147,29 @@ export const AdminSocial: React.FC = () => {
                 </div>
 
                 {/* Instagram Preview */}
-                <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden">
-                  <div className="bg-pink-50 p-6 border-b border-pink-100 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                       <Instagram className="text-pink-600" />
+                <div className="bg-white rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] overflow-hidden">
+                  <div className="bg-pink-50 p-8 border-b border-pink-100 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                       <div className="w-12 h-12 rounded-[1rem] bg-white flex items-center justify-center shadow-sm">
+                          <Instagram className="text-pink-600 w-6 h-6" />
+                       </div>
                        <span className="font-black text-pink-600 uppercase tracking-widest text-xs">Instagram Caption</span>
                     </div>
-                    <button onClick={() => copyToClipboard(result.instagram_caption, 'ig')} className="hover:bg-white p-2 rounded-xl transition-colors">
-                       {copiedField === 'ig' ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-400" />}
+                    <button onClick={() => copyToClipboard(result.instagram_caption, 'ig')} className="hover:bg-white p-3 rounded-full transition-colors bg-white/50 text-pink-600">
+                       {copiedField === 'ig' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                     </button>
                   </div>
-                  <div className="p-8 space-y-6">
+                  <div className="p-10 space-y-8">
                     <p className="text-gray-800 font-medium whitespace-pre-wrap leading-relaxed italic">
                       {result.instagram_caption}
                     </p>
-                    <div className="pt-6 border-t border-gray-50 flex flex-wrap gap-2">
-                      <Hash className="w-4 h-4 text-gray-300" />
+                    <div className="pt-8 border-t border-gray-50 flex flex-wrap gap-3">
+                      <div className="w-full flex items-center gap-2 mb-2">
+                         <Hash className="w-4 h-4 text-gray-300" />
+                         <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Hashtags</span>
+                      </div>
                       {result.hashtags.map((tag, i) => (
-                        <span key={i} className="text-primary font-bold text-sm">#{tag.replace('#', '')}</span>
+                        <span key={i} className="bg-[#FDF9F6] border border-orange-50 px-4 py-2 rounded-full text-pink-600 font-bold text-xs">#{tag.replace('#', '')}</span>
                       ))}
                     </div>
                   </div>
@@ -166,23 +177,30 @@ export const AdminSocial: React.FC = () => {
 
                 {/* Quick Bits */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                   <div className="bg-gray-900 text-white p-8 rounded-[3rem] space-y-4">
-                      <div className="flex items-center gap-2">
-                        <Send className="w-5 h-5 text-primary" />
-                        <h4 className="font-black uppercase tracking-widest text-xs text-gray-400">Story Text</h4>
+                   <div className="bg-gray-900 text-white p-10 rounded-[3rem] space-y-6 shadow-[0_20px_50px_rgba(0,0,0,0.15)] relative overflow-hidden group">
+                      <div className="absolute top-0 right-0 w-48 h-48 bg-pink-600/20 blur-[60px] -mr-24 -mt-24 rounded-full group-hover:bg-pink-600/30 transition-all duration-700 pointer-events-none" />
+                      <div className="relative z-10 space-y-6">
+                         <div className="flex items-center gap-3">
+                           <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                              <Send className="w-5 h-5 text-pink-500" />
+                           </div>
+                           <h4 className="font-black uppercase tracking-widest text-xs text-gray-400">Story Text</h4>
+                         </div>
+                         <p className="text-2xl font-black tracking-tighter italic">{result.story_text}</p>
+                         <button onClick={() => copyToClipboard(result.story_text, 'story')} className="flex items-center gap-3 text-[10px] uppercase tracking-widest font-black text-gray-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-5 py-3 rounded-full w-fit">
+                           {copiedField === 'story' ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                           Copy Story Text
+                         </button>
                       </div>
-                      <p className="text-2xl font-black tracking-tight">{result.story_text}</p>
-                      <button onClick={() => copyToClipboard(result.story_text, 'story')} className="flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-white transition-colors">
-                        {copiedField === 'story' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                        Copy Story Text
-                      </button>
                    </div>
-                   <div className="bg-primary/10 border border-primary/20 p-8 rounded-[3rem] space-y-4">
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-5 h-5 text-primary" />
-                        <h4 className="font-black uppercase tracking-widest text-xs text-primary/60">Posting Strategy</h4>
+                   <div className="bg-[#FDF9F6] border border-orange-50 p-10 rounded-[3rem] space-y-6 shadow-[0_5px_15px_rgba(0,0,0,0.02)]">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-orange-100 shadow-sm">
+                           <Clock className="w-5 h-5 text-pink-500" />
+                        </div>
+                        <h4 className="font-black uppercase tracking-widest text-xs text-pink-500">Posting Strategy</h4>
                       </div>
-                      <p className="text-xl font-black text-gray-900">{result.best_time}</p>
+                      <p className="text-3xl font-black text-gray-900 tracking-tighter italic">{result.best_time}</p>
                    </div>
                 </div>
               </motion.div>
