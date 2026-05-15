@@ -14,7 +14,8 @@ import {
   User,
   Sparkles,
   Bot,
-  Globe
+  Globe,
+  MessageCircle
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
