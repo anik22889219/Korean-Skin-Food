@@ -37,22 +37,22 @@ export const AdminRoutes = () => {
         <AdminLayout>
           <Suspense fallback={<PageLoader />}>
             <Routes>
-              <Route path="/dashboard" element={<AdminDashboard />} />
-              <Route path="/orders"    element={<AdminOrders />} />
-              <Route path="/inventory" element={<AdminInventory />} />
-              <Route path="/scanner"   element={<AdminBarcodeScanner />} />
-              <Route path="/reports"   element={<AdminReports />} />
-              <Route path="/settings"  element={<AdminSettings />} />
-              <Route path="/seo"       element={<AdminSEO />} />
-              <Route path="/social"    element={<AdminSocial />} />
-              <Route path="/customers" element={<AdminCustomers />} />
-              <Route path="/whatsapp"  element={<AdminWhatsApp />} />
-              <Route path="/meta-ads"  element={<AdminMetaAds />} />
-              <Route path="/ai-center" element={<AdminAICenter />} />
-              <Route path="/system-fix" element={<AdminSystemFix />} />
-              <Route path="/dropshipping" element={<AdminDropshipping />} />
-              <Route path="/sourcing" element={<AdminSourcing />} />
-              <Route path="/import-list" element={<AdminImportList />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="orders"    element={<AdminOrders />} />
+              <Route path="inventory" element={<AdminInventory />} />
+              <Route path="scanner"   element={<AdminBarcodeScanner />} />
+              <Route path="reports"   element={<AdminReports />} />
+              <Route path="settings"  element={<AdminSettings />} />
+              <Route path="seo"       element={<AdminSEO />} />
+              <Route path="social"    element={<AdminSocial />} />
+              <Route path="customers" element={<AdminCustomers />} />
+              <Route path="whatsapp"  element={<AdminWhatsApp />} />
+              <Route path="meta-ads"  element={<AdminMetaAds />} />
+              <Route path="ai-center" element={<AdminAICenter />} />
+              <Route path="system-fix" element={<AdminSystemFix />} />
+              <Route path="dropshipping" element={<AdminDropshipping />} />
+              <Route path="sourcing" element={<AdminSourcing />} />
+              <Route path="import-list" element={<AdminImportList />} />
               <Route path="/" element={<AdminDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

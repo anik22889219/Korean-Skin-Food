@@ -49,6 +49,11 @@ export const Account: React.FC = () => {
         navigate('/admin/dashboard');
         return;
       }
+      if (user.role === 'customer' && window.location.pathname === '/account') {
+        // Only redirect if specifically on /account and not viewing a sub-path
+        // navigate('/customer/dashboard'); 
+      }
+      
       setLoading(true);
       api.getUserOrders(user.phone)
         .then(data => {
@@ -73,8 +78,17 @@ export const Account: React.FC = () => {
           setError(language === 'bn' ? 'রেজিস্ট্রেশন ব্যর্থ হয়েছে' : 'Registration failed');
         }
       } else {
-        const success = await login(formData.phone, formData.password);
-        if (!success) {
+        const loggedInUser = await login(formData.phone, formData.password);
+        if (loggedInUser) {
+          // Role-based redirection after login
+          if (loggedInUser.role === 'super_admin' || loggedInUser.role === 'admin') {
+            navigate('/admin/dashboard');
+          } else if (loggedInUser.role === 'customer') {
+            navigate('/customer/dashboard');
+          } else if (loggedInUser.role === 'viewer') {
+            navigate('/viewer/dashboard');
+          }
+        } else {
           setError(language === 'bn' ? 'ফোন বা পাসওয়ার্ড ভুল' : 'Invalid phone or password');
         }
       }
@@ -91,13 +105,22 @@ export const Account: React.FC = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const { user } = result;
       
-      const success = await loginWithGoogle(
+      const successUser = await loginWithGoogle(
         user.email || '', 
         user.displayName || 'Google User', 
         user.photoURL || undefined
       );
       
-      if (!success) {
+      if (successUser) {
+        // Role-based redirection after login
+        if (successUser.role === 'super_admin' || successUser.role === 'admin') {
+          navigate('/admin/dashboard');
+        } else if (successUser.role === 'customer') {
+          navigate('/customer/dashboard');
+        } else if (successUser.role === 'viewer') {
+          navigate('/viewer/dashboard');
+        }
+      } else {
         setError(language === 'bn' ? 'গুগল লগইন ব্যর্থ হয়েছে' : 'Google login failed');
       }
     } catch (err: any) {

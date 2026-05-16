@@ -16,40 +16,58 @@ import AdminLogin from '../pages/AdminLogin';
  * - No user → Public Routes
  */
 export const RoleBasedRouter: React.FC = () => {
-  const { user, isAdminTeam } = useAuth();
+  const { user, isAdminTeam, isCustomer, isViewer } = useAuth();
 
-  // Admin team access - show admin routes
-  if (user && isAdminTeam) {
+  // 1. GATE: No user or not authenticated - only show Account page or Admin Login
+  if (!user) {
+    return (
+      <Routes>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/account/*" element={<Account />} />
+        <Route path="*" element={<Navigate to="/account" replace />} />
+      </Routes>
+    );
+  }
+
+  // 2. ADMIN TEAM: Show admin routes and redirect root to dashboard
+  if (isAdminTeam) {
     return (
       <Routes>
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/*" element={<AdminRoutes />} />
+        <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="/account" element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
       </Routes>
     );
   }
 
-  // Customer access - show customer dashboard + public routes
-  if (user && user.role === 'customer') {
+  // 3. CUSTOMER: Show customer dashboard + public routes, but land on dashboard
+  if (isCustomer) {
     return (
       <Routes>
         <Route path="/customer/dashboard" element={<CustomerDashboard />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/" element={<Navigate to="/customer/dashboard" replace />} />
         <Route path="*" element={<PublicRoutes />} />
       </Routes>
     );
   }
 
-  // Viewer access - show viewer dashboard + public routes
-  if (user && user.role === 'viewer') {
+  // 4. VIEWER: Show viewer dashboard + public routes, but land on dashboard
+  if (isViewer) {
     return (
       <Routes>
         <Route path="/viewer/dashboard" element={<ViewerDashboard />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/" element={<Navigate to="/viewer/dashboard" replace />} />
         <Route path="*" element={<PublicRoutes />} />
       </Routes>
     );
   }
 
-  // No user or unknown role - show public routes
+  // Fallback (should not be reached with the above logic)
   return <PublicRoutes />;
 };
 
