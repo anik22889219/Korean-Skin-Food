@@ -30,21 +30,45 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user, logout, isAdminTeam, canAccessInventory, canAccessCustomerSupport, canAccessSettings } = useAuth();
 
-  const menuItems = [
-    { icon: LayoutDashboard, label: 'Overview', path: '/admin/dashboard' },
-    { icon: ShoppingBag, label: 'Orders', path: '/admin/orders' },
-    { icon: Package, label: 'Inventory', path: '/admin/inventory' },
-    { icon: Scan, label: 'Barcode Scanner', path: '/admin/scanner' },
-    { icon: User, label: 'Customers & Leads', path: '/admin/customers' },
-    { icon: BarChart3, label: 'Analytics', path: '/admin/reports' },
-    { icon: MessageCircle, label: 'WhatsApp CRM', path: '/admin/whatsapp' },
-    { icon: Sparkles, label: 'Meta Ads & Pixel', path: '/admin/meta-ads' },
-    { icon: Bot, label: 'AI Center', path: '/admin/ai-center' },
-    { icon: Globe, label: 'Dropshipping', path: '/admin/dropshipping' },
-    { icon: Settings, label: 'Settings', path: '/admin/settings' },
+  // ════════════════════════════════════════════════════════════════════════════════
+  // ROLE-BASED MENU ITEMS
+  // ════════════════════════════════════════════════════════════════════════════════
+  
+  const allMenuItems = [
+    { icon: LayoutDashboard, label: 'Overview', path: '/admin/dashboard', requiredAccess: 'all' },
+    { icon: ShoppingBag, label: 'Orders', path: '/admin/orders', requiredAccess: 'all' },
+    { icon: Package, label: 'Inventory', path: '/admin/inventory', requiredAccess: 'inventory' },
+    { icon: Scan, label: 'Barcode Scanner', path: '/admin/scanner', requiredAccess: 'inventory' },
+    { icon: User, label: 'Customers & Leads', path: '/admin/customers', requiredAccess: 'support' },
+    { icon: BarChart3, label: 'Analytics', path: '/admin/reports', requiredAccess: 'inventory' },
+    { icon: MessageCircle, label: 'WhatsApp CRM', path: '/admin/whatsapp', requiredAccess: 'support' },
+    { icon: Sparkles, label: 'Meta Ads & Pixel', path: '/admin/meta-ads', requiredAccess: 'settings' },
+    { icon: Bot, label: 'AI Center', path: '/admin/ai-center', requiredAccess: 'settings' },
+    { icon: Globe, label: 'Dropshipping', path: '/admin/dropshipping', requiredAccess: 'settings' },
+    { icon: Settings, label: 'Settings', path: '/admin/settings', requiredAccess: 'settings' },
   ];
+
+  // Filter menu items based on user permissions
+  const getVisibleMenuItems = () => {
+    return allMenuItems.filter(item => {
+      switch (item.requiredAccess) {
+        case 'all':
+          return true; // Everyone in admin team can see
+        case 'inventory':
+          return canAccessInventory;
+        case 'support':
+          return canAccessCustomerSupport;
+        case 'settings':
+          return canAccessSettings;
+        default:
+          return false;
+      }
+    });
+  };
+
+  const menuItems = getVisibleMenuItems();
 
   return (
     <div className="min-h-screen bg-[#FDF9F6] flex relative">
