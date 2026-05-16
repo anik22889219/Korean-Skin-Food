@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Star, ShoppingCart } from 'lucide-react';
+import { api } from '../services/api';
 
 interface Product {
   id: string;
@@ -29,83 +30,24 @@ export const ViewerDashboard: React.FC = () => {
 
   const fetchProducts = async () => {
     setLoading(true);
-    // Mock data - replace with actual API call
-    const mockFeatured: Product[] = [
-      {
-        id: '1',
-        name: 'Premium Face Serum',
-        price: 1200,
-        image: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&h=300&fit=crop',
-        rating: 4.8,
-        reviews: 234,
-        badge: 'Best Seller',
-      },
-      {
-        id: '2',
-        name: 'Hydrating Facial Mask',
-        price: 850,
-        image: 'https://images.unsplash.com/photo-1617634924626-92292c2c2f37?w=300&h=300&fit=crop',
-        rating: 4.6,
-        reviews: 189,
-        badge: 'New',
-      },
-      {
-        id: '3',
-        name: 'Brightening Sheet Mask',
-        price: 450,
-        image: 'https://images.unsplash.com/photo-1620293915637-c51194221d37?w=300&h=300&fit=crop',
-        rating: 4.7,
-        reviews: 312,
-      },
-      {
-        id: '4',
-        name: 'Anti-Aging Eye Cream',
-        price: 1800,
-        image: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&h=300&fit=crop',
-        rating: 4.9,
-        reviews: 456,
-        badge: 'Premium',
-      },
-    ];
-
-    const mockRecommendations: Product[] = [
-      {
-        id: '5',
-        name: 'Gentle Cleansing Oil',
-        price: 650,
-        image: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&h=300&fit=crop',
-        rating: 4.5,
-        reviews: 156,
-      },
-      {
-        id: '6',
-        name: 'Vitamin C Essence',
-        price: 1100,
-        image: 'https://images.unsplash.com/photo-1617634924626-92292c2c2f37?w=300&h=300&fit=crop',
-        rating: 4.7,
-        reviews: 287,
-      },
-      {
-        id: '7',
-        name: 'Hydration Boost Serum',
-        price: 950,
-        image: 'https://images.unsplash.com/photo-1620293915637-c51194221d37?w=300&h=300&fit=crop',
-        rating: 4.6,
-        reviews: 198,
-      },
-      {
-        id: '8',
-        name: 'Soothing Toner',
-        price: 520,
-        image: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&h=300&fit=crop',
-        rating: 4.4,
-        reviews: 127,
-      },
-    ];
-
-    setFeaturedProducts(mockFeatured);
-    setRecommendations(mockRecommendations);
-    setLoading(false);
+    try {
+      const data = await api.getProducts();
+      const mapped = data.map(p => ({
+        id: p.product_id,
+        name: p.name_en,
+        price: p.price,
+        image: p.images?.[0] || 'https://via.placeholder.com/300',
+        rating: 4.5, // Mock rating
+        reviews: Math.floor(Math.random() * 100),
+        badge: p.is_featured ? 'Featured' : undefined
+      }));
+      setFeaturedProducts(mapped.slice(0, 4));
+      setRecommendations(mapped.slice(4, 8));
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLogout = () => {

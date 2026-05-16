@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Heart, Package, MapPin, Calendar, Trash2 } from 'lucide-react';
+import { api } from '../services/api';
 
 interface Order {
   order_id: string;
@@ -24,36 +25,30 @@ export const CustomerDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'wishlist'>('overview');
   const [orders, setOrders] = useState<Order[]>([]);
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user) {
       navigate('/');
+      return;
     }
+    const fetchOrders = async () => {
+      try {
+        const data = await api.getUserOrders(user.phone);
+        setOrders(data.sort((a, b) => new Date(b.timestamp || b.order_date).getTime() - new Date(a.timestamp || a.order_date).getTime()));
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrders();
   }, [user, navigate]);
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
-
-  // Mock data - replace with API calls
-  const mockOrders: Order[] = [
-    {
-      order_id: 'ORD-001',
-      total_price: 2500,
-      order_date: '2024-05-10',
-      status: 'delivered',
-      items_count: 3,
-    },
-    {
-      order_id: 'ORD-002',
-      total_price: 1800,
-      order_date: '2024-05-08',
-      status: 'shipped',
-      items_count: 2,
-    },
-  ];
 
   const mockWishlist: WishlistItem[] = [
     {
@@ -165,12 +160,12 @@ export const CustomerDashboard: React.FC = () => {
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="text-3xl font-bold text-pink-600">{mockOrders.length}</div>
+                <div className="text-3xl font-bold text-pink-600">{orders.length}</div>
                 <p className="text-gray-600 text-sm mt-1">Total Orders</p>
               </div>
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <div className="text-3xl font-bold text-green-600">
-                  ৳{mockOrders.reduce((sum, o) => sum + o.total_price, 0)}
+                  ৳{orders.reduce((sum, o) => sum + (o.total || o.total_price || 0), 0)}
                 </div>
                 <p className="text-gray-600 text-sm mt-1">Total Spent</p>
               </div>
@@ -225,9 +220,11 @@ export const CustomerDashboard: React.FC = () => {
         {activeTab === 'orders' && (
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Order History</h2>
-            {mockOrders.length > 0 ? (
+            {loading ? (
+              <div className="text-center text-gray-500 py-12">Loading orders...</div>
+            ) : orders.length > 0 ? (
               <div className="space-y-4">
-                {mockOrders.map((order) => (
+                {orders.map((order) => (
                   <div
                     key={order.order_id}
                     className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
@@ -239,7 +236,7 @@ export const CustomerDashboard: React.FC = () => {
                           <h3 className="font-bold text-gray-900">{order.order_id}</h3>
                           <p className="text-sm text-gray-500 flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
-                            {new Date(order.order_date).toLocaleDateString()}
+                            {new Date(order.timestamp || order.order_date).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
@@ -249,7 +246,7 @@ export const CustomerDashboard: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="text-sm text-gray-600">
-                        {order.items_count} {order.items_count === 1 ? 'item' : 'items'}
+                        {order.items?.length || order.items_count} {(order.items?.length || order.items_count) === 1 ? 'item' : 'items'}
                       </div>
                       <button className="text-pink-600 font-semibold hover:text-pink-700 transition-colors">
                         View Details
@@ -258,7 +255,7 @@ export const CustomerDashboard: React.FC = () => {
                     <div className="mt-3 pt-3 border-t border-gray-200">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Total:</span>
-                        <span className="text-lg font-bold text-gray-900">৳{order.total_price}</span>
+                        <span className="text-lg font-bold text-gray-900">৳{order.total || order.total_price}</span>
                       </div>
                     </div>
                   </div>

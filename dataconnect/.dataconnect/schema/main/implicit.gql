@@ -1,0 +1,136 @@
+extend type Address {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Address", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Address`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  userId: UUID! @fdc_generated(from: "Address.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type Cart {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Cart", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Cart`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  userId: UUID! @fdc_generated(from: "Cart.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type CartItem {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "CartItem", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `CartItem`.`cart`. It must match the value of `Cart`.`id`. See `@ref` for how to customize it.
+  """
+  cartId: UUID! @fdc_generated(from: "CartItem.cart", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `CartItem`.`product`. It must match the value of `Product`.`id`. See `@ref` for how to customize it.
+  """
+  productId: UUID! @fdc_generated(from: "CartItem.product", purpose: IMPLICIT_REF_FIELD)
+}
+extend type Category {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Category", purpose: IMPLICIT_KEY_FIELD)
+}
+extend type Order {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Order", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Order`.`billingAddress`. It must match the value of `Address`.`id`. See `@ref` for how to customize it.
+  """
+  billingAddressId: UUID! @fdc_generated(from: "Order.billingAddress", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Order`.`shippingAddress`. It must match the value of `Address`.`id`. See `@ref` for how to customize it.
+  """
+  shippingAddressId: UUID! @fdc_generated(from: "Order.shippingAddress", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Order`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  userId: UUID! @fdc_generated(from: "Order.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type OrderItem {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "OrderItem", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `OrderItem`.`order`. It must match the value of `Order`.`id`. See `@ref` for how to customize it.
+  """
+  orderId: UUID! @fdc_generated(from: "OrderItem.order", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `OrderItem`.`product`. It must match the value of `Product`.`id`. See `@ref` for how to customize it.
+  """
+  productId: UUID! @fdc_generated(from: "OrderItem.product", purpose: IMPLICIT_REF_FIELD)
+}
+extend type Payment {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Payment", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Payment`.`order`. It must match the value of `Order`.`id`. See `@ref` for how to customize it.
+  """
+  orderId: UUID! @fdc_generated(from: "Payment.order", purpose: IMPLICIT_REF_FIELD)
+}
+extend type Product {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Product", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Product`.`category`. It must match the value of `Category`.`id`. See `@ref` for how to customize it.
+  """
+  categoryId: UUID @fdc_generated(from: "Product.category", purpose: IMPLICIT_REF_FIELD)
+}
+extend type Review {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Review", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Review`.`product`. It must match the value of `Product`.`id`. See `@ref` for how to customize it.
+  """
+  productId: UUID! @fdc_generated(from: "Review.product", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Review`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  userId: UUID! @fdc_generated(from: "Review.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type User {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "User", purpose: IMPLICIT_KEY_FIELD)
+}
+extend type Wishlist {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Wishlist", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Wishlist`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  userId: UUID! @fdc_generated(from: "Wishlist.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type WishlistItem {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "WishlistItem", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `WishlistItem`.`product`. It must match the value of `Product`.`id`. See `@ref` for how to customize it.
+  """
+  productId: UUID! @fdc_generated(from: "WishlistItem.product", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `WishlistItem`.`wishlist`. It must match the value of `Wishlist`.`id`. See `@ref` for how to customize it.
+  """
+  wishlistId: UUID! @fdc_generated(from: "WishlistItem.wishlist", purpose: IMPLICIT_REF_FIELD)
+}

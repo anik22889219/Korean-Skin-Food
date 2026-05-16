@@ -29,14 +29,14 @@ import {
 } from 'recharts';
 
 const AdminDashboard: React.FC = () => {
-  const { isAdmin } = useAuth();
+  const { isAdminTeam, isAdmin, isInventoryManager, isCustomerSupport } = useAuth();
   const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!isAdmin) {
+    if (!isAdminTeam) {
       navigate('/account');
       return;
     }
@@ -57,7 +57,7 @@ const AdminDashboard: React.FC = () => {
     };
 
     fetchData();
-  }, [isAdmin, navigate]);
+  }, [isAdminTeam, navigate]);
 
   const stats = useMemo(() => ({
     totalRevenue: orders.reduce((acc, curr) => acc + curr.total, 0),
@@ -134,56 +134,65 @@ const AdminDashboard: React.FC = () => {
 
         {/* Essential Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-           <div className="bg-white p-8 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden group hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all">
-              <div className="w-14 h-14 bg-[#FDF9F6] border border-orange-50 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform">
-                <TrendingUp className="w-6 h-6 text-gray-900" />
-              </div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Total Revenue</p>
-              <h3 className="text-4xl font-black text-gray-900 tracking-tighter italic">৳{stats.totalRevenue.toLocaleString()}</h3>
-              <div className="mt-6 flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-[10px] font-black text-emerald-600 uppercase tracking-widest rounded-full w-max">
-                <ArrowUpRight className="w-3 h-3" /> 12% vs last month
-              </div>
-           </div>
+           {isAdmin && (
+             <>
+               <div className="bg-white p-8 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden group hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all">
+                  <div className="w-14 h-14 bg-[#FDF9F6] border border-orange-50 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                    <TrendingUp className="w-6 h-6 text-gray-900" />
+                  </div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Total Revenue</p>
+                  <h3 className="text-4xl font-black text-gray-900 tracking-tighter italic">৳{stats.totalRevenue.toLocaleString()}</h3>
+                  <div className="mt-6 flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-[10px] font-black text-emerald-600 uppercase tracking-widest rounded-full w-max">
+                    <ArrowUpRight className="w-3 h-3" /> 12% vs last month
+                  </div>
+               </div>
 
-           <div className="bg-white p-8 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden group hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all">
-              <div className="w-14 h-14 bg-[#FDF9F6] border border-orange-50 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform">
-                <ShoppingBag className="w-6 h-6 text-gray-900" />
-              </div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Active Sales</p>
-              <h3 className="text-4xl font-black text-gray-900 tracking-tighter italic">{stats.totalOrders}</h3>
-              <div className="mt-6 flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-[10px] font-black text-blue-600 uppercase tracking-widest rounded-full w-max">
-                {stats.pendingOrders} Pending
-              </div>
-           </div>
+               <div className="bg-white p-8 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden group hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all">
+                  <div className="w-14 h-14 bg-[#FDF9F6] border border-orange-50 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                    <ShoppingBag className="w-6 h-6 text-gray-900" />
+                  </div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Active Sales</p>
+                  <h3 className="text-4xl font-black text-gray-900 tracking-tighter italic">{stats.totalOrders}</h3>
+                  <div className="mt-6 flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-[10px] font-black text-blue-600 uppercase tracking-widest rounded-full w-max">
+                    {stats.pendingOrders} Pending
+                  </div>
+               </div>
+             </>
+           )}
 
-           <div className="bg-white p-8 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden group hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all">
-              <div className="w-14 h-14 bg-[#FDF9F6] border border-orange-50 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform">
-                <Package className="w-6 h-6 text-gray-900" />
-              </div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Inventory Asset</p>
-              <h3 className="text-4xl font-black text-gray-900 tracking-tighter italic">{stats.activeStock}</h3>
-              <div className="mt-6 flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 text-[10px] font-black text-purple-600 uppercase tracking-widest rounded-full w-max">
-                {stats.totalProducts} Managed SKUs
-              </div>
-           </div>
+           {(isAdmin || isInventoryManager) && (
+             <>
+               <div className="bg-white p-8 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden group hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all">
+                  <div className="w-14 h-14 bg-[#FDF9F6] border border-orange-50 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                    <Package className="w-6 h-6 text-gray-900" />
+                  </div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Inventory Asset</p>
+                  <h3 className="text-4xl font-black text-gray-900 tracking-tighter italic">{stats.activeStock}</h3>
+                  <div className="mt-6 flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 text-[10px] font-black text-purple-600 uppercase tracking-widest rounded-full w-max">
+                    {stats.totalProducts} Managed SKUs
+                  </div>
+               </div>
 
-           <div className="bg-gray-900 p-8 rounded-[3rem] shadow-[0_10px_40px_rgba(0,0,0,0.1)] relative overflow-hidden group hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] transition-all">
-              <div className={`w-14 h-14 ${stats.lowStock > 0 || stats.outOfStock > 0 ? 'bg-red-500/20 border border-red-500/30 animate-pulse' : 'bg-white/10 border border-white/10'} rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform`}>
-                <AlertTriangle className={`w-6 h-6 ${stats.lowStock > 0 || stats.outOfStock > 0 ? 'text-red-400' : 'text-white'}`} />
-              </div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Critical Alerts</p>
-              <h3 className="text-4xl font-black text-white tracking-tighter italic">{stats.lowStock + stats.outOfStock}</h3>
-              <div className={`mt-6 flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full w-max ${stats.lowStock > 0 || stats.outOfStock > 0 ? 'bg-red-500/20 text-red-400' : 'bg-white/10 text-white'}`}>
-                {stats.outOfStock} OOS | {stats.lowStock} Low Stock
-              </div>
-           </div>
+               <div className="bg-gray-900 p-8 rounded-[3rem] shadow-[0_10px_40px_rgba(0,0,0,0.1)] relative overflow-hidden group hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] transition-all">
+                  <div className={`w-14 h-14 ${stats.lowStock > 0 || stats.outOfStock > 0 ? 'bg-red-500/20 border border-red-500/30 animate-pulse' : 'bg-white/10 border border-white/10'} rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform`}>
+                    <AlertTriangle className={`w-6 h-6 ${stats.lowStock > 0 || stats.outOfStock > 0 ? 'text-red-400' : 'text-white'}`} />
+                  </div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Critical Alerts</p>
+                  <h3 className="text-4xl font-black text-white tracking-tighter italic">{stats.lowStock + stats.outOfStock}</h3>
+                  <div className={`mt-6 flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full w-max ${stats.lowStock > 0 || stats.outOfStock > 0 ? 'bg-red-500/20 text-red-400' : 'bg-white/10 text-white'}`}>
+                    {stats.outOfStock} OOS | {stats.lowStock} Low Stock
+                  </div>
+               </div>
+             </>
+           )}
         </div>
 
         {/* Charts & Analytics Section */}
         <div className="grid lg:grid-cols-3 gap-8">
            {/* Revenue Trends */}
-           <div className="lg:col-span-2 space-y-6">
-              <div className="flex items-center justify-between">
+           {isAdmin && (
+             <div className="lg:col-span-2 space-y-6">
+                <div className="flex items-center justify-between">
                 <h4 className="text-xl font-black tracking-tighter text-gray-900 uppercase italic">Revenue Performance</h4>
                 <div className="flex items-center gap-2">
                    <div className="flex items-center gap-2 mr-4">
@@ -222,8 +231,10 @@ const AdminDashboard: React.FC = () => {
                  </ResponsiveContainer>
               </div>
            </div>
+           )}
 
            {/* Category Distribution */}
+           {(isAdmin || isInventoryManager) && (
            <div className="space-y-6">
               <h4 className="text-xl font-black tracking-tighter text-gray-900 uppercase italic">Stock Distribution</h4>
               <div className="bg-white p-8 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] h-[400px] flex flex-col items-center justify-center">
@@ -267,13 +278,15 @@ const AdminDashboard: React.FC = () => {
                  </div>
               </div>
            </div>
+           )}
         </div>
 
         {/* Recent Events Section */}
         <div className="grid lg:grid-cols-2 gap-8">
-           <div className="space-y-6">
-              <h4 className="text-xl font-black tracking-tighter text-gray-900 uppercase italic">Critical Stock Alerts</h4>
-              <div className="bg-white rounded-[3rem] p-8 border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] space-y-4">
+           {(isAdmin || isInventoryManager) && (
+             <div className="space-y-6">
+                <h4 className="text-xl font-black tracking-tighter text-gray-900 uppercase italic">Critical Stock Alerts</h4>
+                <div className="bg-white rounded-[3rem] p-8 border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] space-y-4">
                  {products.filter(p => p.stock < 10).slice(0, 4).map((product, idx) => (
                    <div key={`${product.product_id}-${idx}`} className="flex items-center justify-between p-4 bg-[#FDF9F6] rounded-3xl border border-transparent hover:border-orange-100 transition-all">
                       <div className="flex items-center gap-4">
@@ -303,7 +316,9 @@ const AdminDashboard: React.FC = () => {
                  )}
               </div>
            </div>
+           )}
 
+           {(isAdmin || isCustomerSupport) && (
            <div className="space-y-6">
               <h4 className="text-xl font-black tracking-tighter text-gray-900 uppercase italic">Recent Logistics</h4>
               <div className="bg-white rounded-[3rem] p-8 border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] space-y-4">
@@ -331,9 +346,11 @@ const AdminDashboard: React.FC = () => {
                  ))}
               </div>
            </div>
+           )}
 
            {/* Task 4.7 — Top selling products */}
-           <div className="space-y-6">
+           {isAdmin && (
+             <div className="space-y-6">
               <h4 className="text-xl font-black tracking-tighter text-gray-900 uppercase italic">🏆 Top Selling</h4>
               <div className="bg-white rounded-[3rem] p-8 border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] space-y-6">
                 {topProducts.length === 0 ? (
@@ -352,8 +369,9 @@ const AdminDashboard: React.FC = () => {
                     </div>
                   </div>
                 ))}
-              </div>
-           </div>
+               </div>
+             </div>
+           )}
         </div>
       </div>
     </>

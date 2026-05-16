@@ -1,0 +1,3460 @@
+"""
+✨ `Address_KeyOutput` returns the primary key fields of table type `Address`.
+
+It has the same format as `Address_Key`, but is only used as mutation return value.
+"""
+scalar Address_KeyOutput
+"""
+✨ `Cart_KeyOutput` returns the primary key fields of table type `Cart`.
+
+It has the same format as `Cart_Key`, but is only used as mutation return value.
+"""
+scalar Cart_KeyOutput
+"""
+✨ `CartItem_KeyOutput` returns the primary key fields of table type `CartItem`.
+
+It has the same format as `CartItem_Key`, but is only used as mutation return value.
+"""
+scalar CartItem_KeyOutput
+"""
+✨ `Category_KeyOutput` returns the primary key fields of table type `Category`.
+
+It has the same format as `Category_Key`, but is only used as mutation return value.
+"""
+scalar Category_KeyOutput
+"""
+✨ `Order_KeyOutput` returns the primary key fields of table type `Order`.
+
+It has the same format as `Order_Key`, but is only used as mutation return value.
+"""
+scalar Order_KeyOutput
+"""
+✨ `OrderItem_KeyOutput` returns the primary key fields of table type `OrderItem`.
+
+It has the same format as `OrderItem_Key`, but is only used as mutation return value.
+"""
+scalar OrderItem_KeyOutput
+"""
+✨ `Payment_KeyOutput` returns the primary key fields of table type `Payment`.
+
+It has the same format as `Payment_Key`, but is only used as mutation return value.
+"""
+scalar Payment_KeyOutput
+"""
+✨ `Product_KeyOutput` returns the primary key fields of table type `Product`.
+
+It has the same format as `Product_Key`, but is only used as mutation return value.
+"""
+scalar Product_KeyOutput
+"""
+✨ `Review_KeyOutput` returns the primary key fields of table type `Review`.
+
+It has the same format as `Review_Key`, but is only used as mutation return value.
+"""
+scalar Review_KeyOutput
+"""
+✨ `User_KeyOutput` returns the primary key fields of table type `User`.
+
+It has the same format as `User_Key`, but is only used as mutation return value.
+"""
+scalar User_KeyOutput
+"""
+✨ `Wishlist_KeyOutput` returns the primary key fields of table type `Wishlist`.
+
+It has the same format as `Wishlist_Key`, but is only used as mutation return value.
+"""
+scalar Wishlist_KeyOutput
+"""
+✨ `WishlistItem_KeyOutput` returns the primary key fields of table type `WishlistItem`.
+
+It has the same format as `WishlistItem_Key`, but is only used as mutation return value.
+"""
+scalar WishlistItem_KeyOutput
+"""
+✨ Generated data input type for table 'Address'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Address_Data {
+  """
+  ✨ Generated from Field `Address`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Address`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Address`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Address`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Address`.`user` of type `User!`
+  """
+  user: User_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Address`.`addressType` of type `String!`
+  """
+  addressType: String
+  """
+  ✨ `_expr` server value variant of `addressType` (✨ Generated from Field `Address`.`addressType` of type `String!`)
+  """
+  addressType_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Address`.`city` of type `String!`
+  """
+  city: String
+  """
+  ✨ `_expr` server value variant of `city` (✨ Generated from Field `Address`.`city` of type `String!`)
+  """
+  city_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Address`.`state` of type `String!`
+  """
+  state: String
+  """
+  ✨ `_expr` server value variant of `state` (✨ Generated from Field `Address`.`state` of type `String!`)
+  """
+  state_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Address`.`street` of type `String!`
+  """
+  street: String
+  """
+  ✨ `_expr` server value variant of `street` (✨ Generated from Field `Address`.`street` of type `String!`)
+  """
+  street_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Address`.`zipCode` of type `String!`
+  """
+  zipCode: String
+  """
+  ✨ `_expr` server value variant of `zipCode` (✨ Generated from Field `Address`.`zipCode` of type `String!`)
+  """
+  zipCode_expr: String_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Address'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Address_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Address_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Address_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Address_Filter!]
+  """
+  ✨ Generated from Field `Address`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Address`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Address`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Address`.`addressType` of type `String!`
+  """
+  addressType: String_Filter
+  """
+  ✨ Generated from Field `Address`.`city` of type `String!`
+  """
+  city: String_Filter
+  """
+  ✨ Generated from Field `Address`.`state` of type `String!`
+  """
+  state: String_Filter
+  """
+  ✨ Generated from Field `Address`.`street` of type `String!`
+  """
+  street: String_Filter
+  """
+  ✨ Generated from Field `Address`.`zipCode` of type `String!`
+  """
+  zipCode: String_Filter
+  """
+  ✨ Generated from Field `Address`.`orders_on_billingAddress` of type `[Order!]!`
+  """
+  orders_on_billingAddress: Order_ListFilter
+  """
+  ✨ Generated from Field `Address`.`orders_on_shippingAddress` of type `[Order!]!`
+  """
+  orders_on_shippingAddress: Order_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'Address'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Address_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Address_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Address_Filter
+}
+"""
+✨ Generated having input type for table 'Address'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Address_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Address_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Address_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Address_Having!]
+  """
+  ✨ Generated from Field `Address`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Address`.`addressType_count` of type `Int!`
+  """
+  addressType_count: Int_Filter
+  """
+  ✨ Generated from Field `Address`.`city_count` of type `Int!`
+  """
+  city_count: Int_Filter
+  """
+  ✨ Generated from Field `Address`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Address`.`state_count` of type `Int!`
+  """
+  state_count: Int_Filter
+  """
+  ✨ Generated from Field `Address`.`street_count` of type `Int!`
+  """
+  street_count: Int_Filter
+  """
+  ✨ Generated from Field `Address`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Address`.`zipCode_count` of type `Int!`
+  """
+  zipCode_count: Int_Filter
+}
+"""
+✨ Generated key input type for table 'Address'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Address_Key {
+  """
+  ✨ Generated from Field `Address`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Address`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Address'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Address_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Address_Filter
+}
+"""
+✨ Generated order input type for table 'Address'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Address_Order {
+  """
+  ✨ Generated from Field `Address`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Address`.`addressType` of type `String!`
+  """
+  addressType: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`city` of type `String!`
+  """
+  city: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`state` of type `String!`
+  """
+  state: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`street` of type `String!`
+  """
+  street: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`zipCode` of type `String!`
+  """
+  zipCode: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`addressType_count` of type `Int!`
+  """
+  addressType_count: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`city_count` of type `Int!`
+  """
+  city_count: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`state_count` of type `Int!`
+  """
+  state_count: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`street_count` of type `Int!`
+  """
+  street_count: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Address`.`zipCode_count` of type `Int!`
+  """
+  zipCode_count: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Cart'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Cart_Data {
+  """
+  ✨ Generated from Field `Cart`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Cart`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Cart`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Cart`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Cart`.`user` of type `User!`
+  """
+  user: User_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Cart`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Cart`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `Cart`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Cart`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Cart`.`updatedAt` of type `Timestamp!`
+  """
+  updatedAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `Cart`.`updatedAt` of type `Timestamp!`)
+  """
+  updatedAt_expr: Timestamp_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_time` server value variant of `updatedAt` (✨ Generated from Field `Cart`.`updatedAt` of type `Timestamp!`)
+  """
+  updatedAt_time: Timestamp_Relative @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `Cart`.`updatedAt` of type `Timestamp!`)
+  """
+  updatedAt_update: [Timestamp_Update!] @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Cart'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Cart_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Cart_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Cart_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Cart_Filter!]
+  """
+  ✨ Generated from Field `Cart`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Cart`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Cart`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Cart`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Cart`.`updatedAt` of type `Timestamp!`
+  """
+  updatedAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Cart`.`cartItems_on_cart` of type `[CartItem!]!`
+  """
+  cartItems_on_cart: CartItem_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'Cart'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Cart_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Cart_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Cart_Filter
+}
+"""
+✨ Generated having input type for table 'Cart'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Cart_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Cart_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Cart_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Cart_Having!]
+  """
+  ✨ Generated from Field `Cart`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Cart`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Cart`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Cart`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Cart`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Cart`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Cart`.`updatedAt_min` of type `Timestamp`
+  """
+  updatedAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Cart`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+  """
+  ✨ Generated from Field `Cart`.`updatedAt_max` of type `Timestamp`
+  """
+  updatedAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Cart'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Cart_Key {
+  """
+  ✨ Generated from Field `Cart`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Cart`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Cart'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Cart_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Cart_Filter
+}
+"""
+✨ Generated order input type for table 'Cart'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Cart_Order {
+  """
+  ✨ Generated from Field `Cart`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Cart`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`updatedAt` of type `Timestamp!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`updatedAt_min` of type `Timestamp`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `Cart`.`updatedAt_max` of type `Timestamp`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'CartItem'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input CartItem_Data {
+  """
+  ✨ Generated from Field `CartItem`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `CartItem`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `CartItem`.`cartId` of type `UUID!`
+  """
+  cartId: UUID
+  """
+  ✨ `_expr` server value variant of `cartId` (✨ Generated from Field `CartItem`.`cartId` of type `UUID!`)
+  """
+  cartId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `CartItem`.`productId` of type `UUID!`
+  """
+  productId: UUID
+  """
+  ✨ `_expr` server value variant of `productId` (✨ Generated from Field `CartItem`.`productId` of type `UUID!`)
+  """
+  productId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `CartItem`.`cart` of type `Cart!`
+  """
+  cart: Cart_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `CartItem`.`product` of type `Product!`
+  """
+  product: Product_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `CartItem`.`quantity` of type `Int!`
+  """
+  quantity: Int
+  """
+  ✨ `_expr` server value variant of `quantity` (✨ Generated from Field `CartItem`.`quantity` of type `Int!`)
+  """
+  quantity_expr: Int_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `quantity` (✨ Generated from Field `CartItem`.`quantity` of type `Int!`)
+  """
+  quantity_update: [Int_Update!] @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'CartItem'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input CartItem_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [CartItem_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: CartItem_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [CartItem_Filter!]
+  """
+  ✨ Generated from Field `CartItem`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `CartItem`.`cartId` of type `UUID!`
+  """
+  cartId: UUID_Filter
+  """
+  ✨ Generated from Field `CartItem`.`productId` of type `UUID!`
+  """
+  productId: UUID_Filter
+  """
+  ✨ Generated from Field `CartItem`.`cart` of type `Cart!`
+  """
+  cart: Cart_Filter
+  """
+  ✨ Generated from Field `CartItem`.`product` of type `Product!`
+  """
+  product: Product_Filter
+  """
+  ✨ Generated from Field `CartItem`.`quantity` of type `Int!`
+  """
+  quantity: Int_Filter
+}
+"""
+✨ Generated first-row input type for table 'CartItem'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input CartItem_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [CartItem_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: CartItem_Filter
+}
+"""
+✨ Generated having input type for table 'CartItem'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input CartItem_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [CartItem_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: CartItem_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [CartItem_Having!]
+  """
+  ✨ Generated from Field `CartItem`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `CartItem`.`cartId_count` of type `Int!`
+  """
+  cartId_count: Int_Filter
+  """
+  ✨ Generated from Field `CartItem`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `CartItem`.`productId_count` of type `Int!`
+  """
+  productId_count: Int_Filter
+  """
+  ✨ Generated from Field `CartItem`.`quantity_count` of type `Int!`
+  """
+  quantity_count: Int_Filter
+  """
+  ✨ Generated from Field `CartItem`.`quantity_sum` of type `Int`
+  """
+  quantity_sum: Int_Filter
+  """
+  ✨ Generated from Field `CartItem`.`quantity_avg` of type `Float`
+  """
+  quantity_avg: Float_Filter
+  """
+  ✨ Generated from Field `CartItem`.`quantity_min` of type `Int`
+  """
+  quantity_min: Int_Filter
+  """
+  ✨ Generated from Field `CartItem`.`quantity_max` of type `Int`
+  """
+  quantity_max: Int_Filter
+}
+"""
+✨ Generated key input type for table 'CartItem'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input CartItem_Key {
+  """
+  ✨ Generated from Field `CartItem`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `CartItem`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'CartItem'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input CartItem_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: CartItem_Filter
+}
+"""
+✨ Generated order input type for table 'CartItem'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input CartItem_Order {
+  """
+  ✨ Generated from Field `CartItem`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`cartId` of type `UUID!`
+  """
+  cartId: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`productId` of type `UUID!`
+  """
+  productId: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`cart` of type `Cart!`
+  """
+  cart: Cart_Order
+  """
+  ✨ Generated from Field `CartItem`.`product` of type `Product!`
+  """
+  product: Product_Order
+  """
+  ✨ Generated from Field `CartItem`.`quantity` of type `Int!`
+  """
+  quantity: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`cartId_count` of type `Int!`
+  """
+  cartId_count: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`productId_count` of type `Int!`
+  """
+  productId_count: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`quantity_count` of type `Int!`
+  """
+  quantity_count: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`quantity_sum` of type `Int`
+  """
+  quantity_sum: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`quantity_avg` of type `Float`
+  """
+  quantity_avg: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`quantity_min` of type `Int`
+  """
+  quantity_min: OrderDirection
+  """
+  ✨ Generated from Field `CartItem`.`quantity_max` of type `Int`
+  """
+  quantity_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Category'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Category_Data {
+  """
+  ✨ Generated from Field `Category`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Category`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Category`.`description` of type `String`
+  """
+  description: String
+  """
+  ✨ `_expr` server value variant of `description` (✨ Generated from Field `Category`.`description` of type `String`)
+  """
+  description_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Category`.`name` of type `String!`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `Category`.`name` of type `String!`)
+  """
+  name_expr: String_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Category'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Category_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Category_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Category_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Category_Filter!]
+  """
+  ✨ Generated from Field `Category`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Category`.`description` of type `String`
+  """
+  description: String_Filter
+  """
+  ✨ Generated from Field `Category`.`name` of type `String!`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `Category`.`products_on_category` of type `[Product!]!`
+  """
+  products_on_category: Product_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'Category'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Category_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Category_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Category_Filter
+}
+"""
+✨ Generated having input type for table 'Category'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Category_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Category_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Category_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Category_Having!]
+  """
+  ✨ Generated from Field `Category`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Category`.`description_count` of type `Int!`
+  """
+  description_count: Int_Filter
+  """
+  ✨ Generated from Field `Category`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Category`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+}
+"""
+✨ Generated key input type for table 'Category'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Category_Key {
+  """
+  ✨ Generated from Field `Category`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Category`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Category'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Category_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Category_Filter
+}
+"""
+✨ Generated order input type for table 'Category'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Category_Order {
+  """
+  ✨ Generated from Field `Category`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Category`.`description` of type `String`
+  """
+  description: OrderDirection
+  """
+  ✨ Generated from Field `Category`.`name` of type `String!`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `Category`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Category`.`description_count` of type `Int!`
+  """
+  description_count: OrderDirection
+  """
+  ✨ Generated from Field `Category`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Category`.`name_count` of type `Int!`
+  """
+  name_count: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Order'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Order_Data {
+  """
+  ✨ Generated from Field `Order`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Order`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Order`.`billingAddressId` of type `UUID!`
+  """
+  billingAddressId: UUID
+  """
+  ✨ `_expr` server value variant of `billingAddressId` (✨ Generated from Field `Order`.`billingAddressId` of type `UUID!`)
+  """
+  billingAddressId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Order`.`shippingAddressId` of type `UUID!`
+  """
+  shippingAddressId: UUID
+  """
+  ✨ `_expr` server value variant of `shippingAddressId` (✨ Generated from Field `Order`.`shippingAddressId` of type `UUID!`)
+  """
+  shippingAddressId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Order`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Order`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Order`.`billingAddress` of type `Address!`
+  """
+  billingAddress: Address_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Order`.`shippingAddress` of type `Address!`
+  """
+  shippingAddress: Address_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Order`.`user` of type `User!`
+  """
+  user: User_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Order`.`orderDate` of type `Timestamp!`
+  """
+  orderDate: Timestamp
+  """
+  ✨ `_expr` server value variant of `orderDate` (✨ Generated from Field `Order`.`orderDate` of type `Timestamp!`)
+  """
+  orderDate_expr: Timestamp_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_time` server value variant of `orderDate` (✨ Generated from Field `Order`.`orderDate` of type `Timestamp!`)
+  """
+  orderDate_time: Timestamp_Relative @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `orderDate` (✨ Generated from Field `Order`.`orderDate` of type `Timestamp!`)
+  """
+  orderDate_update: [Timestamp_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Order`.`status` of type `String!`
+  """
+  status: String
+  """
+  ✨ `_expr` server value variant of `status` (✨ Generated from Field `Order`.`status` of type `String!`)
+  """
+  status_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Order`.`totalAmount` of type `Float!`
+  """
+  totalAmount: Float
+  """
+  ✨ `_expr` server value variant of `totalAmount` (✨ Generated from Field `Order`.`totalAmount` of type `Float!`)
+  """
+  totalAmount_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `totalAmount` (✨ Generated from Field `Order`.`totalAmount` of type `Float!`)
+  """
+  totalAmount_update: [Float_Update!] @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Order'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Order_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Order_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Order_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Order_Filter!]
+  """
+  ✨ Generated from Field `Order`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Order`.`billingAddressId` of type `UUID!`
+  """
+  billingAddressId: UUID_Filter
+  """
+  ✨ Generated from Field `Order`.`shippingAddressId` of type `UUID!`
+  """
+  shippingAddressId: UUID_Filter
+  """
+  ✨ Generated from Field `Order`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Order`.`billingAddress` of type `Address!`
+  """
+  billingAddress: Address_Filter
+  """
+  ✨ Generated from Field `Order`.`shippingAddress` of type `Address!`
+  """
+  shippingAddress: Address_Filter
+  """
+  ✨ Generated from Field `Order`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Order`.`orderDate` of type `Timestamp!`
+  """
+  orderDate: Timestamp_Filter
+  """
+  ✨ Generated from Field `Order`.`status` of type `String!`
+  """
+  status: String_Filter
+  """
+  ✨ Generated from Field `Order`.`totalAmount` of type `Float!`
+  """
+  totalAmount: Float_Filter
+  """
+  ✨ Generated from Field `Order`.`orderItems_on_order` of type `[OrderItem!]!`
+  """
+  orderItems_on_order: OrderItem_ListFilter
+  """
+  ✨ Generated from Field `Order`.`payments_on_order` of type `[Payment!]!`
+  """
+  payments_on_order: Payment_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'Order'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Order_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Order_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Order_Filter
+}
+"""
+✨ Generated having input type for table 'Order'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Order_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Order_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Order_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Order_Having!]
+  """
+  ✨ Generated from Field `Order`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Order`.`billingAddressId_count` of type `Int!`
+  """
+  billingAddressId_count: Int_Filter
+  """
+  ✨ Generated from Field `Order`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Order`.`orderDate_count` of type `Int!`
+  """
+  orderDate_count: Int_Filter
+  """
+  ✨ Generated from Field `Order`.`shippingAddressId_count` of type `Int!`
+  """
+  shippingAddressId_count: Int_Filter
+  """
+  ✨ Generated from Field `Order`.`status_count` of type `Int!`
+  """
+  status_count: Int_Filter
+  """
+  ✨ Generated from Field `Order`.`totalAmount_count` of type `Int!`
+  """
+  totalAmount_count: Int_Filter
+  """
+  ✨ Generated from Field `Order`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Order`.`totalAmount_sum` of type `Float`
+  """
+  totalAmount_sum: Float_Filter
+  """
+  ✨ Generated from Field `Order`.`totalAmount_avg` of type `Float`
+  """
+  totalAmount_avg: Float_Filter
+  """
+  ✨ Generated from Field `Order`.`orderDate_min` of type `Timestamp`
+  """
+  orderDate_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Order`.`totalAmount_min` of type `Float`
+  """
+  totalAmount_min: Float_Filter
+  """
+  ✨ Generated from Field `Order`.`orderDate_max` of type `Timestamp`
+  """
+  orderDate_max: Timestamp_Filter
+  """
+  ✨ Generated from Field `Order`.`totalAmount_max` of type `Float`
+  """
+  totalAmount_max: Float_Filter
+}
+"""
+✨ Generated key input type for table 'Order'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Order_Key {
+  """
+  ✨ Generated from Field `Order`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Order`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Order'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Order_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Order_Filter
+}
+"""
+✨ Generated order input type for table 'Order'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Order_Order {
+  """
+  ✨ Generated from Field `Order`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`billingAddressId` of type `UUID!`
+  """
+  billingAddressId: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`shippingAddressId` of type `UUID!`
+  """
+  shippingAddressId: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`billingAddress` of type `Address!`
+  """
+  billingAddress: Address_Order
+  """
+  ✨ Generated from Field `Order`.`shippingAddress` of type `Address!`
+  """
+  shippingAddress: Address_Order
+  """
+  ✨ Generated from Field `Order`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Order`.`orderDate` of type `Timestamp!`
+  """
+  orderDate: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`status` of type `String!`
+  """
+  status: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`totalAmount` of type `Float!`
+  """
+  totalAmount: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`billingAddressId_count` of type `Int!`
+  """
+  billingAddressId_count: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`orderDate_count` of type `Int!`
+  """
+  orderDate_count: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`shippingAddressId_count` of type `Int!`
+  """
+  shippingAddressId_count: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`status_count` of type `Int!`
+  """
+  status_count: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`totalAmount_count` of type `Int!`
+  """
+  totalAmount_count: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`totalAmount_sum` of type `Float`
+  """
+  totalAmount_sum: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`totalAmount_avg` of type `Float`
+  """
+  totalAmount_avg: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`orderDate_min` of type `Timestamp`
+  """
+  orderDate_min: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`totalAmount_min` of type `Float`
+  """
+  totalAmount_min: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`orderDate_max` of type `Timestamp`
+  """
+  orderDate_max: OrderDirection
+  """
+  ✨ Generated from Field `Order`.`totalAmount_max` of type `Float`
+  """
+  totalAmount_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'OrderItem'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input OrderItem_Data {
+  """
+  ✨ Generated from Field `OrderItem`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `OrderItem`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `OrderItem`.`orderId` of type `UUID!`
+  """
+  orderId: UUID
+  """
+  ✨ `_expr` server value variant of `orderId` (✨ Generated from Field `OrderItem`.`orderId` of type `UUID!`)
+  """
+  orderId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `OrderItem`.`productId` of type `UUID!`
+  """
+  productId: UUID
+  """
+  ✨ `_expr` server value variant of `productId` (✨ Generated from Field `OrderItem`.`productId` of type `UUID!`)
+  """
+  productId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `OrderItem`.`order` of type `Order!`
+  """
+  order: Order_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `OrderItem`.`product` of type `Product!`
+  """
+  product: Product_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder` of type `Float!`
+  """
+  priceAtOrder: Float
+  """
+  ✨ `_expr` server value variant of `priceAtOrder` (✨ Generated from Field `OrderItem`.`priceAtOrder` of type `Float!`)
+  """
+  priceAtOrder_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `priceAtOrder` (✨ Generated from Field `OrderItem`.`priceAtOrder` of type `Float!`)
+  """
+  priceAtOrder_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `OrderItem`.`quantity` of type `Int!`
+  """
+  quantity: Int
+  """
+  ✨ `_expr` server value variant of `quantity` (✨ Generated from Field `OrderItem`.`quantity` of type `Int!`)
+  """
+  quantity_expr: Int_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `quantity` (✨ Generated from Field `OrderItem`.`quantity` of type `Int!`)
+  """
+  quantity_update: [Int_Update!] @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'OrderItem'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input OrderItem_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [OrderItem_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: OrderItem_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [OrderItem_Filter!]
+  """
+  ✨ Generated from Field `OrderItem`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`orderId` of type `UUID!`
+  """
+  orderId: UUID_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`productId` of type `UUID!`
+  """
+  productId: UUID_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`order` of type `Order!`
+  """
+  order: Order_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`product` of type `Product!`
+  """
+  product: Product_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder` of type `Float!`
+  """
+  priceAtOrder: Float_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`quantity` of type `Int!`
+  """
+  quantity: Int_Filter
+}
+"""
+✨ Generated first-row input type for table 'OrderItem'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input OrderItem_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [OrderItem_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: OrderItem_Filter
+}
+"""
+✨ Generated having input type for table 'OrderItem'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input OrderItem_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [OrderItem_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: OrderItem_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [OrderItem_Having!]
+  """
+  ✨ Generated from Field `OrderItem`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`orderId_count` of type `Int!`
+  """
+  orderId_count: Int_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder_count` of type `Int!`
+  """
+  priceAtOrder_count: Int_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`productId_count` of type `Int!`
+  """
+  productId_count: Int_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`quantity_count` of type `Int!`
+  """
+  quantity_count: Int_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder_sum` of type `Float`
+  """
+  priceAtOrder_sum: Float_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`quantity_sum` of type `Int`
+  """
+  quantity_sum: Int_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder_avg` of type `Float`
+  """
+  priceAtOrder_avg: Float_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`quantity_avg` of type `Float`
+  """
+  quantity_avg: Float_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder_min` of type `Float`
+  """
+  priceAtOrder_min: Float_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`quantity_min` of type `Int`
+  """
+  quantity_min: Int_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder_max` of type `Float`
+  """
+  priceAtOrder_max: Float_Filter
+  """
+  ✨ Generated from Field `OrderItem`.`quantity_max` of type `Int`
+  """
+  quantity_max: Int_Filter
+}
+"""
+✨ Generated key input type for table 'OrderItem'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input OrderItem_Key {
+  """
+  ✨ Generated from Field `OrderItem`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `OrderItem`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'OrderItem'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input OrderItem_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: OrderItem_Filter
+}
+"""
+✨ Generated order input type for table 'OrderItem'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input OrderItem_Order {
+  """
+  ✨ Generated from Field `OrderItem`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`orderId` of type `UUID!`
+  """
+  orderId: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`productId` of type `UUID!`
+  """
+  productId: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`order` of type `Order!`
+  """
+  order: Order_Order
+  """
+  ✨ Generated from Field `OrderItem`.`product` of type `Product!`
+  """
+  product: Product_Order
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder` of type `Float!`
+  """
+  priceAtOrder: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`quantity` of type `Int!`
+  """
+  quantity: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`orderId_count` of type `Int!`
+  """
+  orderId_count: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder_count` of type `Int!`
+  """
+  priceAtOrder_count: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`productId_count` of type `Int!`
+  """
+  productId_count: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`quantity_count` of type `Int!`
+  """
+  quantity_count: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder_sum` of type `Float`
+  """
+  priceAtOrder_sum: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`quantity_sum` of type `Int`
+  """
+  quantity_sum: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder_avg` of type `Float`
+  """
+  priceAtOrder_avg: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`quantity_avg` of type `Float`
+  """
+  quantity_avg: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder_min` of type `Float`
+  """
+  priceAtOrder_min: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`quantity_min` of type `Int`
+  """
+  quantity_min: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`priceAtOrder_max` of type `Float`
+  """
+  priceAtOrder_max: OrderDirection
+  """
+  ✨ Generated from Field `OrderItem`.`quantity_max` of type `Int`
+  """
+  quantity_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Payment'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Payment_Data {
+  """
+  ✨ Generated from Field `Payment`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Payment`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Payment`.`orderId` of type `UUID!`
+  """
+  orderId: UUID
+  """
+  ✨ `_expr` server value variant of `orderId` (✨ Generated from Field `Payment`.`orderId` of type `UUID!`)
+  """
+  orderId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Payment`.`order` of type `Order!`
+  """
+  order: Order_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Payment`.`amount` of type `Float!`
+  """
+  amount: Float
+  """
+  ✨ `_expr` server value variant of `amount` (✨ Generated from Field `Payment`.`amount` of type `Float!`)
+  """
+  amount_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `amount` (✨ Generated from Field `Payment`.`amount` of type `Float!`)
+  """
+  amount_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Payment`.`paymentDate` of type `Timestamp!`
+  """
+  paymentDate: Timestamp
+  """
+  ✨ `_expr` server value variant of `paymentDate` (✨ Generated from Field `Payment`.`paymentDate` of type `Timestamp!`)
+  """
+  paymentDate_expr: Timestamp_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_time` server value variant of `paymentDate` (✨ Generated from Field `Payment`.`paymentDate` of type `Timestamp!`)
+  """
+  paymentDate_time: Timestamp_Relative @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `paymentDate` (✨ Generated from Field `Payment`.`paymentDate` of type `Timestamp!`)
+  """
+  paymentDate_update: [Timestamp_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Payment`.`paymentMethod` of type `String!`
+  """
+  paymentMethod: String
+  """
+  ✨ `_expr` server value variant of `paymentMethod` (✨ Generated from Field `Payment`.`paymentMethod` of type `String!`)
+  """
+  paymentMethod_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Payment`.`status` of type `String!`
+  """
+  status: String
+  """
+  ✨ `_expr` server value variant of `status` (✨ Generated from Field `Payment`.`status` of type `String!`)
+  """
+  status_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Payment`.`transactionId` of type `String!`
+  """
+  transactionId: String
+  """
+  ✨ `_expr` server value variant of `transactionId` (✨ Generated from Field `Payment`.`transactionId` of type `String!`)
+  """
+  transactionId_expr: String_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Payment'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Payment_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Payment_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Payment_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Payment_Filter!]
+  """
+  ✨ Generated from Field `Payment`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Payment`.`orderId` of type `UUID!`
+  """
+  orderId: UUID_Filter
+  """
+  ✨ Generated from Field `Payment`.`order` of type `Order!`
+  """
+  order: Order_Filter
+  """
+  ✨ Generated from Field `Payment`.`amount` of type `Float!`
+  """
+  amount: Float_Filter
+  """
+  ✨ Generated from Field `Payment`.`paymentDate` of type `Timestamp!`
+  """
+  paymentDate: Timestamp_Filter
+  """
+  ✨ Generated from Field `Payment`.`paymentMethod` of type `String!`
+  """
+  paymentMethod: String_Filter
+  """
+  ✨ Generated from Field `Payment`.`status` of type `String!`
+  """
+  status: String_Filter
+  """
+  ✨ Generated from Field `Payment`.`transactionId` of type `String!`
+  """
+  transactionId: String_Filter
+}
+"""
+✨ Generated first-row input type for table 'Payment'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Payment_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Payment_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Payment_Filter
+}
+"""
+✨ Generated having input type for table 'Payment'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Payment_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Payment_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Payment_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Payment_Having!]
+  """
+  ✨ Generated from Field `Payment`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Payment`.`amount_count` of type `Int!`
+  """
+  amount_count: Int_Filter
+  """
+  ✨ Generated from Field `Payment`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Payment`.`orderId_count` of type `Int!`
+  """
+  orderId_count: Int_Filter
+  """
+  ✨ Generated from Field `Payment`.`paymentDate_count` of type `Int!`
+  """
+  paymentDate_count: Int_Filter
+  """
+  ✨ Generated from Field `Payment`.`paymentMethod_count` of type `Int!`
+  """
+  paymentMethod_count: Int_Filter
+  """
+  ✨ Generated from Field `Payment`.`status_count` of type `Int!`
+  """
+  status_count: Int_Filter
+  """
+  ✨ Generated from Field `Payment`.`transactionId_count` of type `Int!`
+  """
+  transactionId_count: Int_Filter
+  """
+  ✨ Generated from Field `Payment`.`amount_sum` of type `Float`
+  """
+  amount_sum: Float_Filter
+  """
+  ✨ Generated from Field `Payment`.`amount_avg` of type `Float`
+  """
+  amount_avg: Float_Filter
+  """
+  ✨ Generated from Field `Payment`.`amount_min` of type `Float`
+  """
+  amount_min: Float_Filter
+  """
+  ✨ Generated from Field `Payment`.`paymentDate_min` of type `Timestamp`
+  """
+  paymentDate_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Payment`.`amount_max` of type `Float`
+  """
+  amount_max: Float_Filter
+  """
+  ✨ Generated from Field `Payment`.`paymentDate_max` of type `Timestamp`
+  """
+  paymentDate_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Payment'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Payment_Key {
+  """
+  ✨ Generated from Field `Payment`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Payment`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Payment'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Payment_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Payment_Filter
+}
+"""
+✨ Generated order input type for table 'Payment'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Payment_Order {
+  """
+  ✨ Generated from Field `Payment`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`orderId` of type `UUID!`
+  """
+  orderId: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`order` of type `Order!`
+  """
+  order: Order_Order
+  """
+  ✨ Generated from Field `Payment`.`amount` of type `Float!`
+  """
+  amount: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`paymentDate` of type `Timestamp!`
+  """
+  paymentDate: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`paymentMethod` of type `String!`
+  """
+  paymentMethod: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`status` of type `String!`
+  """
+  status: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`transactionId` of type `String!`
+  """
+  transactionId: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`amount_count` of type `Int!`
+  """
+  amount_count: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`orderId_count` of type `Int!`
+  """
+  orderId_count: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`paymentDate_count` of type `Int!`
+  """
+  paymentDate_count: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`paymentMethod_count` of type `Int!`
+  """
+  paymentMethod_count: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`status_count` of type `Int!`
+  """
+  status_count: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`transactionId_count` of type `Int!`
+  """
+  transactionId_count: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`amount_sum` of type `Float`
+  """
+  amount_sum: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`amount_avg` of type `Float`
+  """
+  amount_avg: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`amount_min` of type `Float`
+  """
+  amount_min: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`paymentDate_min` of type `Timestamp`
+  """
+  paymentDate_min: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`amount_max` of type `Float`
+  """
+  amount_max: OrderDirection
+  """
+  ✨ Generated from Field `Payment`.`paymentDate_max` of type `Timestamp`
+  """
+  paymentDate_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Product'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Product_Data {
+  """
+  ✨ Generated from Field `Product`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Product`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Product`.`categoryId` of type `UUID`
+  """
+  categoryId: UUID
+  """
+  ✨ `_expr` server value variant of `categoryId` (✨ Generated from Field `Product`.`categoryId` of type `UUID`)
+  """
+  categoryId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Product`.`category` of type `Category`
+  """
+  category: Category_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Product`.`barcode` of type `String!`
+  """
+  barcode: String
+  """
+  ✨ `_expr` server value variant of `barcode` (✨ Generated from Field `Product`.`barcode` of type `String!`)
+  """
+  barcode_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Product`.`description` of type `String`
+  """
+  description: String
+  """
+  ✨ `_expr` server value variant of `description` (✨ Generated from Field `Product`.`description` of type `String`)
+  """
+  description_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Product`.`imageUrl` of type `String`
+  """
+  imageUrl: String
+  """
+  ✨ `_expr` server value variant of `imageUrl` (✨ Generated from Field `Product`.`imageUrl` of type `String`)
+  """
+  imageUrl_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Product`.`name` of type `String!`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `Product`.`name` of type `String!`)
+  """
+  name_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Product`.`price` of type `Float!`
+  """
+  price: Float
+  """
+  ✨ `_expr` server value variant of `price` (✨ Generated from Field `Product`.`price` of type `Float!`)
+  """
+  price_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `price` (✨ Generated from Field `Product`.`price` of type `Float!`)
+  """
+  price_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Product`.`stockQuantity` of type `Int!`
+  """
+  stockQuantity: Int
+  """
+  ✨ `_expr` server value variant of `stockQuantity` (✨ Generated from Field `Product`.`stockQuantity` of type `Int!`)
+  """
+  stockQuantity_expr: Int_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `stockQuantity` (✨ Generated from Field `Product`.`stockQuantity` of type `Int!`)
+  """
+  stockQuantity_update: [Int_Update!] @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Product'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Product_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Product_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Product_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Product_Filter!]
+  """
+  ✨ Generated from Field `Product`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Product`.`categoryId` of type `UUID`
+  """
+  categoryId: UUID_Filter
+  """
+  ✨ Generated from Field `Product`.`category` of type `Category`
+  """
+  category: Category_Filter
+  """
+  ✨ Generated from Field `Product`.`barcode` of type `String!`
+  """
+  barcode: String_Filter
+  """
+  ✨ Generated from Field `Product`.`description` of type `String`
+  """
+  description: String_Filter
+  """
+  ✨ Generated from Field `Product`.`imageUrl` of type `String`
+  """
+  imageUrl: String_Filter
+  """
+  ✨ Generated from Field `Product`.`name` of type `String!`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `Product`.`price` of type `Float!`
+  """
+  price: Float_Filter
+  """
+  ✨ Generated from Field `Product`.`stockQuantity` of type `Int!`
+  """
+  stockQuantity: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`cartItems_on_product` of type `[CartItem!]!`
+  """
+  cartItems_on_product: CartItem_ListFilter
+  """
+  ✨ Generated from Field `Product`.`orderItems_on_product` of type `[OrderItem!]!`
+  """
+  orderItems_on_product: OrderItem_ListFilter
+  """
+  ✨ Generated from Field `Product`.`reviews_on_product` of type `[Review!]!`
+  """
+  reviews_on_product: Review_ListFilter
+  """
+  ✨ Generated from Field `Product`.`wishlistItems_on_product` of type `[WishlistItem!]!`
+  """
+  wishlistItems_on_product: WishlistItem_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'Product'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Product_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Product_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Product_Filter
+}
+"""
+✨ Generated having input type for table 'Product'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Product_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Product_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Product_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Product_Having!]
+  """
+  ✨ Generated from Field `Product`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`barcode_count` of type `Int!`
+  """
+  barcode_count: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`categoryId_count` of type `Int!`
+  """
+  categoryId_count: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`description_count` of type `Int!`
+  """
+  description_count: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`imageUrl_count` of type `Int!`
+  """
+  imageUrl_count: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`price_count` of type `Int!`
+  """
+  price_count: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`stockQuantity_count` of type `Int!`
+  """
+  stockQuantity_count: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`price_sum` of type `Float`
+  """
+  price_sum: Float_Filter
+  """
+  ✨ Generated from Field `Product`.`stockQuantity_sum` of type `Int`
+  """
+  stockQuantity_sum: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`price_avg` of type `Float`
+  """
+  price_avg: Float_Filter
+  """
+  ✨ Generated from Field `Product`.`stockQuantity_avg` of type `Float`
+  """
+  stockQuantity_avg: Float_Filter
+  """
+  ✨ Generated from Field `Product`.`price_min` of type `Float`
+  """
+  price_min: Float_Filter
+  """
+  ✨ Generated from Field `Product`.`stockQuantity_min` of type `Int`
+  """
+  stockQuantity_min: Int_Filter
+  """
+  ✨ Generated from Field `Product`.`price_max` of type `Float`
+  """
+  price_max: Float_Filter
+  """
+  ✨ Generated from Field `Product`.`stockQuantity_max` of type `Int`
+  """
+  stockQuantity_max: Int_Filter
+}
+"""
+✨ Generated key input type for table 'Product'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Product_Key {
+  """
+  ✨ Generated from Field `Product`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Product`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Product'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Product_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Product_Filter
+}
+"""
+✨ Generated order input type for table 'Product'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Product_Order {
+  """
+  ✨ Generated from Field `Product`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`categoryId` of type `UUID`
+  """
+  categoryId: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`category` of type `Category`
+  """
+  category: Category_Order
+  """
+  ✨ Generated from Field `Product`.`barcode` of type `String!`
+  """
+  barcode: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`description` of type `String`
+  """
+  description: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`imageUrl` of type `String`
+  """
+  imageUrl: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`name` of type `String!`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`price` of type `Float!`
+  """
+  price: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`stockQuantity` of type `Int!`
+  """
+  stockQuantity: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`barcode_count` of type `Int!`
+  """
+  barcode_count: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`categoryId_count` of type `Int!`
+  """
+  categoryId_count: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`description_count` of type `Int!`
+  """
+  description_count: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`imageUrl_count` of type `Int!`
+  """
+  imageUrl_count: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`name_count` of type `Int!`
+  """
+  name_count: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`price_count` of type `Int!`
+  """
+  price_count: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`stockQuantity_count` of type `Int!`
+  """
+  stockQuantity_count: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`price_sum` of type `Float`
+  """
+  price_sum: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`stockQuantity_sum` of type `Int`
+  """
+  stockQuantity_sum: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`price_avg` of type `Float`
+  """
+  price_avg: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`stockQuantity_avg` of type `Float`
+  """
+  stockQuantity_avg: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`price_min` of type `Float`
+  """
+  price_min: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`stockQuantity_min` of type `Int`
+  """
+  stockQuantity_min: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`price_max` of type `Float`
+  """
+  price_max: OrderDirection
+  """
+  ✨ Generated from Field `Product`.`stockQuantity_max` of type `Int`
+  """
+  stockQuantity_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Review'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Review_Data {
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Review`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Review`.`productId` of type `UUID!`
+  """
+  productId: UUID
+  """
+  ✨ `_expr` server value variant of `productId` (✨ Generated from Field `Review`.`productId` of type `UUID!`)
+  """
+  productId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Review`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Review`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Review`.`product` of type `Product!`
+  """
+  product: Product_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Review`.`user` of type `User!`
+  """
+  user: User_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Review`.`comment` of type `String`
+  """
+  comment: String
+  """
+  ✨ `_expr` server value variant of `comment` (✨ Generated from Field `Review`.`comment` of type `String`)
+  """
+  comment_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Review`.`rating` of type `Int!`
+  """
+  rating: Int
+  """
+  ✨ `_expr` server value variant of `rating` (✨ Generated from Field `Review`.`rating` of type `Int!`)
+  """
+  rating_expr: Int_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `rating` (✨ Generated from Field `Review`.`rating` of type `Int!`)
+  """
+  rating_update: [Int_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Review`.`reviewDate` of type `Timestamp!`
+  """
+  reviewDate: Timestamp
+  """
+  ✨ `_expr` server value variant of `reviewDate` (✨ Generated from Field `Review`.`reviewDate` of type `Timestamp!`)
+  """
+  reviewDate_expr: Timestamp_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_time` server value variant of `reviewDate` (✨ Generated from Field `Review`.`reviewDate` of type `Timestamp!`)
+  """
+  reviewDate_time: Timestamp_Relative @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `reviewDate` (✨ Generated from Field `Review`.`reviewDate` of type `Timestamp!`)
+  """
+  reviewDate_update: [Timestamp_Update!] @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Review'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Review_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Review_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Review_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Review_Filter!]
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Review`.`productId` of type `UUID!`
+  """
+  productId: UUID_Filter
+  """
+  ✨ Generated from Field `Review`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Review`.`product` of type `Product!`
+  """
+  product: Product_Filter
+  """
+  ✨ Generated from Field `Review`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Review`.`comment` of type `String`
+  """
+  comment: String_Filter
+  """
+  ✨ Generated from Field `Review`.`rating` of type `Int!`
+  """
+  rating: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`reviewDate` of type `Timestamp!`
+  """
+  reviewDate: Timestamp_Filter
+}
+"""
+✨ Generated first-row input type for table 'Review'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Review_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Review_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Review_Filter
+}
+"""
+✨ Generated having input type for table 'Review'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Review_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Review_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Review_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Review_Having!]
+  """
+  ✨ Generated from Field `Review`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`comment_count` of type `Int!`
+  """
+  comment_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`productId_count` of type `Int!`
+  """
+  productId_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_count` of type `Int!`
+  """
+  rating_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`reviewDate_count` of type `Int!`
+  """
+  reviewDate_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_sum` of type `Int`
+  """
+  rating_sum: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_avg` of type `Float`
+  """
+  rating_avg: Float_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_min` of type `Int`
+  """
+  rating_min: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`reviewDate_min` of type `Timestamp`
+  """
+  reviewDate_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_max` of type `Int`
+  """
+  rating_max: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`reviewDate_max` of type `Timestamp`
+  """
+  reviewDate_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Review'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Review_Key {
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Review`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Review'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Review_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Review_Filter
+}
+"""
+✨ Generated order input type for table 'Review'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Review_Order {
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`productId` of type `UUID!`
+  """
+  productId: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`product` of type `Product!`
+  """
+  product: Product_Order
+  """
+  ✨ Generated from Field `Review`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Review`.`comment` of type `String`
+  """
+  comment: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating` of type `Int!`
+  """
+  rating: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`reviewDate` of type `Timestamp!`
+  """
+  reviewDate: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`comment_count` of type `Int!`
+  """
+  comment_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`productId_count` of type `Int!`
+  """
+  productId_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating_count` of type `Int!`
+  """
+  rating_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`reviewDate_count` of type `Int!`
+  """
+  reviewDate_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating_sum` of type `Int`
+  """
+  rating_sum: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating_avg` of type `Float`
+  """
+  rating_avg: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating_min` of type `Int`
+  """
+  rating_min: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`reviewDate_min` of type `Timestamp`
+  """
+  reviewDate_min: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating_max` of type `Int`
+  """
+  rating_max: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`reviewDate_max` of type `Timestamp`
+  """
+  reviewDate_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'User'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input User_Data {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`email` of type `String!`
+  """
+  email: String
+  """
+  ✨ `_expr` server value variant of `email` (✨ Generated from Field `User`.`email` of type `String!`)
+  """
+  email_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`firstName` of type `String`
+  """
+  firstName: String
+  """
+  ✨ `_expr` server value variant of `firstName` (✨ Generated from Field `User`.`firstName` of type `String`)
+  """
+  firstName_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`lastName` of type `String`
+  """
+  lastName: String
+  """
+  ✨ `_expr` server value variant of `lastName` (✨ Generated from Field `User`.`lastName` of type `String`)
+  """
+  lastName_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`marketingOptIn` of type `Boolean!`
+  """
+  marketingOptIn: Boolean
+  """
+  ✨ `_expr` server value variant of `marketingOptIn` (✨ Generated from Field `User`.`marketingOptIn` of type `Boolean!`)
+  """
+  marketingOptIn_expr: Boolean_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'User'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input User_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [User_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: User_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [User_Filter!]
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `User`.`email` of type `String!`
+  """
+  email: String_Filter
+  """
+  ✨ Generated from Field `User`.`firstName` of type `String`
+  """
+  firstName: String_Filter
+  """
+  ✨ Generated from Field `User`.`lastName` of type `String`
+  """
+  lastName: String_Filter
+  """
+  ✨ Generated from Field `User`.`marketingOptIn` of type `Boolean!`
+  """
+  marketingOptIn: Boolean_Filter
+  """
+  ✨ Generated from Field `User`.`addresses_on_user` of type `[Address!]!`
+  """
+  addresses_on_user: Address_ListFilter
+  """
+  ✨ Generated from Field `User`.`carts_on_user` of type `[Cart!]!`
+  """
+  carts_on_user: Cart_ListFilter
+  """
+  ✨ Generated from Field `User`.`orders_on_user` of type `[Order!]!`
+  """
+  orders_on_user: Order_ListFilter
+  """
+  ✨ Generated from Field `User`.`reviews_on_user` of type `[Review!]!`
+  """
+  reviews_on_user: Review_ListFilter
+  """
+  ✨ Generated from Field `User`.`wishlists_on_user` of type `[Wishlist!]!`
+  """
+  wishlists_on_user: Wishlist_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'User'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input User_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [User_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: User_Filter
+}
+"""
+✨ Generated having input type for table 'User'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input User_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [User_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: User_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [User_Having!]
+  """
+  ✨ Generated from Field `User`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`email_count` of type `Int!`
+  """
+  email_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`firstName_count` of type `Int!`
+  """
+  firstName_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`lastName_count` of type `Int!`
+  """
+  lastName_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`marketingOptIn_count` of type `Int!`
+  """
+  marketingOptIn_count: Int_Filter
+}
+"""
+✨ Generated key input type for table 'User'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input User_Key {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'User'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input User_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: User_Filter
+}
+"""
+✨ Generated order input type for table 'User'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input User_Order {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `User`.`email` of type `String!`
+  """
+  email: OrderDirection
+  """
+  ✨ Generated from Field `User`.`firstName` of type `String`
+  """
+  firstName: OrderDirection
+  """
+  ✨ Generated from Field `User`.`lastName` of type `String`
+  """
+  lastName: OrderDirection
+  """
+  ✨ Generated from Field `User`.`marketingOptIn` of type `Boolean!`
+  """
+  marketingOptIn: OrderDirection
+  """
+  ✨ Generated from Field `User`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`email_count` of type `Int!`
+  """
+  email_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`firstName_count` of type `Int!`
+  """
+  firstName_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`lastName_count` of type `Int!`
+  """
+  lastName_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`marketingOptIn_count` of type `Int!`
+  """
+  marketingOptIn_count: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Wishlist'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Wishlist_Data {
+  """
+  ✨ Generated from Field `Wishlist`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Wishlist`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Wishlist`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Wishlist`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Wishlist`.`user` of type `User!`
+  """
+  user: User_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Wishlist`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Wishlist`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `Wishlist`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Wishlist`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Wishlist`.`name` of type `String`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `Wishlist`.`name` of type `String`)
+  """
+  name_expr: String_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Wishlist'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Wishlist_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Wishlist_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Wishlist_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Wishlist_Filter!]
+  """
+  ✨ Generated from Field `Wishlist`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`name` of type `String`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`wishlistItems_on_wishlist` of type `[WishlistItem!]!`
+  """
+  wishlistItems_on_wishlist: WishlistItem_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'Wishlist'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Wishlist_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Wishlist_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Wishlist_Filter
+}
+"""
+✨ Generated having input type for table 'Wishlist'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Wishlist_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Wishlist_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Wishlist_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Wishlist_Having!]
+  """
+  ✨ Generated from Field `Wishlist`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Wishlist`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Wishlist'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Wishlist_Key {
+  """
+  ✨ Generated from Field `Wishlist`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Wishlist`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Wishlist'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Wishlist_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Wishlist_Filter
+}
+"""
+✨ Generated order input type for table 'Wishlist'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Wishlist_Order {
+  """
+  ✨ Generated from Field `Wishlist`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Wishlist`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Wishlist`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Wishlist`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Wishlist`.`name` of type `String`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `Wishlist`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Wishlist`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Wishlist`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Wishlist`.`name_count` of type `Int!`
+  """
+  name_count: OrderDirection
+  """
+  ✨ Generated from Field `Wishlist`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Wishlist`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Wishlist`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'WishlistItem'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input WishlistItem_Data {
+  """
+  ✨ Generated from Field `WishlistItem`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `WishlistItem`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `WishlistItem`.`productId` of type `UUID!`
+  """
+  productId: UUID
+  """
+  ✨ `_expr` server value variant of `productId` (✨ Generated from Field `WishlistItem`.`productId` of type `UUID!`)
+  """
+  productId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `WishlistItem`.`wishlistId` of type `UUID!`
+  """
+  wishlistId: UUID
+  """
+  ✨ `_expr` server value variant of `wishlistId` (✨ Generated from Field `WishlistItem`.`wishlistId` of type `UUID!`)
+  """
+  wishlistId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `WishlistItem`.`product` of type `Product!`
+  """
+  product: Product_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `WishlistItem`.`wishlist` of type `Wishlist!`
+  """
+  wishlist: Wishlist_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `WishlistItem`.`addedDate` of type `Timestamp!`
+  """
+  addedDate: Timestamp
+  """
+  ✨ `_expr` server value variant of `addedDate` (✨ Generated from Field `WishlistItem`.`addedDate` of type `Timestamp!`)
+  """
+  addedDate_expr: Timestamp_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_time` server value variant of `addedDate` (✨ Generated from Field `WishlistItem`.`addedDate` of type `Timestamp!`)
+  """
+  addedDate_time: Timestamp_Relative @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `addedDate` (✨ Generated from Field `WishlistItem`.`addedDate` of type `Timestamp!`)
+  """
+  addedDate_update: [Timestamp_Update!] @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'WishlistItem'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input WishlistItem_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [WishlistItem_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: WishlistItem_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [WishlistItem_Filter!]
+  """
+  ✨ Generated from Field `WishlistItem`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`productId` of type `UUID!`
+  """
+  productId: UUID_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`wishlistId` of type `UUID!`
+  """
+  wishlistId: UUID_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`product` of type `Product!`
+  """
+  product: Product_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`wishlist` of type `Wishlist!`
+  """
+  wishlist: Wishlist_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`addedDate` of type `Timestamp!`
+  """
+  addedDate: Timestamp_Filter
+}
+"""
+✨ Generated first-row input type for table 'WishlistItem'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input WishlistItem_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [WishlistItem_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: WishlistItem_Filter
+}
+"""
+✨ Generated having input type for table 'WishlistItem'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input WishlistItem_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [WishlistItem_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: WishlistItem_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [WishlistItem_Having!]
+  """
+  ✨ Generated from Field `WishlistItem`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`addedDate_count` of type `Int!`
+  """
+  addedDate_count: Int_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`productId_count` of type `Int!`
+  """
+  productId_count: Int_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`wishlistId_count` of type `Int!`
+  """
+  wishlistId_count: Int_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`addedDate_min` of type `Timestamp`
+  """
+  addedDate_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `WishlistItem`.`addedDate_max` of type `Timestamp`
+  """
+  addedDate_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'WishlistItem'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input WishlistItem_Key {
+  """
+  ✨ Generated from Field `WishlistItem`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `WishlistItem`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'WishlistItem'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input WishlistItem_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: WishlistItem_Filter
+}
+"""
+✨ Generated order input type for table 'WishlistItem'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input WishlistItem_Order {
+  """
+  ✨ Generated from Field `WishlistItem`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `WishlistItem`.`productId` of type `UUID!`
+  """
+  productId: OrderDirection
+  """
+  ✨ Generated from Field `WishlistItem`.`wishlistId` of type `UUID!`
+  """
+  wishlistId: OrderDirection
+  """
+  ✨ Generated from Field `WishlistItem`.`product` of type `Product!`
+  """
+  product: Product_Order
+  """
+  ✨ Generated from Field `WishlistItem`.`wishlist` of type `Wishlist!`
+  """
+  wishlist: Wishlist_Order
+  """
+  ✨ Generated from Field `WishlistItem`.`addedDate` of type `Timestamp!`
+  """
+  addedDate: OrderDirection
+  """
+  ✨ Generated from Field `WishlistItem`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `WishlistItem`.`addedDate_count` of type `Int!`
+  """
+  addedDate_count: OrderDirection
+  """
+  ✨ Generated from Field `WishlistItem`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `WishlistItem`.`productId_count` of type `Int!`
+  """
+  productId_count: OrderDirection
+  """
+  ✨ Generated from Field `WishlistItem`.`wishlistId_count` of type `Int!`
+  """
+  wishlistId_count: OrderDirection
+  """
+  ✨ Generated from Field `WishlistItem`.`addedDate_min` of type `Timestamp`
+  """
+  addedDate_min: OrderDirection
+  """
+  ✨ Generated from Field `WishlistItem`.`addedDate_max` of type `Timestamp`
+  """
+  addedDate_max: OrderDirection
+}

@@ -1,0 +1,87 @@
+type User @table {
+  email: String!
+  firstName: String
+  lastName: String
+  marketingOptIn: Boolean!
+}
+
+type Address @table {
+  user: User!
+  street: String!
+  city: String!
+  state: String!
+  zipCode: String!
+  addressType: String!
+}
+
+type Category @table {
+  name: String!
+  description: String
+}
+
+type Product @table {
+  name: String!
+  description: String
+  price: Float!
+  barcode: String!
+  category: Category
+  imageUrl: String
+  stockQuantity: Int!
+}
+
+type Cart @table {
+  user: User!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+}
+
+type CartItem @table {
+  cart: Cart!
+  product: Product!
+  quantity: Int!
+}
+
+type Order @table {
+  user: User!
+  orderDate: Timestamp!
+  totalAmount: Float!
+  shippingAddress: Address!
+  billingAddress: Address!
+  status: String!
+}
+
+type OrderItem @table {
+  order: Order!
+  product: Product!
+  quantity: Int!
+  priceAtOrder: Float!
+}
+
+type Review @table {
+  product: Product!
+  user: User!
+  rating: Int!
+  comment: String
+  reviewDate: Timestamp!
+}
+
+type Payment @table {
+  order: Order!
+  paymentDate: Timestamp!
+  amount: Float!
+  paymentMethod: String!
+  transactionId: String!
+  status: String!
+}
+
+type Wishlist @table {
+  user: User!
+  name: String
+  createdAt: Timestamp!
+}
+
+type WishlistItem @table {
+  wishlist: Wishlist!
+  product: Product!
+  addedDate: Timestamp!
+}

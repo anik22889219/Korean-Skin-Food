@@ -1,0 +1,638 @@
+extend type Query {
+  """
+  ✨ Look up a single `Address` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  address(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Address_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Address_FirstRow
+  ): Address @fdc_generated(from: "Address", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Cart` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  cart(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Cart_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Cart_FirstRow
+  ): Cart @fdc_generated(from: "Cart", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `CartItem` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  cartItem(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: CartItem_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: CartItem_FirstRow
+  ): CartItem @fdc_generated(from: "CartItem", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Category` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  category(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Category_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Category_FirstRow
+  ): Category @fdc_generated(from: "Category", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Order` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  order(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Order_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Order_FirstRow
+  ): Order @fdc_generated(from: "Order", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `OrderItem` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  orderItem(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: OrderItem_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: OrderItem_FirstRow
+  ): OrderItem @fdc_generated(from: "OrderItem", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Payment` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  payment(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Payment_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Payment_FirstRow
+  ): Payment @fdc_generated(from: "Payment", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Product` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  product(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Product_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Product_FirstRow
+  ): Product @fdc_generated(from: "Product", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Review` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  review(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Review_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Review_FirstRow
+  ): Review @fdc_generated(from: "Review", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `User` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  user(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+  ): User @fdc_generated(from: "User", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Wishlist` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  wishlist(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Wishlist_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Wishlist_FirstRow
+  ): Wishlist @fdc_generated(from: "Wishlist", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `WishlistItem` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  wishlistItem(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: WishlistItem_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: WishlistItem_FirstRow
+  ): WishlistItem @fdc_generated(from: "WishlistItem", purpose: QUERY_SINGLE)
+  """
+  ✨ List `Address` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  addresses(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Address_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Address_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Address_Having
+  ): [Address!]! @fdc_generated(from: "Address", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Cart` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  carts(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Cart_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Cart_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Cart_Having
+  ): [Cart!]! @fdc_generated(from: "Cart", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `CartItem` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  cartItems(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: CartItem_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [CartItem_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: CartItem_Having
+  ): [CartItem!]! @fdc_generated(from: "CartItem", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Category` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  categories(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Category_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Category_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Category_Having
+  ): [Category!]! @fdc_generated(from: "Category", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Order` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  orders(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Order_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Order_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Order_Having
+  ): [Order!]! @fdc_generated(from: "Order", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `OrderItem` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  orderItems(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: OrderItem_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [OrderItem_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: OrderItem_Having
+  ): [OrderItem!]! @fdc_generated(from: "OrderItem", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Payment` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  payments(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Payment_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Payment_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Payment_Having
+  ): [Payment!]! @fdc_generated(from: "Payment", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Product` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  products(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Product_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Product_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Product_Having
+  ): [Product!]! @fdc_generated(from: "Product", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Review` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  reviews(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Review_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Review_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Review_Having
+  ): [Review!]! @fdc_generated(from: "Review", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `User` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  users(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: User_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [User_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: User_Having
+  ): [User!]! @fdc_generated(from: "User", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Wishlist` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  wishlists(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Wishlist_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Wishlist_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Wishlist_Having
+  ): [Wishlist!]! @fdc_generated(from: "Wishlist", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `WishlistItem` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  wishlistItems(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: WishlistItem_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [WishlistItem_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: WishlistItem_Having
+  ): [WishlistItem!]! @fdc_generated(from: "WishlistItem", purpose: QUERY_MULTIPLE)
+}

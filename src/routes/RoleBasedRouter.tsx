@@ -3,9 +3,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { AdminRoutes } from './AdminRoutes';
 import { PublicRoutes } from './PublicRoutes';
-import CustomerDashboard from '../pages/CustomerDashboard';
-import ViewerDashboard from '../pages/ViewerDashboard';
+import { CustomerDashboard } from '../pages/CustomerDashboard';
+import { ViewerDashboard } from '../pages/ViewerDashboard';
 import AdminLogin from '../pages/AdminLogin';
+import { Account } from '../pages/Account';
 
 /**
  * RoleBasedRouter — Main routing hub
