@@ -50,7 +50,7 @@ export const RoleBasedRouter: React.FC = () => {
         <Route path="/account"     element={<Account />} />
         <Route path="/account/*"   element={<Account />} />
         {/* Anything else → customer login (public users land here) */}
-        <Route path="*"            element={<PublicRoutes />} />
+        <Route path="/*"            element={<PublicRoutes />} />
       </Routes>
     );
   }
@@ -62,8 +62,7 @@ export const RoleBasedRouter: React.FC = () => {
         <Route path="/admin/login" element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="/admin/*"     element={<AdminRoutes />} />
         <Route path="/account"     element={<Navigate to="/admin/dashboard" replace />} />
-        <Route path="/"            element={<Navigate to="/admin/dashboard" replace />} />
-        <Route path="*"            element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="/*"            element={<PublicRoutes />} />
       </Routes>
     );
   }
@@ -73,9 +72,8 @@ export const RoleBasedRouter: React.FC = () => {
     return (
       <Routes>
         <Route path="/customer/dashboard" element={<CustomerDashboard />} />
-        <Route path="/account"            element={<Account />} />
-        <Route path="/"                   element={<Navigate to="/customer/dashboard" replace />} />
-        <Route path="*"                   element={<PublicRoutes />} />
+        <Route path="/account"            element={<Navigate to="/customer/dashboard" replace />} />
+        <Route path="/*"                   element={<PublicRoutes />} />
       </Routes>
     );
   }
@@ -85,9 +83,8 @@ export const RoleBasedRouter: React.FC = () => {
     return (
       <Routes>
         <Route path="/viewer/dashboard" element={<ViewerDashboard />} />
-        <Route path="/account"          element={<Account />} />
-        <Route path="/"                 element={<Navigate to="/viewer/dashboard" replace />} />
-        <Route path="*"                 element={<PublicRoutes />} />
+        <Route path="/account"          element={<Navigate to="/viewer/dashboard" replace />} />
+        <Route path="/*"                 element={<PublicRoutes />} />
       </Routes>
     );
   }
