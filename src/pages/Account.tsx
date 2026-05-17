@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { api } from '../services/api';
@@ -25,7 +23,7 @@ import {
 import { useNavigate, Link } from 'react-router-dom';
 
 export const Account: React.FC = () => {
-  const { user, login, register, logout, isAdmin, loginWithGoogle } = useAuth();
+  const { user, loginWithEmail, register, logout, loginWithGoogle, isAdmin, isAdminTeam } = useAuth();
   const { language, t } = useLanguage();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
@@ -37,9 +35,7 @@ export const Account: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
     password: '',
-    address: ''
   });
   const [error, setError] = useState('');
 
@@ -70,30 +66,31 @@ export const Account: React.FC = () => {
 
     try {
       if (isRegistering) {
-        const success = await register(formData.name, formData.email, formData.phone, formData.password);
+        const success = await register(formData.name, formData.email, formData.password);
         if (success) {
           setIsRegistering(false);
-          alert(language === 'bn' ? 'রেজিস্ট্রেশন সফল! লগইন করুন।' : 'Registration successful! Please login.');
-        } else {
-          setError(language === 'bn' ? 'রেজিস্ট্রেশন ব্যর্থ হয়েছে' : 'Registration failed');
         }
       } else {
-        const loggedInUser = await login(formData.phone, formData.password);
+        const loggedInUser = await loginWithEmail(formData.email, formData.password);
         if (loggedInUser) {
-          // Role-based redirection after login
-          if (loggedInUser.role === 'super_admin' || loggedInUser.role === 'admin') {
+          if (['super_admin','admin','inventory_manager','customer_support'].includes(loggedInUser.role)) {
             navigate('/admin/dashboard');
           } else if (loggedInUser.role === 'customer') {
             navigate('/customer/dashboard');
           } else if (loggedInUser.role === 'viewer') {
             navigate('/viewer/dashboard');
           }
-        } else {
-          setError(language === 'bn' ? 'ফোন বা পাসওয়ার্ড ভুল' : 'Invalid phone or password');
         }
       }
-    } catch (err) {
-      setError('Something went wrong');
+    } catch (err: any) {
+      const code = err?.code || '';
+      if (code.includes('wrong-password') || code.includes('invalid-credential') || code.includes('user-not-found')) {
+        setError(language === 'bn' ? 'ইমেইল বা পাসওয়ার্ড ভুল' : 'Invalid email or password');
+      } else if (code.includes('email-already-in-use')) {
+        setError(language === 'bn' ? 'এই ইমেইল ইতোমধ্যে ব্যবহৃত হয়েছে' : 'Email already in use');
+      } else {
+        setError(language === 'bn' ? 'কিছু একটা সমস্যা হয়েছে' : 'Something went wrong');
+      }
     } finally {
       setLoading(false);
     }
@@ -102,30 +99,20 @@ export const Account: React.FC = () => {
   const handleGoogleSuccess = async () => {
     try {
       setLoading(true);
-      const result = await signInWithPopup(auth, googleProvider);
-      const { user } = result;
-      
-      const successUser = await loginWithGoogle(
-        user.email || '', 
-        user.displayName || 'Google User', 
-        user.photoURL || undefined
-      );
-      
+      const successUser = await loginWithGoogle();
       if (successUser) {
-        // Role-based redirection after login
-        if (successUser.role === 'super_admin' || successUser.role === 'admin') {
+        if (['super_admin','admin','inventory_manager','customer_support'].includes(successUser.role)) {
           navigate('/admin/dashboard');
-        } else if (successUser.role === 'customer') {
-          navigate('/customer/dashboard');
         } else if (successUser.role === 'viewer') {
           navigate('/viewer/dashboard');
+        } else {
+          navigate('/customer/dashboard');
         }
-      } else {
-        setError(language === 'bn' ? 'গুগল লগইন ব্যর্থ হয়েছে' : 'Google login failed');
       }
     } catch (err: any) {
-      console.error(err);
-      setError('Something went wrong with Google Login: ' + err.message);
+      if (err?.code !== 'auth/popup-closed-by-user') {
+        setError(language === 'bn' ? 'গুগল লগইন ব্যর্থ হয়েছে' : 'Google login failed');
+      }
     } finally {
       setLoading(false);
     }
@@ -196,46 +183,33 @@ export const Account: React.FC = () => {
 
           <form onSubmit={handleAuth} className="space-y-4 relative z-10">
             {isRegistering && (
-              <div className="space-y-4">
-                <div className="relative">
-                  <UserIcon className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
-                  <input 
-                    type="text" 
-                    placeholder="Full Name"
-                    required
-                    className="w-full pl-14 pr-6 py-4 bg-[#FDF9F6] rounded-full border border-orange-50 outline-none focus:ring-2 focus:ring-primary/20 text-sm font-bold transition-all"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  />
-                </div>
-                <div className="relative">
-                  <Mail className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
-                  <input 
-                    type="email" 
-                    placeholder="Email Address"
-                    required
-                    className="w-full pl-14 pr-6 py-4 bg-[#FDF9F6] rounded-full border border-orange-50 outline-none focus:ring-2 focus:ring-primary/20 text-sm font-bold transition-all"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  />
-                </div>
+              <div className="relative">
+                <UserIcon className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  required
+                  className="w-full pl-14 pr-6 py-4 bg-[#FDF9F6] rounded-full border border-orange-50 outline-none focus:ring-2 focus:ring-primary/20 text-sm font-bold transition-all"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                />
               </div>
             )}
             <div className="relative">
-              <Phone className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
-              <input 
-                type="tel" 
-                placeholder="Phone Number"
+              <Mail className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
+              <input
+                type="email"
+                placeholder="Email Address"
                 required
                 className="w-full pl-14 pr-6 py-4 bg-[#FDF9F6] rounded-full border border-orange-50 outline-none focus:ring-2 focus:ring-primary/20 text-sm font-bold transition-all"
-                value={formData.phone}
-                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                value={formData.email}
+                onChange={(e) => setFormData({...formData, email: e.target.value})}
               />
             </div>
             <div className="relative">
               <Lock className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
-              <input 
-                type="password" 
+              <input
+                type="password"
                 placeholder="Password"
                 required
                 className="w-full pl-14 pr-6 py-4 bg-[#FDF9F6] rounded-full border border-orange-50 outline-none focus:ring-2 focus:ring-primary/20 text-sm font-bold transition-all"
@@ -246,8 +220,8 @@ export const Account: React.FC = () => {
 
             {error && <p className="text-red-500 text-[10px] font-black uppercase tracking-widest text-center bg-red-50 py-2 rounded-lg">{error}</p>}
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="w-full mt-4 py-5 bg-gray-900 text-white rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl shadow-gray-900/20 flex items-center justify-center gap-2 transition-all hover:bg-gray-800 active:scale-95 disabled:opacity-50"
             >
@@ -329,7 +303,7 @@ export const Account: React.FC = () => {
 
                 <div className="pt-6 mt-6 border-t border-orange-50">
                   <button 
-                    onClick={() => { logout(); navigate('/'); }}
+                    onClick={async () => { await logout(); navigate('/'); }}
                     className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl text-red-500 hover:bg-red-50 transition-all font-black text-[10px] uppercase tracking-widest border border-transparent hover:border-red-100"
                   >
                     <LogOut className="w-4 h-4" />

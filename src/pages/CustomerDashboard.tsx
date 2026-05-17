@@ -45,8 +45,8 @@ export const CustomerDashboard: React.FC = () => {
     fetchOrders();
   }, [user, navigate]);
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate('/');
   };
 

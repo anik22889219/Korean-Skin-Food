@@ -1,4 +1,4 @@
-connectorId: example
+cnonnectorId: example
 generate:
   javascriptSdk:
     - outputDir: ..\..\src\dataconnect-generated

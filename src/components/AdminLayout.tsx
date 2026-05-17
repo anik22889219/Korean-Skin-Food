@@ -154,7 +154,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               <div className="flex-1 min-w-0">
                 <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest truncate">{user?.name}</p>
                 <button 
-                  onClick={() => { logout(); navigate('/'); }}
+                  onClick={async () => { await logout(); navigate('/'); }}
                   className="text-[8px] font-black text-red-500 uppercase tracking-widest hover:underline mt-0.5"
                 >
                   Sign Out
