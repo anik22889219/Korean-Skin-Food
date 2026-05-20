@@ -42,7 +42,31 @@ export const ChatBot: React.FC = () => {
 
     const response = await geminiService.getChatResponse(userMessage, history, products, user);
     
-    setMessages(prev => [...prev, { role: 'model', text: response }]);
+    // Parse Lead Capture JSON if present
+    const leadRegex = /\[\[LEAD_CAPTURE:\s*({.*?})\s*\]\]/;
+    const match = response.match(leadRegex);
+    let cleanResponse = response;
+
+    if (match) {
+      try {
+        const leadData = JSON.parse(match[1]);
+        await api.saveLead({
+          name: leadData.name,
+          phone: leadData.phone,
+          address: leadData.address || '',
+          source: 'Sabiha AI Chatbot',
+          skin_type: leadData.skin_type || '',
+          concern: leadData.concern || ''
+        });
+        console.log('[Sabiha Chatbot] Lead captured and saved successfully:', leadData);
+      } catch (err) {
+        console.error('[Sabiha Chatbot] Failed to parse and save lead:', err);
+      }
+      // Strip out the LEAD_CAPTURE tag so it does not appear in the user dialogue
+      cleanResponse = response.replace(leadRegex, '').trim();
+    }
+
+    setMessages(prev => [...prev, { role: 'model', text: cleanResponse }]);
     setIsLoading(false);
   };
 

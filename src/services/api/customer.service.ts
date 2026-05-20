@@ -22,4 +22,13 @@ export const customerService = {
       return [];
     }
   },
+
+  async getAllLeads(): Promise<any[]> {
+    try {
+      const res = await get({ action: 'getAllLeads' });
+      return Array.isArray(res.data) ? res.data : [];
+    } catch {
+      return [];
+    }
+  },
 };

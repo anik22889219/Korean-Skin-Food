@@ -32,7 +32,6 @@ const PageLoader = () => (
 export const AdminRoutes = () => {
   return (
     <>
-      <Navbar />
       <AdminGuard>
         <AdminLayout>
           <Suspense fallback={<PageLoader />}>
