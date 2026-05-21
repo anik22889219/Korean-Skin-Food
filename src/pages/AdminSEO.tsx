@@ -210,3 +210,5 @@ export const AdminSEO: React.FC = () => {
     </div>
   );
 };
+
+export default AdminSEO;

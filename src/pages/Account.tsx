@@ -368,12 +368,12 @@ export const Account: React.FC = () => {
                                   <img 
                                     src={item.images?.[0] || 'https://via.placeholder.com/100'} 
                                     className="w-full h-full object-cover mix-blend-multiply" 
-                                    alt={item.name}
+                                    alt={item.name_en}
                                     referrerPolicy="no-referrer"
                                   />
                                 </div>
                                 <div className="flex-1">
-                                  <h5 className="text-sm font-bold text-gray-900 line-clamp-2">{item.name}</h5>
+                                  <h5 className="text-sm font-bold text-gray-900 line-clamp-2">{item.name_en}</h5>
                                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-2">Qty: {item.quantity} × ৳{item.price.toLocaleString()}</p>
                                 </div>
                                 <div className="text-right pl-4">

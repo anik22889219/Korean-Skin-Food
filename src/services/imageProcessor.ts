@@ -5,15 +5,15 @@ export interface ProcessedImageResult {
   dataUrl: string;
 }
 
+export type DesignTemplate = 'PINK_BLOSSOM' | 'LUXURY_MINIMAL' | 'NATURE_PURE' | 'SOFT_GLOW';
+
 /**
- * Professional K-Beauty Image Processor
- * 1. Removes background from product photo
- * 2. Adds aesthetic gradient + ingredients text background
- * 3. Returns final Blob for upload
+ * Professional K-Beauty Image Processor with Templates
  */
 export async function processProductImage(
   imageFile: File,
   ingredients: string,
+  templateId: DesignTemplate = 'PINK_BLOSSOM',
   onProgress?: (msg: string) => void
 ): Promise<ProcessedImageResult> {
   
@@ -26,7 +26,7 @@ export async function processProductImage(
   const removedBgBlob = await removeBackground(imageFile, config);
   const removedBgUrl = URL.createObjectURL(removedBgBlob);
 
-  if (onProgress) onProgress('🎨 এস্থেটিক ব্যাকগ্রাউন্ড তৈরি হচ্ছে...');
+  if (onProgress) onProgress('🎨 এস্থেটিক টেম্পলেট অ্যাপ্লাই হচ্ছে...');
 
   // 2. Create Canvas
   const canvas = document.createElement('canvas');
@@ -36,31 +36,24 @@ export async function processProductImage(
   canvas.width = 1080;
   canvas.height = 1080;
 
-  // 3. Draw Aesthetic Background (Gradient)
-  const gradient = ctx.createLinearGradient(0, 0, 1080, 1080);
-  gradient.addColorStop(0, '#fff5f7'); // Light pink
-  gradient.addColorStop(1, '#ffffff');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, 1080, 1080);
-
-  // Add subtle circle patterns
-  ctx.fillStyle = 'rgba(255, 192, 203, 0.1)';
-  ctx.beginPath();
-  ctx.arc(900, 200, 300, 0, Math.PI * 2);
-  ctx.fill();
-
-  // 4. Draw Ingredients Text as Background Decor
-  const ingredientList = ingredients.split(',').map(i => i.trim()).slice(0, 5);
-  ctx.rotate(-0.1);
-  ctx.font = 'bold 40px "Inter", sans-serif';
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
-  
-  for (let i = 0; i < 20; i++) {
-    const text = ingredientList.join(' • ');
-    ctx.fillText(text, -100, i * 80);
-    ctx.fillText(text, 400, i * 80 + 40);
+  // 3. Apply Template Background
+  switch (templateId) {
+    case 'PINK_BLOSSOM':
+      drawPinkBlossom(ctx);
+      break;
+    case 'LUXURY_MINIMAL':
+      drawLuxuryMinimal(ctx);
+      break;
+    case 'NATURE_PURE':
+      drawNaturePure(ctx);
+      break;
+    case 'SOFT_GLOW':
+      drawSoftGlow(ctx);
+      break;
   }
-  ctx.rotate(0.1);
+
+  // 4. Draw Overlay Decor (Ingredients)
+  drawIngredientsOverlay(ctx, ingredients);
 
   // 5. Load and Draw Processed Product
   const productImg = await new Promise<HTMLImageElement>((resolve, reject) => {
@@ -75,27 +68,20 @@ export async function processProductImage(
   const w = productImg.width * scale;
   const h = productImg.height * scale;
   const x = (1080 - w) / 2;
-  const y = (1080 - h) / 2 + 50;
+  const y = (1080 - h) / 2;
 
   // Draw shadow
-  ctx.shadowColor = 'rgba(0,0,0,0.1)';
-  ctx.shadowBlur = 40;
-  ctx.shadowOffsetY = 20;
+  ctx.shadowColor = 'rgba(0,0,0,0.15)';
+  ctx.shadowBlur = 50;
+  ctx.shadowOffsetY = 30;
   ctx.drawImage(productImg, x, y, w, h);
   
   // Reset shadow
   ctx.shadowBlur = 0;
   ctx.shadowOffsetY = 0;
 
-  // 6. Add Brand Text
-  ctx.font = 'bold 30px "Inter", sans-serif';
-  ctx.fillStyle = '#ff4d8d';
-  ctx.textAlign = 'center';
-  ctx.fillText('KOREAN SKIN FOOD', 540, 1000);
-  
-  ctx.font = '500 20px "Inter", sans-serif';
-  ctx.fillStyle = '#999';
-  ctx.fillText('PREMIUM K-BEAUTY SELECTION', 540, 1030);
+  // 6. Brand Identity
+  drawBrandIdentity(ctx, templateId);
 
   // 7. Export
   const finalDataUrl = canvas.toDataURL('image/jpeg', 0.9);
@@ -107,4 +93,93 @@ export async function processProductImage(
     blob: finalBlob,
     dataUrl: finalDataUrl
   };
+}
+
+// ── Template Helpers ─────────────────────────────────────────────────────────
+
+function drawPinkBlossom(ctx: CanvasRenderingContext2D) {
+  const gradient = ctx.createLinearGradient(0, 0, 0, 1080);
+  gradient.addColorStop(0, '#FFF5F7');
+  gradient.addColorStop(1, '#FFFFFF');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  // Soft circle patterns
+  ctx.fillStyle = 'rgba(255, 182, 193, 0.15)';
+  ctx.beginPath(); ctx.arc(900, 200, 400, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(100, 900, 300, 0, Math.PI * 2); ctx.fill();
+}
+
+function drawLuxuryMinimal(ctx: CanvasRenderingContext2D) {
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  // Fine border
+  ctx.strokeStyle = '#F0F0F0';
+  ctx.lineWidth = 40;
+  ctx.strokeRect(20, 20, 1040, 1040);
+
+  // Luxury geometric accent
+  ctx.fillStyle = '#F9F9F9';
+  ctx.fillRect(0, 700, 1080, 380);
+}
+
+function drawNaturePure(ctx: CanvasRenderingContext2D) {
+  const gradient = ctx.createLinearGradient(0, 0, 1080, 1080);
+  gradient.addColorStop(0, '#F6FFF8');
+  gradient.addColorStop(1, '#FFFFFF');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  // Leafy green circles
+  ctx.fillStyle = 'rgba(167, 201, 164, 0.1)';
+  ctx.beginPath(); ctx.arc(1000, 540, 350, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, 400, 0, Math.PI * 2); ctx.fill();
+}
+
+function drawSoftGlow(ctx: CanvasRenderingContext2D) {
+  const radial = ctx.createRadialGradient(540, 540, 100, 540, 540, 800);
+  radial.addColorStop(0, '#FFFFFF');
+  radial.addColorStop(1, '#FFF9F0');
+  ctx.fillStyle = radial;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  // Glow spots
+  ctx.fillStyle = 'rgba(255, 223, 186, 0.2)';
+  ctx.beginPath(); ctx.arc(200, 200, 400, 0, Math.PI * 2); ctx.fill();
+}
+
+function drawIngredientsOverlay(ctx: CanvasRenderingContext2D, ingredients: string) {
+  const list = ingredients.split(',').map(i => i.trim()).slice(0, 4);
+  if (list.length === 0) return;
+
+  ctx.save();
+  ctx.rotate(-0.05);
+  ctx.font = 'bold 32px "Inter", sans-serif';
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+  
+  for (let i = 0; i < 15; i++) {
+    const text = list.join('  •  ').toUpperCase();
+    ctx.fillText(text, -100, i * 100);
+    ctx.fillText(text, 500, i * 100 + 50);
+  }
+  ctx.restore();
+}
+
+function drawBrandIdentity(ctx: CanvasRenderingContext2D, templateId: DesignTemplate) {
+  const isDark = templateId === 'LUXURY_MINIMAL';
+  
+  ctx.textAlign = 'center';
+  
+  // Tagline
+  ctx.font = 'black 18px "Inter", sans-serif';
+  ctx.fillStyle = '#BBB';
+  ctx.letterSpacing = '10px';
+  ctx.fillText('PREMIUM K-BEAUTY', 540, 1000);
+
+  // Logo Text
+  ctx.font = 'black 42px "Inter", sans-serif';
+  ctx.fillStyle = templateId === 'NATURE_PURE' ? '#4A7C59' : '#E91E8C';
+  ctx.letterSpacing = '2px';
+  ctx.fillText('KOREAN SKIN FOOD', 540, 1050);
 }

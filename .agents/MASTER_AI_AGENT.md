@@ -70,7 +70,7 @@ Backend:        Google Apps Script REST API
 Database:       Google Sheets (14 sheets)
 AI:             Google Gemini API (gemini-1.5-flash / gemini-2.0-flash)
 CDN:            Cloudinary (product images)
-Hosting:        Netlify (primary)
+Hosting:        Firebase Hosting (Primary)
 Barcode:        html5-qrcode + JsBarcode
 PWA:            vite-plugin-pwa
 Analytics:      Meta Pixel + Google Analytics + TikTok Pixel
@@ -246,7 +246,7 @@ log_id | scan_type | product_id | action | result | operator | timestamp
 **Agent Name:** সাবিহা (Sabiha)  
 **Role:** Lead Skincare Consultant  
 **Language:** ALWAYS Bangla — even if customer writes in English  
-**Model:** gemini-2.0-flash-exp  
+**Model:** gemini-1.5-flash (Stable / High Quota)
 
 ### Personality
 - Warm, professional, genuine — like a real WhatsApp skincare manager

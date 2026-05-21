@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "customer-support": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "skillPath": "skills/customer-support/SKILL.md",
+      "computedHash": "0f7f9c7a47a44f04946f4b49bf4880519b33ff00fd1539ce1da641825464436e"
+    },
     "developing-genkit-dart": {
       "source": "firebase/agent-skills",
       "sourceType": "github",
@@ -24,6 +30,12 @@
       "sourceType": "github",
       "skillPath": "skills/developing-genkit-python/SKILL.md",
       "computedHash": "6d80e42acbaec4f53f8f62da5d61e0ae540144552fc07fc06a3605efb5420fba"
+    },
+    "email-marketing-automation": {
+      "source": "finsilabs/awesome-ecommerce-skills",
+      "sourceType": "github",
+      "skillPath": "skills/marketing-growth/email-marketing-automation/SKILL.md",
+      "computedHash": "099178e4b994b39d710243eb3887aa6693f6da4768536a5344e52cd94e9baa37"
     },
     "firebase-ai-logic-basics": {
       "source": "firebase/agent-skills",
@@ -61,6 +73,12 @@
       "skillPath": "skills/firebase-data-connect-basics/SKILL.md",
       "computedHash": "506bd68146e316f296df2dd02d90aa90542584b6b131f4003447d7716155dcdd"
     },
+    "firebase-development": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "firebase-development/SKILL.md",
+      "computedHash": "1e543e6eb8aeacaa9071bafe272e5a02ccf2da4aa63e94725c72d7b33d23622c"
+    },
     "firebase-firestore": {
       "source": "firebase/agent-skills",
       "sourceType": "github",
@@ -84,6 +102,12 @@
       "sourceType": "github",
       "skillPath": "skills/firebase-security-rules-auditor/SKILL.md",
       "computedHash": "42e793406ca8980c47fcdbd309f02838316849bcbf8475001b4ecaa6a67606b8"
+    },
+    "image-optimization-cdn": {
+      "source": "finsilabs/awesome-ecommerce-skills",
+      "sourceType": "github",
+      "skillPath": "skills/infrastructure-performance/image-optimization-cdn/SKILL.md",
+      "computedHash": "86e51df2a99eaf29aa6a0711bbb7653dfae44a6bee15ba772a4aabd5a56a3e12"
     },
     "xcode-project-setup": {
       "source": "firebase/agent-skills",

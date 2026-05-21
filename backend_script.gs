@@ -52,6 +52,12 @@ function doGet(e) {
     return jsonResponse(data);
   }
 
+  if (action === 'getAllUsers') {
+    const sheet = ss.getSheetByName('Users');
+    const data = getRowsData(sheet);
+    return jsonResponse(data);
+  }
+
   if (action === 'getSettings') {
     const sheet = ss.getSheetByName('Settings');
     const data = getRowsData(sheet);

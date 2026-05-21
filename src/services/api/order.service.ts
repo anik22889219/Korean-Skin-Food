@@ -1,18 +1,24 @@
 import { Order } from '../../types';
-import { get, post } from './client';
+import { db } from '../firebase';
+import { 
+  collection, 
+  getDocs, 
+  doc, 
+  setDoc, 
+  updateDoc, 
+  query, 
+  where, 
+  orderBy,
+  serverTimestamp 
+} from 'firebase/firestore';
 
 export const mapOrder = (o: any): Order => ({
   order_id: String(o.order_id || ''),
-  timestamp: String(o.order_date || o.timestamp || ''),
-  customer_name: String(o.name || o.customer_name || ''),
+  timestamp: o.timestamp?.toDate ? o.timestamp.toDate().toISOString() : String(o.timestamp || ''),
+  customer_name: String(o.customer_name || o.name || ''),
   customer_phone: String(o.customer_phone || ''),
   customer_address: String(o.customer_address || ''),
-  items:
-    typeof o.items === 'string'
-      ? JSON.parse(o.items)
-      : Array.isArray(o.items)
-      ? o.items
-      : [],
+  items: Array.isArray(o.items) ? o.items : [],
   total: Number(o.total_amount || o.total || 0),
   payment_method: String(o.payment_method || 'Cash on Delivery'),
   status: (o.delivery_status || o.status || 'Pending') as any,
@@ -21,36 +27,71 @@ export const mapOrder = (o: any): Order => ({
 
 export const orderService = {
   async placeOrder(orderData: any): Promise<{ success: boolean; order_id: string; error?: string }> {
-    const res = await post({
-      action: 'placeOrder',
-      ...orderData,
-      total_amount: orderData.total,
-    });
-    return res.data;
+    try {
+      const orderId = `ORD-${Date.now()}`;
+      const docRef = doc(db, 'orders', orderId);
+      
+      const firestoreOrder = {
+        ...orderData,
+        order_id: orderId,
+        total_amount: orderData.total,
+        delivery_status: 'Pending',
+        timestamp: serverTimestamp(),
+      };
+      
+      await setDoc(docRef, firestoreOrder);
+      return { success: true, order_id: orderId };
+    } catch (err: any) {
+      console.error('[KSF] placeOrder error:', err);
+      return { success: false, order_id: '', error: err.message };
+    }
   },
 
   async getAllOrders(): Promise<Order[]> {
     try {
-      const res = await get({ action: 'getAllOrders' });
-      return Array.isArray(res.data) ? res.data.map(mapOrder) : [];
+      const q = query(collection(db, 'orders'), orderBy('timestamp', 'desc'));
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.docs.map(doc => mapOrder(doc.data()));
     } catch (err) {
       console.error('[KSF] getAllOrders error:', err);
       return [];
     }
   },
 
-  async getUserOrders(phone: string): Promise<Order[]> {
+  async getUserOrders(userId: string): Promise<Order[]> {
     try {
-      const res = await get({ action: 'getUserOrders', phone });
-      return Array.isArray(res.data) ? res.data.map(mapOrder) : [];
+      const q = query(
+        collection(db, 'orders'), 
+        where('userId', '==', userId), 
+        orderBy('timestamp', 'desc')
+      );
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.docs.map(doc => mapOrder(doc.data()));
     } catch (err) {
       console.error('[KSF] getUserOrders error:', err);
-      return [];
+      // Fallback to phone search if userId is not available (legacy)
+      try {
+        const q2 = query(
+          collection(db, 'orders'), 
+          where('customer_phone', '==', userId), 
+          orderBy('timestamp', 'desc')
+        );
+        const snapshot2 = await getDocs(q2);
+        return snapshot2.docs.map(doc => mapOrder(doc.data()));
+      } catch (err2) {
+        return [];
+      }
     }
   },
 
   async updateOrderStatus(orderId: string, status: string): Promise<any> {
-    return post({ action: 'updateOrderStatus', order_id: orderId, status });
+    try {
+      const docRef = doc(db, 'orders', orderId);
+      await updateDoc(docRef, { delivery_status: status });
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   },
 
   // Task 3.6 — BD SMS Integration
@@ -68,3 +109,4 @@ export const orderService = {
     }
   },
 };
+

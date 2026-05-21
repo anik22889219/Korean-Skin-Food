@@ -49,11 +49,10 @@ export async function uploadImageToCloudinary(
 }
 
 /**
- * Upload a base64 / dataURL string to Cloudinary.
- * Useful when the image was generated via Canvas.
+ * Generic uploader for strings (Base64 Data URLs or Remote URLs)
  */
-export async function uploadBase64ToCloudinary(
-  dataUrl: string,
+async function uploadStringToCloudinary(
+  content: string,
   onProgress?: (pct: number) => void
 ): Promise<string> {
   if (!CLOUD_NAME || !UPLOAD_PRESET) {
@@ -85,10 +84,20 @@ export async function uploadBase64ToCloudinary(
     xhr.onerror = () => reject(new Error('Network error during Cloudinary upload'));
 
     const params = new URLSearchParams({
-      file: dataUrl,
+      file: content,
       upload_preset: UPLOAD_PRESET,
     });
 
     xhr.send(params.toString());
   });
 }
+
+/**
+ * Upload a base64 / dataURL string to Cloudinary.
+ */
+export const uploadBase64ToCloudinary = uploadStringToCloudinary;
+
+/**
+ * Upload an image from a remote URL to Cloudinary.
+ */
+export const uploadUrlToCloudinary = uploadStringToCloudinary;

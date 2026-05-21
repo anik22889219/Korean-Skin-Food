@@ -124,7 +124,7 @@ const AdminOrders: React.FC = () => {
     total: orders.length,
     pending: orders.filter(o => o.status === 'Pending').length,
     delivered: orders.filter(o => o.status === 'Delivered').length,
-    revenue: orders.filter(o => o.status !== 'Canceled').reduce((s, o) => s + o.total, 0),
+    revenue: orders.filter(o => o.status !== 'Cancelled').reduce((s, o) => s + o.total, 0),
   };
 
   return (

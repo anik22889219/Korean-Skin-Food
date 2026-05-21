@@ -1,16 +1,28 @@
 import { SiteSettings } from '../../types';
-import { get, post } from './client';
+import { db } from '../firebase';
+import { 
+  collection, 
+  getDocs, 
+  doc, 
+  getDoc, 
+  setDoc, 
+  updateDoc, 
+  addDoc, 
+  serverTimestamp,
+  increment 
+} from 'firebase/firestore';
 import { productService } from './product.service';
+import { uploadUrlToCloudinary } from '../cloudinary';
 
 export const adminService = {
   // Settings
   async getSettings(): Promise<SiteSettings> {
     try {
-      const res = await get({ action: 'getSettings' });
+      const querySnapshot = await getDocs(collection(db, 'settings'));
       const settings: any = {};
-      if (Array.isArray(res.data)) {
-        res.data.forEach((item: any) => { settings[item.key] = item.value; });
-      }
+      querySnapshot.forEach((doc) => {
+        settings[doc.id] = doc.data().value;
+      });
       return settings as SiteSettings;
     } catch {
       return {} as SiteSettings;
@@ -19,17 +31,49 @@ export const adminService = {
 
   // Stock / Inventory
   async updateStock(productId: string, newStock: number): Promise<any> {
-    return post({ action: 'updateStock', product_id: productId, stock: newStock });
+    try {
+      const docRef = doc(db, 'products', productId);
+      await updateDoc(docRef, { stock: newStock });
+      
+      // Log inventory change
+      await addDoc(collection(db, 'inventory_logs'), {
+        product_id: productId,
+        change_type: 'STOCK_UPDATE',
+        quantity: newStock,
+        timestamp: serverTimestamp(),
+        user_role: 'admin'
+      });
+      
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   },
 
   async packOrder(orderId: string, productId: string, userRole: string): Promise<any> {
-    return post({ action: 'packOrder', order_id: orderId, product_id: productId, user_role: userRole });
+    try {
+      const orderRef = doc(db, 'orders', orderId);
+      await updateDoc(orderRef, { delivery_status: 'ready_for_delivery' });
+      
+      // Log scan event
+      await addDoc(collection(db, 'inventory_logs'), {
+        product_id: productId,
+        change_type: 'SCAN_PACK',
+        order_id: orderId,
+        timestamp: serverTimestamp(),
+        user_role: userRole
+      });
+      
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   },
 
   async getInventoryLogs(): Promise<any[]> {
     try {
-      const res = await get({ action: 'getInventoryLogs' });
-      return Array.isArray(res.data) ? res.data : [];
+      const querySnapshot = await getDocs(collection(db, 'inventory_logs'));
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } catch {
       return [];
     }
@@ -38,27 +82,35 @@ export const adminService = {
   // Analytics
   async getAnalytics(): Promise<any> {
     try {
-      const res = await get({ action: 'getAnalytics' });
-      return res.data;
+      const orders = await getDocs(collection(db, 'orders'));
+      const leads = await getDocs(collection(db, 'customer_leads'));
+      const products = await getDocs(collection(db, 'products'));
+      
+      let revenue = 0;
+      orders.forEach(doc => {
+        const data = doc.data();
+        revenue += Number(data.total_amount || data.total || 0);
+      });
+
+      return {
+        total_orders: orders.size,
+        total_leads: leads.size,
+        total_products: products.size,
+        revenue: revenue
+      };
     } catch {
       return null;
     }
   },
 
-  // Sheet Management (super_admin only)
-  async manageSheet(config: {
-    sub_action: 'createSheet' | 'addColumn';
-    sheet_name: string;
-    headers?: string[];
-    column_name?: string;
-    user_role: string;
-  }): Promise<any> {
-    return post({ action: 'manageSheet', ...config });
+  // Sheet Management - Deprecated for Firestore, kept for compatibility as no-op
+  async manageSheet(config: any): Promise<any> {
+    console.warn('manageSheet is deprecated for Firestore.');
+    return { success: true, message: 'Firestore does not require sheet management.' };
   },
 
   // Dropshipping & Sourcing
   async getSourcedProducts(): Promise<any[]> {
-    // Simulated sourcing marketplace for Korean Skin Care
     const mockSourced = [
       {
         id: 'S-COSRX-01',
@@ -109,15 +161,24 @@ export const adminService = {
   },
 
   async importProduct(sourcedProduct: any): Promise<any> {
+    // Ensure image is hosted on our Cloudinary
+    let imageUrl = sourcedProduct.image;
+    try {
+      imageUrl = await uploadUrlToCloudinary(sourcedProduct.image);
+    } catch (e) {
+      console.error('Failed to upload imported image to Cloudinary, using source URL.', e);
+    }
+
     const productData: any = {
       product_id: sourcedProduct.id.replace('S-', 'KSF-'),
       name_en: sourcedProduct.name,
       category: sourcedProduct.category,
       price: sourcedProduct.suggested_retail,
-      stock: 10, // Initial dropshipping stock
-      images: [sourcedProduct.image],
+      stock: 10,
+      images: [imageUrl],
       description_en: `Authentic ${sourcedProduct.name} by ${sourcedProduct.brand}. Sourced directly from Korean suppliers.`,
       tags: `dropshipping, ${sourcedProduct.brand}, ${sourcedProduct.category}`,
+      barcode: '880' + Math.floor(Math.random() * 1000000000).toString().padStart(10, '0'), // Generate a dummy K-beauty EAN-13 style barcode
     };
     return productService.addProduct(productData);
   },
@@ -133,27 +194,21 @@ export const adminService = {
 
   // Audit Logging
   async logAction(details: any): Promise<any> {
-    return post({ action: 'logAction', ...details });
+    try {
+      await addDoc(collection(db, 'logs'), {
+        ...details,
+        timestamp: serverTimestamp()
+      });
+      return { success: true };
+    } catch {
+      return { success: false };
+    }
   },
 
-  // System Initialization & Repair
+  // System Initialization & Repair - Deprecated for Firestore
   async initializeSystem(): Promise<any> {
-    // This will check and add missing columns across all critical sheets
-    const criticalFixes = [
-      { sheet: 'Product list 2026', col: 'barcode' },
-      { sheet: 'Orders', col: 'admin_note' },
-      { sheet: 'Users', col: 'role' },
-      { sheet: 'inventory_logs', col: 'user_role' }
-    ];
-
-    for (const fix of criticalFixes) {
-      await this.manageSheet({
-        sub_action: 'addColumn',
-        sheet_name: fix.sheet,
-        column_name: fix.col,
-        user_role: 'super_admin'
-      });
-    }
+    console.warn('initializeSystem is deprecated for Firestore.');
     return { success: true };
   },
 };
+

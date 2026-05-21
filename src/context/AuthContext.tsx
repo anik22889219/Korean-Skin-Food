@@ -14,7 +14,16 @@ import {
   updateProfile,
   type User as FirebaseUser,
 } from 'firebase/auth';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { 
+  collection, 
+  query, 
+  where, 
+  getDocs, 
+  doc, 
+  getDoc, 
+  setDoc, 
+  serverTimestamp 
+} from 'firebase/firestore';
 import { auth, googleProvider, db } from '../services/firebase';
 import type { User } from '../types';
 import {
@@ -28,7 +37,6 @@ import {
   canAccessInventory,
   canAccessCustomerSupport,
   canAccessSettings,
-  type UserRole,
 } from '../lib/roles';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -84,26 +92,45 @@ async function fetchOrCreateUserDoc(
       name: data.name || fbUser.displayName || '',
       email: data.email || fbUser.email || '',
       phone: data.phone || '',
+      address: data.address || '',
       role: (String(data.role || 'customer').trim().toLowerCase()) as User['role'],
     };
   }
 
-  // First-time sign-in → create document with default role "customer"
+  // UID doc not found → Check for migrated record by email or phone
+  let migratedData: any = null;
+  
+  if (fbUser.email) {
+    const q = query(collection(db, 'users'), where('email', '==', fbUser.email));
+    const qs = await getDocs(q);
+    if (!qs.empty) migratedData = qs.docs[0].data();
+  }
+
+  // If still not found and phone is available (rare for first Google login)
+  if (!migratedData && fbUser.phoneNumber) {
+    const q = query(collection(db, 'users'), where('phone', '==', fbUser.phoneNumber.replace('+88', '')));
+    const qs = await getDocs(q);
+    if (!qs.empty) migratedData = qs.docs[0].data();
+  }
+
   const newUser: User = {
     user_id: fbUser.uid,
-    name: overrides?.name || fbUser.displayName || '',
-    email: overrides?.email || fbUser.email || '',
-    phone: overrides?.phone || '',
-    role: (overrides?.role || 'customer') as User['role'],
+    name: overrides?.name || migratedData?.name || fbUser.displayName || '',
+    email: overrides?.email || migratedData?.email || fbUser.email || '',
+    phone: overrides?.phone || migratedData?.phone || '',
+    address: overrides?.address || migratedData?.address || '',
+    role: (overrides?.role || migratedData?.role || 'customer') as User['role'],
   };
 
   await setDoc(ref, {
     ...newUser,
-    createdAt: serverTimestamp(),
+    createdAt: migratedData?.createdAt || serverTimestamp(),
+    migratedFrom: migratedData ? 'legacy_sheet' : 'none'
   });
 
   return newUser;
 }
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Provider

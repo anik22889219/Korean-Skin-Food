@@ -14,6 +14,7 @@ export interface Product {
   tags: string;
   is_featured: boolean;
   barcode?: string;
+  import_price?: number;
 }
 
 export interface User {
@@ -21,6 +22,7 @@ export interface User {
   name: string;
   email: string;
   phone: string;
+  address?: string;
   role: 'customer' | 'admin' | 'super_admin' | 'inventory_manager' | 'customer_support' | 'moderator' | 'viewer';
 }
 

@@ -211,3 +211,5 @@ export const AdminSocial: React.FC = () => {
     </div>
   );
 };
+
+export default AdminSocial;

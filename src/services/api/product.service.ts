@@ -1,15 +1,26 @@
 import { Product } from '../../types';
-import { get, post } from './client';
+import { db } from '../firebase';
+import { 
+  collection, 
+  getDocs, 
+  getDoc, 
+  doc, 
+  setDoc, 
+  updateDoc, 
+  deleteDoc, 
+  query, 
+  where,
+  limit
+} from 'firebase/firestore';
 
 export const transformProduct = (p: any): Product => {
-  if (!p || p.error) return null as any;
+  if (!p) return null as any;
 
+  // Use a simpler mapping if data is already normalized in Firestore
+  // but keep the robust mapper to handle potential inconsistencies from legacy sheets data
   const getVal = (...keys: string[]) => {
-    const normalize = (s: string) => String(s).toLowerCase().replace(/[\s_-]/g, '');
     for (const key of keys) {
-      const normalizedKey = normalize(key);
-      const foundKey = Object.keys(p).find(k => normalize(k) === normalizedKey);
-      if (foundKey) return p[foundKey];
+      if (p[key] !== undefined) return p[key];
     }
     return undefined;
   };
@@ -58,6 +69,7 @@ export const transformProduct = (p: any): Product => {
     skin_type: String(getVal('skin_type', 'skin') || 'All'),
     tags: String(getVal('tags') || ''),
     barcode: String(getVal('barcode', 'upc', 'ean') || ''),
+    import_price: Number(getVal('import_price', 'cost_price') || 0) || undefined,
     is_featured:
       getVal('is_featured', 'featured') === true ||
       getVal('is_featured', 'featured') === 'TRUE' ||
@@ -68,10 +80,8 @@ export const transformProduct = (p: any): Product => {
 export const productService = {
   async getProducts(): Promise<Product[]> {
     try {
-      const res = await get({ action: 'getProducts' });
-      return Array.isArray(res.data)
-        ? res.data.map(transformProduct).filter(Boolean)
-        : [];
+      const querySnapshot = await getDocs(collection(db, 'products'));
+      return querySnapshot.docs.map(doc => transformProduct(doc.data())).filter(Boolean);
     } catch (err) {
       console.error('[KSF] getProducts error:', err);
       return [];
@@ -80,9 +90,13 @@ export const productService = {
 
   async getProductById(id: string): Promise<Product | null> {
     try {
-      const res = await get({ action: 'getProductById', id: id.trim() });
-      const product = transformProduct(res.data);
-      return product && product.product_id ? product : null;
+      const docRef = doc(db, 'products', id.trim());
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        return transformProduct(docSnap.data());
+      }
+      return null;
     } catch (err) {
       console.error('[KSF] getProductById error:', err);
       return null;
@@ -91,9 +105,13 @@ export const productService = {
 
   async getProductByBarcode(barcode: string): Promise<Product | null> {
     try {
-      const res = await get({ action: 'getProductByBarcode', barcode: barcode.trim() });
-      const product = transformProduct(res.data);
-      return product && product.product_id ? product : null;
+      const q = query(collection(db, 'products'), where('barcode', '==', barcode.trim()), limit(1));
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        return transformProduct(querySnapshot.docs[0].data());
+      }
+      return null;
     } catch (err) {
       console.error('[KSF] getProductByBarcode error:', err);
       return null;
@@ -101,14 +119,23 @@ export const productService = {
   },
 
   async addProduct(product: Partial<Product>): Promise<any> {
-    return post({ action: 'addProduct', ...product });
+    if (!product.product_id) throw new Error('Product ID is required');
+    const docRef = doc(db, 'products', product.product_id);
+    await setDoc(docRef, product);
+    return { success: true };
   },
 
   async updateProduct(product: Partial<Product>): Promise<any> {
-    return post({ action: 'updateProduct', ...product });
+    if (!product.product_id) throw new Error('Product ID is required');
+    const docRef = doc(db, 'products', product.product_id);
+    await updateDoc(docRef, product as any);
+    return { success: true };
   },
 
   async deleteProduct(productId: string): Promise<any> {
-    return post({ action: 'deleteProduct', product_id: productId });
+    const docRef = doc(db, 'products', productId);
+    await deleteDoc(docRef);
+    return { success: true };
   },
 };
+

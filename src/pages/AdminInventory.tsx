@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { api } from '../services/api';
 import { uploadImageToCloudinary, uploadBase64ToCloudinary } from '../services/cloudinary';
-import { processProductImage } from '../services/imageProcessor';
+import { processProductImage, DesignTemplate } from '../services/imageProcessor';
 import { Product } from '../types';
 import {
   Plus, Search, Edit2, Trash2, AlertTriangle,
@@ -13,25 +14,27 @@ import {
 import { BarcodeGenerator } from '../components/BarcodeGenerator';
 
 // ── Gemini AI Research ────────────────────────────────────────────────────────
-async function researchProduct(name: string): Promise<Partial<Product>> {
+async function researchProduct(name: string, barcode?: string): Promise<Partial<Product>> {
   const key = import.meta.env.VITE_GEMINI_API_KEY;
   if (!key) throw new Error('VITE_GEMINI_API_KEY not set');
 
-  const prompt = `You are a K-beauty product expert. Research this product: "${name}"
+  const query = barcode ? `Product with EAN/UPC barcode: ${barcode} (${name})` : name;
+  const prompt = `You are a K-beauty product expert. Research this product: "${query}"
 Return ONLY valid JSON (no markdown) with these exact keys:
 {
-  "name_en": "English product name",
+  "name_en": "Full English product name",
   "name_bn": "Bengali product name",
   "category": "one of: Serum|Toner|Moisturizer|Cleanser|Sunscreen|Mask|Eye Care|Lip Care|Other",
-  "description_en": "2-3 sentence description",
+  "description_en": "Professional 2-3 sentence description",
   "description_bn": "Bengali description",
-  "ingredients": "top 5 ingredients comma separated",
+  "ingredients": "top 5 key ingredients comma separated",
   "skin_type": "All|Dry|Oily|Combination|Sensitive",
-  "tags": "3-5 relevant tags comma separated"
+  "tags": "3-5 relevant tags comma separated",
+  "barcode": "${barcode || '13-digit EAN barcode if known'}"
 }`;
 
   const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -41,6 +44,9 @@ Return ONLY valid JSON (no markdown) with these exact keys:
   
   if (!res.ok) {
     const errData = await res.json().catch(() => ({}));
+    if (res.status === 429) {
+      throw new Error('AI Quota শেষ হয়েছে। অনুগ্রহ করে ১৫-২০ সেকেন্ড অপেক্ষা করে আবার চেষ্টা করুন।');
+    }
     throw new Error(errData.error?.message || `Gemini Error: ${res.status}`);
   }
 
@@ -77,6 +83,11 @@ const AdminInventory: React.FC = () => {
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
+  const [importPrice, setImportPrice] = useState('');
+  const [uploadMode, setUploadMode] = useState<'AI' | 'MANUAL'>('AI');
+  const [scannedBarcode, setScannedBarcode] = useState('');
+  const [isScanning, setIsScanning] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<DesignTemplate>('PINK_BLOSSOM');
   const [step, setStep] = useState<'input' | 'processing' | 'review' | 'done'>('input');
   const [stepMsg, setStepMsg] = useState('');
   const [progress, setProgress] = useState(0);
@@ -84,6 +95,28 @@ const AdminInventory: React.FC = () => {
   const [error, setError] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
   const cameraRef = useRef<HTMLInputElement>(null);
+
+  // ── Barcode Scanner Effect ──────────────────────────────────────────────────
+  useEffect(() => {
+    let scanner: Html5QrcodeScanner | null = null;
+    if (isScanning) {
+      scanner = new Html5QrcodeScanner(
+        "barcode-reader", 
+        { 
+          fps: 10, 
+          qrbox: { width: 250, height: 150 },
+          aspectRatio: 1.0
+        },
+        false
+      );
+      scanner.render((text) => {
+        setScannedBarcode(text);
+        setIsScanning(false);
+        scanner?.clear();
+      }, () => {});
+    }
+    return () => { scanner?.clear().catch(() => {}); };
+  }, [isScanning]);
 
   useEffect(() => { fetchProducts(); }, []);
 
@@ -104,6 +137,7 @@ const AdminInventory: React.FC = () => {
   const resetModal = () => {
     setImageFile(null); setImagePreview(null);
     setProductName(''); setPrice(''); setStock('');
+    setImportPrice(''); setScannedBarcode(''); setIsScanning(false);
     setStep('input'); setStepMsg(''); setProgress(0);
     setAiData({}); setError('');
     setShowModal(false);
@@ -120,11 +154,11 @@ const AdminInventory: React.FC = () => {
     try {
       // Step 1: AI research (Name -> Info)
       setStepMsg('🤖 Gemini AI পণ্যের তথ্য সংগ্রহ করছে...'); setProgress(20);
-      const ai = await researchProduct(productName);
+      const ai = await researchProduct(productName, scannedBarcode);
       
       // Step 2: Image Processing (BG Removal + Canvas)
       setStepMsg('📸 ছবির ব্যাকগ্রাউন্ড পরিবর্তন করা হচ্ছে...'); setProgress(45);
-      const processed = await processProductImage(imageFile, ai.ingredients || productName, (msg) => {
+      const processed = await processProductImage(imageFile, ai.ingredients || productName, selectedTemplate, (msg) => {
         setStepMsg(msg);
       });
       setImagePreview(processed.dataUrl);
@@ -136,7 +170,17 @@ const AdminInventory: React.FC = () => {
       // Step 4: Finalize
       setProgress(100);
       setStepMsg('✅ সব তথ্য প্রস্তুত, পর্যালোচনা করুন...');
-      setAiData({ ...ai, images: [imageUrl], price: Number(price), stock: Number(stock) });
+      
+      const finalBarcode = scannedBarcode || ai.barcode || ('880' + Math.floor(Math.random() * 1000000000).toString().padStart(10, '0'));
+      
+      setAiData({ 
+        ...ai, 
+        barcode: finalBarcode,
+        images: [imageUrl], 
+        price: Number(price), 
+        import_price: Number(importPrice) || undefined,
+        stock: Number(stock) 
+      });
       setStep('review');
     } catch (err: any) {
       console.error(err);
@@ -146,12 +190,24 @@ const AdminInventory: React.FC = () => {
   };
 
   const handleSave = async () => {
-    setStep('processing'); setStepMsg('💾 Google Sheet-এ সংরক্ষণ হচ্ছে...');
+    setStep('processing'); setStepMsg('💾 সিস্টেমে সংরক্ষণ হচ্ছে...');
     try {
-      const res = await api.addProduct({
-        ...aiData,
-        product_id: 'PRD' + Date.now(),
-      });
+      const productToSave = uploadMode === 'MANUAL' 
+        ? {
+            ...aiData,
+            product_id: 'PRD' + Date.now(),
+            name_en: productName,
+            price: Number(price),
+            import_price: Number(importPrice) || undefined,
+            stock: Number(stock),
+            barcode: scannedBarcode,
+          }
+        : {
+            ...aiData,
+            product_id: 'PRD' + Date.now(),
+          };
+
+      const res = await api.addProduct(productToSave);
       if (res.data && res.data.success === false) {
         throw new Error(res.data.error || 'Failed to add product');
       }
@@ -193,7 +249,8 @@ const AdminInventory: React.FC = () => {
   const filtered = products.filter(p => {
     const matchSearch =
       (p.name_en || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (p.category || '').toLowerCase().includes(searchQuery.toLowerCase());
+      (p.category || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.barcode || '').toLowerCase().includes(searchQuery.toLowerCase());
     const matchCat = categoryFilter === 'All' || (p.category || '') === categoryFilter;
     return matchSearch && matchCat;
   });
@@ -213,7 +270,6 @@ const AdminInventory: React.FC = () => {
             </p>
           </div>
           <div className="flex gap-4 flex-wrap justify-end">
-            {/* Task 3.7 - Facebook Shop product sync feed export */}
             <button
               onClick={() => {
                 const header = 'id,title,description,availability,condition,price,link,image_link,brand\n';
@@ -240,41 +296,19 @@ const AdminInventory: React.FC = () => {
               <History className="w-4 h-4" /> Stock Logs
             </button>
             <button
-              onClick={() => { setShowModal(true); setStep('input'); }}
+              onClick={() => { setShowModal(true); setUploadMode('MANUAL'); setStep('input'); }}
+              className="flex items-center gap-2 px-6 py-4 bg-white border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] text-gray-900 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-gray-50 transition-all hover:scale-[1.02] active:scale-95"
+            >
+              <Plus className="w-4 h-4" /> Manual Add
+            </button>
+            <button
+              onClick={() => { setShowModal(true); setUploadMode('AI'); setStep('input'); }}
               className="flex items-center gap-3 px-8 py-4 bg-gray-900 text-white rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-pink-600 transition-all shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_rgba(219,39,119,0.3)] hover:scale-[1.02] active:scale-95"
             >
-              <Sparkles className="w-4 h-4" /> Add Product with AI
+              <Sparkles className="w-4 h-4" /> Add with AI & Barcode
             </button>
           </div>
         </div>
-
-        {/* Task 1.3 - Low Stock Alert Banner */}
-        {(lowStockProducts.length > 0 || outOfStockProducts.length > 0) && (
-          <div className="flex flex-col sm:flex-row gap-3">
-            {outOfStockProducts.length > 0 && (
-              <div className="flex items-center gap-3 bg-red-50 border border-red-200 rounded-2xl px-5 py-3 flex-1">
-                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <AlertTriangle className="w-4 h-4 text-red-500" />
-                </div>
-                <div>
-                  <p className="text-xs font-black text-red-700">{outOfStockProducts.length}টি পণ্যের স্টক শেষ!</p>
-                  <p className="text-[10px] text-red-400">{outOfStockProducts.map(p => p.name_en).join(', ')}</p>
-                </div>
-              </div>
-            )}
-            {lowStockProducts.length > 0 && (
-              <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-3 flex-1">
-                <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Bell className="w-4 h-4 text-amber-500" />
-                </div>
-                <div>
-                  <p className="text-xs font-black text-amber-700">{lowStockProducts.length}টি পণ্যের স্টক কম!</p>
-                  <p className="text-[10px] text-amber-400">{lowStockProducts.map(p => `${p.name_en} (${p.stock})`).join(', ')}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
 
         {/* Search bar */}
         <div className="bg-white p-6 rounded-[3rem] border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] flex flex-col md:flex-row gap-6 items-center">
@@ -289,7 +323,7 @@ const AdminInventory: React.FC = () => {
           </button>
         </div>
 
-        {/* Task 1.4 - Category Filter Tabs */}
+        {/* Category Filter Tabs */}
         <div className="flex gap-2 flex-wrap justify-center w-full">
           {CATEGORIES.map(cat => (
             <button
@@ -317,7 +351,7 @@ const AdminInventory: React.FC = () => {
               <table className="w-full text-left">
                 <thead className="bg-[#FDF9F6] border-b border-orange-50/50">
                   <tr>
-                    {['Product', 'Price', 'Stock', 'Status', 'Actions'].map(h => (
+                    {['Product', 'Barcode', 'Price', 'Stock', 'Status', 'Actions'].map(h => (
                       <th key={h} className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
@@ -333,6 +367,16 @@ const AdminInventory: React.FC = () => {
                             <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-1">{p.category}</p>
                           </div>
                         </div>
+                      </td>
+                      <td className="px-8 py-6 whitespace-nowrap">
+                        <code className="px-3 py-1 bg-gray-100 rounded-lg text-[10px] font-bold text-gray-600">{p.barcode || 'NO BC'}</code>
+                        <button 
+                          onClick={() => setPrintProduct(p)}
+                          className="ml-2 p-2 bg-white border border-gray-100 rounded-full shadow-sm hover:bg-gray-50 transition-all group/print"
+                          title="Print Barcode"
+                        >
+                          <Tag className="w-3 h-3 text-gray-400 group-hover/print:text-gray-900" />
+                        </button>
                       </td>
                       <td className="px-8 py-6 whitespace-nowrap">
                         <span className="text-sm font-black text-gray-900 tracking-tighter italic">৳{p.price.toLocaleString()}</span>
@@ -375,7 +419,7 @@ const AdminInventory: React.FC = () => {
         </div>
       </div>
 
-      {/* AI Product Modal */}
+      {/* Product Upload Modal */}
       <AnimatePresence>
         {showModal && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
@@ -383,16 +427,16 @@ const AdminInventory: React.FC = () => {
               onClick={resetModal} className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
             <motion.div initial={{ scale: 0.9, opacity: 0, y: 30 }} animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 30 }}
-              className="relative bg-white rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden">
+              className="relative bg-white rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
 
               {/* Modal Header */}
-              <div className="flex items-center justify-between p-8 pb-0">
+              <div className="flex items-center justify-between p-8 pb-4">
                 <div>
                   <h2 className="text-xl font-black uppercase tracking-tighter">
-                    {step === 'done' ? '✅ সফল হয়েছে!' : step === 'review' ? '🔍 পর্যালোচনা' : '🤖 AI Product Agent'}
+                    {step === 'done' ? '✅ সফল হয়েছে!' : step === 'review' ? '🔍 পর্যালোচনা' : uploadMode === 'AI' ? '🤖 AI & Barcode Add' : '📝 Manual Product Add'}
                   </h2>
                   <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold mt-0.5">
-                    Korean Skin Food Inventory
+                    {uploadMode === 'AI' ? 'Smart Scanner & AI Protocol' : 'Direct Data Entry Protocol'}
                   </p>
                 </div>
                 <button onClick={resetModal} className="p-2 hover:bg-gray-100 rounded-xl">
@@ -400,15 +444,29 @@ const AdminInventory: React.FC = () => {
                 </button>
               </div>
 
-              <div className="p-8 space-y-5">
+              <div className="p-8 space-y-5 overflow-y-auto scrollbar-hide flex-1">
 
                 {/* INPUT STEP */}
                 {step === 'input' && (
                   <>
-                    {/* Image Upload */}
+                    <div className="flex bg-gray-100 p-1 rounded-2xl">
+                      <button 
+                        onClick={() => setUploadMode('AI')}
+                        className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${uploadMode === 'AI' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400'}`}
+                      >
+                        AI Mode
+                      </button>
+                      <button 
+                        onClick={() => setUploadMode('MANUAL')}
+                        className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${uploadMode === 'MANUAL' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400'}`}
+                      >
+                        Manual Mode
+                      </button>
+                    </div>
+
                     <div
                       onClick={() => fileRef.current?.click()}
-                      className="relative border-2 border-dashed border-gray-200 rounded-2xl h-48 flex flex-col items-center justify-center cursor-pointer hover:border-pink-400 hover:bg-pink-50/30 transition-all overflow-hidden"
+                      className="relative border-2 border-dashed border-gray-200 rounded-2xl h-32 flex flex-col items-center justify-center cursor-pointer hover:border-pink-400 hover:bg-pink-50/30 transition-all overflow-hidden"
                     >
                       {imagePreview ? (
                         <div className="relative w-full h-full">
@@ -421,75 +479,165 @@ const AdminInventory: React.FC = () => {
                           </button>
                         </div>
                       ) : (
-                        <div className="flex flex-col gap-4 p-6">
-                          <div className="grid grid-cols-2 gap-4">
-                            <button
-                              onClick={(e) => { e.stopPropagation(); fileRef.current?.click(); }}
-                              className="flex flex-col items-center justify-center p-4 bg-pink-50 rounded-xl border-2 border-dashed border-pink-200 hover:bg-pink-100 transition-colors group"
-                            >
-                              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                                <Image className="w-6 h-6 text-pink-500" />
-                              </div>
-                              <span className="text-xs font-black text-gray-700 uppercase">গ্যালারি</span>
-                            </button>
-
-                            <button
-                              onClick={(e) => { e.stopPropagation(); cameraRef.current?.click(); }}
-                              className="flex flex-col items-center justify-center p-4 bg-blue-50 rounded-xl border-2 border-dashed border-blue-200 hover:bg-blue-100 transition-colors group"
-                            >
-                              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                                <Camera className="w-6 h-6 text-blue-500" />
-                              </div>
-                              <span className="text-xs font-black text-gray-700 uppercase">ক্যামেরা</span>
-                            </button>
+                        <div className="flex flex-col items-center gap-2 p-4 text-center">
+                          <div className="w-10 h-10 bg-pink-50 rounded-full flex items-center justify-center text-pink-500">
+                             <Image className="w-5 h-5" />
                           </div>
-                          
-                          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center">
-                            যেকোনো একটি অপশন বেছে নিন
+                          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                            {uploadMode === 'AI' ? 'পণ্যের ছবি তুলুন' : 'ছবি আপলোড করুন (ঐচ্ছিক)'}
                           </p>
                         </div>
                       )}
-                      
-                      {/* Hidden Inputs */}
-                      <input 
-                        ref={fileRef} 
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
-                        onChange={handleImagePick} 
-                      />
-                      <input 
-                        ref={cameraRef} 
-                        type="file" 
-                        accept="image/*" 
-                        capture="environment" 
-                        className="hidden" 
-                        onChange={handleImagePick} 
-                      />
+                      <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImagePick} />
                     </div>
 
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">টিপস: পরিষ্কার ছবি তুললে AI দ্রুত কাজ করবে</p>
-
-                    {/* Fields */}
-                    {[
-                      { label: 'পণ্যের নাম (ইংরেজি)', val: productName, set: setProductName, type: 'text', ph: 'যেমন: Centella Hyaluronic Acid Serum' },
-                      { label: 'মূল্য (৳)', val: price, set: setPrice, type: 'number', ph: '1400' },
-                      { label: 'স্টক পরিমাণ', val: stock, set: setStock, type: 'number', ph: '20' },
-                    ].map(f => (
-                      <div key={f.label} className="space-y-1">
-                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{f.label}</label>
-                        <input type={f.type} placeholder={f.ph}
-                          className="w-full px-4 py-3 bg-gray-50 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-200 transition-all"
-                          value={f.val} onChange={e => f.set(e.target.value)} />
+                    <div className="space-y-4">
+                      <div className="relative">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1">বারকোড (Barcode)</label>
+                        <div className="flex gap-2">
+                           <div className="relative flex-1">
+                              <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                              <input 
+                                type="text" 
+                                placeholder="Scan or type..."
+                                className="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-200 transition-all"
+                                value={scannedBarcode}
+                                onChange={e => setScannedBarcode(e.target.value)}
+                              />
+                           </div>
+                           <button 
+                             onClick={() => setIsScanning(!isScanning)}
+                             className={`p-3 rounded-xl transition-all ${isScanning ? 'bg-red-500 text-white' : 'bg-pink-100 text-pink-600 hover:bg-pink-200'}`}
+                           >
+                             <Camera className="w-5 h-5" />
+                           </button>
+                        </div>
+                        {isScanning && (
+                           <div className="mt-4 overflow-hidden rounded-2xl border-4 border-gray-900 bg-black aspect-square shadow-xl max-h-[200px]">
+                              <div id="barcode-reader" className="w-full h-full"></div>
+                           </div>
+                        )}
                       </div>
-                    ))}
+
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">পণ্যের নাম (ইংরেজি)</label>
+                        <input type="text" placeholder="যেমন: COSRX Snail Mucin"
+                          className="w-full px-4 py-3 bg-gray-50 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-200 transition-all"
+                          value={productName} onChange={e => setProductName(e.target.value)} />
+                      </div>
+
+                      {uploadMode === 'MANUAL' && (
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">পণ্যের নাম (বাংলা)</label>
+                          <input type="text" placeholder="যেমন: কসআরএক্স স্নেল মিউসিন"
+                            className="w-full px-4 py-3 bg-gray-50 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-200 transition-all"
+                            value={aiData.name_bn || ''} onChange={e => setAiData({...aiData, name_bn: e.target.value})} />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">ক্যাটাগরি</label>
+                        <select 
+                          className="w-full px-4 py-3 bg-gray-50 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-200"
+                          value={aiData.category || ''}
+                          onChange={e => setAiData({...aiData, category: e.target.value})}
+                        >
+                          <option value="">Category বেছে নিন</option>
+                          {CATEGORIES.filter(c => c !== 'All').map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">স্কিন টাইপ</label>
+                        <select 
+                          className="w-full px-4 py-3 bg-gray-50 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-200"
+                          value={aiData.skin_type || 'All'}
+                          onChange={e => setAiData({...aiData, skin_type: e.target.value})}
+                        >
+                          {['All', 'Dry', 'Oily', 'Combination', 'Sensitive'].map(t => <option key={t} value={t}>{t}</option>)}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">কেনা মূল্য</label>
+                        <input type="number" placeholder="৳"
+                          className="w-full px-4 py-3 bg-gray-50 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-200"
+                          value={importPrice} onChange={e => setImportPrice(e.target.value)} />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">বিক্রয় মূল্য</label>
+                        <input type="number" placeholder="৳"
+                          className="w-full px-4 py-3 bg-gray-50 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-200"
+                          value={price} onChange={e => setPrice(e.target.value)} />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">স্টক</label>
+                        <input type="number" placeholder="qty"
+                          className="w-full px-4 py-3 bg-gray-50 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-200"
+                          value={stock} onChange={e => setStock(e.target.value)} />
+                      </div>
+                    </div>
+
+                    {uploadMode === 'AI' && (
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">ডিজাইন টেম্পলেট</label>
+                        <div className="grid grid-cols-4 gap-2">
+                          {[
+                            { id: 'PINK_BLOSSOM', icon: '🌸' },
+                            { id: 'LUXURY_MINIMAL', icon: '✨' },
+                            { id: 'NATURE_PURE', icon: '🌿' },
+                            { id: 'SOFT_GLOW', icon: '🕯️' },
+                          ].map(t => (
+                            <button
+                              key={t.id}
+                              onClick={() => setSelectedTemplate(t.id as DesignTemplate)}
+                              className={`p-3 rounded-xl border-2 transition-all text-xl ${selectedTemplate === t.id ? 'border-pink-500 bg-pink-50' : 'border-gray-100 bg-white'}`}
+                            >
+                              {t.icon}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {error && <p className="text-xs text-red-500 font-bold">{error}</p>}
 
-                    <button onClick={runAIAgent}
-                      className="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-pink-600 transition-all flex items-center justify-center gap-2">
-                      <Sparkles className="w-4 h-4" /> AI দিয়ে প্রসেস করুন
-                    </button>
+                    {uploadMode === 'AI' ? (
+                      <button onClick={runAIAgent}
+                        className="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-pink-600 transition-all flex items-center justify-center gap-2">
+                        <Sparkles className="w-4 h-4" /> AI দিয়ে প্রসেস করুন
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={async () => {
+                           if (!productName || !price || !stock) return setError('নাম, মূল্য এবং স্টক প্রয়োজন।');
+                           setStep('processing'); setStepMsg('Assets প্রসেস হচ্ছে...');
+                           try {
+                              let imgUrl = '';
+                              if (imageFile) imgUrl = await uploadImageToCloudinary(imageFile);
+                              setAiData(prev => ({
+                                 ...prev, 
+                                 images: imgUrl ? [imgUrl] : [],
+                                 name_en: productName,
+                                 price: Number(price),
+                                 import_price: Number(importPrice) || undefined,
+                                 stock: Number(stock),
+                                 barcode: scannedBarcode
+                              }));
+                              setStep('review');
+                           } catch (e) {
+                              setError('আপলোড ব্যর্থ হয়েছে।');
+                              setStep('input');
+                           }
+                        }}
+                        className="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-emerald-600 transition-all flex items-center justify-center gap-2"
+                      >
+                        <Plus className="w-4 h-4" /> রিভিউ করুন
+                      </button>
+                    )}
                   </>
                 )}
 
@@ -522,12 +670,22 @@ const AdminInventory: React.FC = () => {
                       <div className="flex-1 space-y-1">
                         <p className="font-black text-gray-900">{aiData.name_en}</p>
                         <p className="text-sm text-gray-500">{aiData.name_bn}</p>
-                        <div className="flex gap-2 mt-2">
+                        <div className="flex gap-2 mt-2 flex-wrap">
                           <span className="px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-[9px] font-black uppercase">{aiData.category}</span>
                           <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-[9px] font-black">৳{aiData.price}</span>
                           <span className="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full text-[9px] font-black">স্টক: {aiData.stock}</span>
+                          <span className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-[9px] font-black">BC: {aiData.barcode}</span>
                         </div>
                       </div>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">বারকোড (Barcode)</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-3 bg-gray-50 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-200 transition-all"
+                        value={aiData.barcode || ''} 
+                        onChange={e => setAiData({...aiData, barcode: e.target.value})} 
+                      />
                     </div>
                     {aiData.ingredients && (
                       <div className="bg-gray-50 rounded-2xl p-4">
@@ -560,7 +718,7 @@ const AdminInventory: React.FC = () => {
                       <CheckCircle2 className="w-10 h-10 text-emerald-500" />
                     </div>
                     <p className="font-black text-gray-900 text-lg">পণ্য সফলভাবে যুক্ত হয়েছে!</p>
-                    <p className="text-xs text-gray-400">Google Sheet-এ সংরক্ষণ সম্পন্ন।</p>
+                    <p className="text-xs text-gray-400">সিস্টেমে সংরক্ষণ সম্পন্ন।</p>
                     <button onClick={resetModal}
                       className="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-sm uppercase hover:bg-pink-600 transition-all">
                       বন্ধ করুন
@@ -594,7 +752,7 @@ const AdminInventory: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Task 1.1 - Edit Product Modal */}
+      {/* Edit Product Modal */}
       <AnimatePresence>
         {editProduct && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
@@ -612,7 +770,7 @@ const AdminInventory: React.FC = () => {
                   <X className="w-5 h-5 text-gray-400" />
                 </button>
               </div>
-              <div className="p-8 space-y-4">
+              <div className="p-8 space-y-4 max-h-[70vh] overflow-y-auto scrollbar-hide">
                 {/* Product image preview */}
                 {editProduct.images?.[0] && (
                   <div className="flex justify-center">
@@ -622,7 +780,9 @@ const AdminInventory: React.FC = () => {
                 {[
                   { label: 'পণ্যের নাম (ইংরেজি)', key: 'name_en', type: 'text' },
                   { label: 'পণ্যের নাম (বাংলা)', key: 'name_bn', type: 'text' },
-                  { label: 'মূল্য (৳)', key: 'price', type: 'number' },
+                  { label: 'বারকোড (Barcode)', key: 'barcode', type: 'text' },
+                  { label: 'কেনা মূল্য (Import ৳)', key: 'import_price', type: 'number' },
+                  { label: 'বিক্রয় মূল্য (Sell ৳)', key: 'price', type: 'number' },
                   { label: 'ছাড়ের মূল্য (৳) — খালি রাখলে ছাড় নেই', key: 'discount_price', type: 'number' },
                   { label: 'স্টক পরিমাণ', key: 'stock', type: 'number' },
                 ].map(f => (
@@ -670,7 +830,7 @@ const AdminInventory: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Task 1.6 - Stock History Log Modal */}
+      {/* Stock History Log Modal */}
       <AnimatePresence>
         {showLogs && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">

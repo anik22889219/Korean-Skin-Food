@@ -36,7 +36,7 @@ export default function AdminAICenter() {
           </div>
           <div>
             <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Model Version</p>
-            <p className="text-lg font-black text-gray-900 tracking-tighter italic">gemini-2.0-flash</p>
+            <p className="text-lg font-black text-gray-900 tracking-tighter italic">gemini-1.5-flash</p>
           </div>
         </motion.div>
 
@@ -70,7 +70,7 @@ export default function AdminAICenter() {
               <div className="flex gap-4">
                   <span className="text-gray-500">[10:45:12]</span>
                   <span className="text-purple-400 font-bold">SYSTEM:</span>
-                  <span className="text-gray-300">Model gemini-2.0-flash initialized</span>
+                  <span className="text-gray-300">Model gemini-1.5-flash initialized</span>
               </div>
               <div className="flex gap-4">
                   <span className="text-gray-500">[10:46:05]</span>

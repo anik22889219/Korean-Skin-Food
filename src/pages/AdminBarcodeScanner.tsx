@@ -55,7 +55,7 @@ const AdminBarcodeScanner: React.FC = () => {
     } catch {}
   };
 
-  const scanCallbackRef = useRef<(text: string) => void>();
+  const scanCallbackRef = useRef<(text: string) => void>(undefined);
 
   useEffect(() => {
     let scanner: Html5QrcodeScanner | null = null;

@@ -3,14 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Heart, Package, MapPin, Calendar, Trash2 } from 'lucide-react';
 import { api } from '../services/api';
-
-interface Order {
-  order_id: string;
-  total_price: number;
-  order_date: string;
-  status: 'pending' | 'processing' | 'shipped' | 'delivered';
-  items_count: number;
-}
+import { Order } from '../types';
 
 interface WishlistItem {
   product_id: string;
@@ -35,7 +28,7 @@ export const CustomerDashboard: React.FC = () => {
     const fetchOrders = async () => {
       try {
         const data = await api.getUserOrders(user.phone);
-        setOrders(data.sort((a, b) => new Date(b.timestamp || b.order_date).getTime() - new Date(a.timestamp || a.order_date).getTime()));
+        setOrders(data.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
       } catch (error) {
         console.error('Error fetching orders:', error);
       } finally {
@@ -165,7 +158,7 @@ export const CustomerDashboard: React.FC = () => {
               </div>
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <div className="text-3xl font-bold text-green-600">
-                  ৳{orders.reduce((sum, o) => sum + (o.total || o.total_price || 0), 0)}
+                  ৳{orders.reduce((sum, o) => sum + (o.total || 0), 0)}
                 </div>
                 <p className="text-gray-600 text-sm mt-1">Total Spent</p>
               </div>
@@ -236,7 +229,7 @@ export const CustomerDashboard: React.FC = () => {
                           <h3 className="font-bold text-gray-900">{order.order_id}</h3>
                           <p className="text-sm text-gray-500 flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
-                            {new Date(order.timestamp || order.order_date).toLocaleDateString()}
+                            {new Date(order.timestamp).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
@@ -246,7 +239,7 @@ export const CustomerDashboard: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="text-sm text-gray-600">
-                        {order.items?.length || order.items_count} {(order.items?.length || order.items_count) === 1 ? 'item' : 'items'}
+                        {order.items?.length || 0} {order.items?.length === 1 ? 'item' : 'items'}
                       </div>
                       <button className="text-pink-600 font-semibold hover:text-pink-700 transition-colors">
                         View Details
@@ -255,7 +248,7 @@ export const CustomerDashboard: React.FC = () => {
                     <div className="mt-3 pt-3 border-t border-gray-200">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Total:</span>
-                        <span className="text-lg font-bold text-gray-900">৳{order.total || order.total_price}</span>
+                        <span className="text-lg font-bold text-gray-900">৳{order.total}</span>
                       </div>
                     </div>
                   </div>

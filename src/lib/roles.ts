@@ -1,5 +1,5 @@
 // Role management utilities
-export type UserRole = 'super_admin' | 'admin' | 'inventory_manager' | 'customer_support' | 'customer' | 'viewer';
+export type UserRole = 'super_admin' | 'admin' | 'inventory_manager' | 'customer_support' | 'customer' | 'viewer' | 'moderator';
 
 export interface User {
   role?: UserRole;
@@ -83,6 +83,7 @@ export const getRoleDisplayName = (role: UserRole | undefined): string => {
     'customer_support': 'Customer Support',
     'customer': 'Customer',
     'viewer': 'Viewer',
+    'moderator': 'Moderator',
   };
   return roleNames[role as UserRole] || 'Unknown Role';
 };

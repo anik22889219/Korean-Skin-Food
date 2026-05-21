@@ -81,7 +81,7 @@ const AdminDashboard: React.FC = () => {
     });
 
     return last7Days.map(({ dateStr, fullDate }) => {
-      const dayOrders = orders.filter(o => new Date(o.timestamp).toDateString() === fullDate && o.status !== 'Canceled');
+      const dayOrders = orders.filter(o => new Date(o.timestamp).toDateString() === fullDate && o.status !== 'Cancelled');
       return {
         name: dateStr,
         revenue: dayOrders.reduce((s, o) => s + o.total, 0),
