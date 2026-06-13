@@ -1,8 +1,5 @@
 {
   "hosting": {
-    "predeploy": [
-      "npm run build"
-    ],
     "public": "dist",
     "ignore": [
       "firebase.json",
@@ -32,7 +29,12 @@
       "emailPassword": true,
       "googleSignIn": {
         "oAuthBrandDisplayName": "Korean Skin Food",
-        "supportEmail": "admin@koreanskinbd.com"
+        "supportEmail": "admin@koreanskinbd.com",
+        "authorizedRedirectUris": [
+          "https://korean-skin-food.web.app",
+          "https://korean-skin-food.firebaseapp.com",
+          "https://korean-skin-food-bd.netlify.app"
+        ]
       }
     }
   },

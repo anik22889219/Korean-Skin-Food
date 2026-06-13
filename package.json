@@ -14,7 +14,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@google/genai": "^2.0.0",
+    "@genkit-ai/google-genai": "^1.0.0",
+    "@google/genai": "^2.7.0",
     "@imgly/background-removal": "^1.7.0",
     "@tailwindcss/vite": "^4.1.14",
     "@tanstack/react-query": "^5.100.9",
@@ -26,6 +27,7 @@
     "express": "^4.21.2",
     "firebase": "^12.13.0",
     "framer-motion": "^12.38.0",
+    "genkit": "^1.0.0",
     "html5-qrcode": "^2.3.8",
     "lucide-react": "^0.546.0",
     "motion": "^12.38.0",
@@ -43,7 +45,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.21",
-    "firebase-admin": "^13.10.0",
+    "firebase-admin": "^13.0.0",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",

@@ -22,7 +22,8 @@ import {
   doc, 
   getDoc, 
   setDoc, 
-  serverTimestamp 
+  serverTimestamp,
+  limit 
 } from 'firebase/firestore';
 import { auth, googleProvider, db } from '../services/firebase';
 import type { User } from '../types';
@@ -101,14 +102,14 @@ async function fetchOrCreateUserDoc(
   let migratedData: any = null;
   
   if (fbUser.email) {
-    const q = query(collection(db, 'users'), where('email', '==', fbUser.email));
+    const q = query(collection(db, 'users'), where('email', '==', fbUser.email), limit(1));
     const qs = await getDocs(q);
     if (!qs.empty) migratedData = qs.docs[0].data();
   }
 
   // If still not found and phone is available (rare for first Google login)
   if (!migratedData && fbUser.phoneNumber) {
-    const q = query(collection(db, 'users'), where('phone', '==', fbUser.phoneNumber.replace('+88', '')));
+    const q = query(collection(db, 'users'), where('phone', '==', fbUser.phoneNumber.replace('+88', '')), limit(1));
     const qs = await getDocs(q);
     if (!qs.empty) migratedData = qs.docs[0].data();
   }
@@ -216,9 +217,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = useCallback(async () => {
     try {
       await signOut(auth);
-    } catch (e) {}
-    setUser(null);
-    setFirebaseUser(null);
+    } catch (e) {
+      console.error('[Auth] Sign-out error:', e);
+    } finally {
+      // Always clear local state — even if Firebase signOut fails,
+      // we want the UI to reflect a logged-out state.
+      setUser(null);
+      setFirebaseUser(null);
+    }
   }, []);
 
   // ── Role flags ────────────────────────────────────────────────────────────

@@ -21,11 +21,6 @@ export const PageRoleGuard: React.FC<PageRoleGuardProps> = ({
   const { user, isAdminTeam, isSuperAdmin, isAdmin, isInventoryManager, isCustomerSupport, canAccessInventory, canAccessCustomerSupport, canAccessSettings } = useAuth();
   const { showToast } = useToast();
 
-  // Not logged in or not admin team
-  if (!user || !isAdminTeam) {
-    return <Navigate to="/" replace />;
-  }
-
   // Check role requirements
   let hasRolePermission = true;
   let roleReason = '';
@@ -76,13 +71,29 @@ export const PageRoleGuard: React.FC<PageRoleGuardProps> = ({
     }
   }
 
-  // Show toast and redirect if no permission
-  if (!hasRolePermission || !hasFeaturePermission) {
-    useEffect(() => {
-      const reason = !hasRolePermission ? roleReason : featureReason;
-      showToast(`❌ This page requires ${reason} access. Your current role doesn't have this permission.`, 'error');
-    }, []);
+  const notInAdminTeam = !user || !isAdminTeam;
+  const accessDenied = !hasRolePermission || !hasFeaturePermission;
+  const deniedReason = !hasRolePermission ? roleReason : featureReason;
 
+  // ── Toast side-effect — MUST be unconditional (Rules of Hooks) ─────────────
+  useEffect(() => {
+    if (notInAdminTeam) return;
+    if (accessDenied) {
+      showToast(
+        `❌ This page requires ${deniedReason} access. Your current role doesn't have this permission.`,
+        'error'
+      );
+    }
+  // showToast is stable (from context), safe to omit from deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessDenied, deniedReason, notInAdminTeam]);
+
+  // Not logged in or not admin team
+  if (notInAdminTeam) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (accessDenied) {
     return <Navigate to="/admin/dashboard" replace />;
   }
 

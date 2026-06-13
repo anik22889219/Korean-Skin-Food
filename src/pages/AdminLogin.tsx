@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Lock, Mail, Eye, EyeOff, Sparkles, AlertCircle, Chrome,
+  Lock, Mail, Eye, EyeOff, Sparkles, AlertCircle,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../services/firebase';
 
 // Firebase error code → human readable Bengali/English message
 function getFirebaseErrorMessage(code: string): string {
@@ -73,7 +70,7 @@ export default function AdminLogin() {
           navigate('/customer/dashboard', { replace: true });
         } else if (loggedIn.role === 'viewer') {
           navigate('/viewer/dashboard', { replace: true });
-        } else if (isAdminTeam || ['super_admin','admin','inventory_manager','customer_support'].includes(loggedIn.role)) {
+        } else if (['super_admin', 'admin', 'inventory_manager', 'customer_support'].includes(loggedIn.role)) {
           navigate('/admin/dashboard', { replace: true });
         } else {
           setError('এই অ্যাকাউন্টে অ্যাডমিন অ্যাক্সেস নেই।');
